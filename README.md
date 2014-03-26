@@ -1,4 +1,4 @@
 bigpetstore-data-generator
 ==========================
 
-Playground for generating 
+Playground for generating BPS data.
