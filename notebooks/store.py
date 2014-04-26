@@ -5,31 +5,29 @@ import random
 
 from monte_carlo import MonteCarloGenerator
 
-class StorePDF(object):
+class ZipcodePDF(object):
 	def __init__(self, zipcode_pop):
 		total_pop = np.float64(zipcode_pop.sum(axis=0))
 		self.pop_density = zipcode_pop / np.float64(total_pop)
 
-	def probability(self, store):
-		zipcode, pop = store
-		return self.pop_density.loc[store]
+	def probability(self, zipcode):
+		return self.pop_density.loc[zipcode]
 
-class StoreInstanceGenerator(object):
+class ZipcodeGenerator(object):
 	def __init__(self, zipcode_pop):
 		self.zipcode_pop = zipcode_pop
 
 	def generate(self):
 		zipcode = random.choice(self.zipcode_pop.index)	
-		pop = self.zipcode_pop.loc[zipcode]
-		return (zipcode, pop)
+		return zipcode
 
 
 class StoreGenerator(object):
 	def __init__(self, zipcode_pop):
 		self.zipcode_pop = zipcode_pop
-		pdf = StorePDF(zipcode_pop)
-		generator = StoreInstanceGenerator(zipcode_pop)
-		self.mcmc = MonteCarloGenerator(pdf, generator)
+		pdf = ZipcodePDF(zipcode_pop)
+		generator = ZipcodeGenerator(zipcode_pop)
+		self.mcmc = MonteCarloGenerator(generator, pdf)
 
 	def generate_n(self, n):
 		zipcodes = self.generate_zipcodes(n)
@@ -48,6 +46,6 @@ class StoreGenerator(object):
 		ids = np.arange(len(zipcodes))
 		populations = self.zipcode_pop.loc[zipcodes]
 		total_pop = np.float64(populations.sum(axis=0))
-		salesfrequencies = populations.divide(total_pop)
-		return pd.DataFrame(data={"id" : ids, "zipcode" : zipcodes, "salesfrequency" : salesfrequencies}, index=zipcodes)
+		pop_density = populations.divide(total_pop)
+		return pd.DataFrame(data={"id" : ids, "zipcode" : zipcodes, "pop_density" : pop_density}, index=zipcodes)
 
