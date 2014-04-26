@@ -49,3 +49,28 @@ class StoreGenerator(object):
 		pop_density = populations.divide(total_pop)
 		return pd.DataFrame(data={"id" : ids, "zipcode" : zipcodes, "pop_density" : pop_density}, index=zipcodes)
 
+class StoreSamplerPDF(object):
+	def __init__(self, stores):
+		self.stores = stores
+
+	def probability(self, store):
+		return store.pop_density
+
+class StoreSamplerGenerator(object):
+	def __init__(self, stores):
+		self.stores = stores
+
+	def generate(self):
+		store = self.stores.loc[random.choice(self.stores.index)]
+		return store
+
+class StoreSampler(object):
+	def __init__(self, stores):
+		pdf = StoreSamplerPDF(stores)
+		gen = StoreSamplerGenerator(stores)
+		self.mcmc = MonteCarloGenerator(gen, pdf)
+
+	def sample(self):
+		return self.mcmc.generate()
+
+
