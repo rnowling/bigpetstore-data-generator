@@ -31,6 +31,7 @@ class CustomerStateBuilder(object):
 				continue
 			rates[category]["daily_usage_rate"] = cat_params["daily_usage_rate"]
 			rates[category]["transaction_trigger_rate"] = cat_params["transaction_trigger_rate"]
+			rates[category]["transaction_purchase_rate"] = cat_params["transaction_purchase_rate"]
 			rates[category]["amount_used_average"] = cat_params["base_amount_used_average"] * float(self.customer.pets[species])
 			rates[category]["amount_used_variance"] = cat_params["base_amount_used_variance"] * float(self.customer.pets[species])
 		return rates

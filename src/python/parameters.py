@@ -4,6 +4,7 @@ item_categories = {
 						"base_amount_used_average" : 0.25,
 						"base_amount_used_variance" : 0.1,
 						"transaction_trigger_rate" : 2.0,
+						"transaction_purchase_rate" : 7.0,
 						"species" : "dog"
 						},
 
@@ -12,6 +13,7 @@ item_categories = {
 						"base_amount_used_average" : 0.1,
 						"base_amount_used_variance" : 0.05,
 						"transaction_trigger_rate" : 2.0,
+						"transaction_purchase_rate" : 7.0,
 						"species" : "cat"
 						},
 
@@ -20,6 +22,7 @@ item_categories = {
 						"base_amount_used_average" : 1.0,
 						"base_amount_used_variance" : 0.5,
 						"transaction_trigger_rate" : 2.0,
+						"transaction_purchase_rate" : 7.0,
 						"species" : "dog"
 						},
 
@@ -28,6 +31,7 @@ item_categories = {
 						"base_amount_used_average" : 0.1,
 						"base_amount_used_variance" : 0.05,
 						"transaction_trigger_rate" : 2.0,
+						"transaction_purchase_rate" : 7.0,
 						"species" : "cat"
 						}	
 				}

@@ -85,7 +85,7 @@ class ExhaustableItemCategorySimulation(object):
 
 class ExhaustibleItemCategory(object):
 	def __init__(self, daily_usage_rate=None, amount_used_average=None, amount_used_variance=None,
-				 transaction_trigger_rate=None):
+				 transaction_trigger_rate=None, transaction_purchase_rate=None):
 		"""
 		daily_usage_rate is given in times/day -- used to determine when an item is used
 		
@@ -98,6 +98,7 @@ class ExhaustibleItemCategory(object):
 		self.amount_used_variance = amount_used_variance
 		
 		self.transaction_trigger_rate = transaction_trigger_rate
+		self.transaction_purchase_rate = transaction_purchase_rate
 		
 		self.sim = None
 				
@@ -135,7 +136,7 @@ class ExhaustibleItemCategory(object):
 
 	def purchase_weight(self, time):
 		remaining_time = max(self.exhaustion_time() - time, 0.0)
-		lambd = 1.0 / self.transaction_trigger_rate
+		lambd = 1.0 / self.transaction_purchase_rate
 		return lambd * np.exp(-lambd * remaining_time)
 		
 	def propose_transaction_time(self):
@@ -145,7 +146,8 @@ class ExhaustibleItemCategory(object):
 
 
 if __name__ == "__main__":
-	sim = ExhaustableItemCategorySimulation(initial_amount=30.0, initial_time=0.0, daily_usage_rate=1.0, amount_used_average=0.5, amount_used_variance=0.2)
+	sim = ExhaustableItemCategorySimulation(initial_amount=30.0, initial_time=0.0, daily_usage_rate=1.0,
+		amount_used_average=0.5, amount_used_variance=0.2)
 	sim.simulate()
 
 	for time, amount in sim.trajectory:
