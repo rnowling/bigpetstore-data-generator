@@ -1,0 +1,26 @@
+[
+	{
+		"category" : "dry dog food",
+		"species" : ["dog"],
+		"trigger_transaction" : "true",
+		"fields" : ["brand", "flavor", "size", "per_unit_cost"]
+	},
+	{
+		"category" : "dry cat food",
+		"species" : ["cat"],
+		"trigger_transaction" : "true",
+		"fields" : ["brand", "flavor", "size", "per_unit_cost"]
+	},
+	{
+		"category" : "kitty litter",
+		"species" : ["cat"],
+		"trigger_transaction" : "true",
+		"fields" : ["brand", "size", "per_unit_cost"]
+	},
+	{
+		"category" : "poop bags",
+		"species" : ["dog"],
+		"trigger_transaction" : "true",
+		"fields" : ["brand", "color", "count", "per_unit_cost"]
+	}
+]
