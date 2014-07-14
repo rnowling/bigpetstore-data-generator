@@ -36,33 +36,6 @@ def load_products_json():
 
 	return item_category_objects
 
-def load_products():
-	products = defaultdict(list)
-	fl = open("products.csv")
-
-	# skip header
-	next(fl)
-
-	for ln in fl:
-		cols = ln.strip().split(",")
-		category = cols[0]
-		item = {
-			"category" : cols[0],
-			"brand" : cols[1],
-			"flavor" : cols[2],
-			"size" : float(cols[3]),
-			"per_unit_cost" : float(cols[4])
-			}
-		products[category].append(item)
-
-	fl.close()
-
-	return products
-
 if __name__ == "__main__":
 	product_cateogry_objects = load_products_json()
 
-	#markov_model = product_cateogry_objects["dry dog food"].create_markov_model()
-
-	#for i in xrange(20):
-	#	print markov_model.progress_state()
