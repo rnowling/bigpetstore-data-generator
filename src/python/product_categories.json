@@ -178,13 +178,6 @@
 						"flavor" : "Fish & Potato",
 						"size" : 30.0,
 						"per_unit_cost" : 3.00
-					},
-					{
-						"category" : "dry cat food",
-						"brand" : "Pretty Cat",
-						"flavor" : "Chicken & Rice",
-						"size" : 7.0,
-						"per_unit_cost" : 2.86
 					}
 				]
 	},

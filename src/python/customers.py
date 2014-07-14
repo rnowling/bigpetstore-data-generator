@@ -27,8 +27,13 @@ class CustomerGenerator(object):
 		for i in xrange(n):
 			customer = Customer()
 			customer.name = "Customer " + str(i)
-			customer.pets["dog"] = random.randint(1, 4)
-			customer.pets["cat"] = random.randint(1, 4)
+			
+			num_pets = random.randint(1, 10)
+			num_dogs = random.randint(0, num_pets)
+			num_cats = num_pets - num_dogs
+			
+			customer.pets["dog"] = num_dogs
+			customer.pets["cat"] = num_cats
 			customers.append(customer)
 		return customers
 

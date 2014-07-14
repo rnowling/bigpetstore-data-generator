@@ -28,10 +28,11 @@ class TransactionPurchasesSimulator(object):
 		category_weights = self.customer_state.item_category_weights(self.trans_time)
 
 		if self.purchases != 0:
-			category_weights.append(("stop", 0.5))
+			category_weights.append(("stop", 0.1))
 
 		weight_sum = 0.0
 		for category, weight in category_weights:
+			print category, weight
 			weight_sum += weight
 
 		category_probabilities = []

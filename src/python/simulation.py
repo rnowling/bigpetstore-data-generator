@@ -13,6 +13,7 @@ class Simulator(object):
 
 	def simulate(self, end_time=None):
 		for customer in self.customers:
+			print customer
 			state = CustomerState(item_categories=self.item_categories,
 				customer=customer)
 			trans_sim = TransactionSimulator(customer_state=state)

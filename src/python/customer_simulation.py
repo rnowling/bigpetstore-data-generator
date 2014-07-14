@@ -6,7 +6,11 @@ class CustomerState(object):
 		
 		self.item_sims = dict()
 		for category, model in item_categories.iteritems():
-			self.item_sims[category] = ExhaustibleItemCategorySimulation(item_category=model,
+			num_pets = 0
+			for species in model.species:
+				num_pets += customer.pets[species]
+			if num_pets > 0:
+				self.item_sims[category] = ExhaustibleItemCategorySimulation(item_category=model,
 					customer=customer)
 
 	def propose_transaction_time(self):
@@ -28,7 +32,6 @@ class CustomerState(object):
 
 	def update_inventory(self, time, item):
 		item = dict(item)
-		print item
 		category = item["category"]
 		amount = item["size"]
 		sim = self.item_sims[category]
