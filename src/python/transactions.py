@@ -1,14 +1,6 @@
 from collections import defaultdict
 
-from items import ExhaustibleItemCategory
-
-import parameters
-
 import random
-
-import products
-
-from customers import CustomerStateBuilder
 
 from samplers import RouletteWheelSampler
 
@@ -27,9 +19,8 @@ class Transaction(object):
 
 
 class TransactionPurchasesSimulator(object):
-	def __init__(self, customer_state=None, products=None, trans_time=None):
+	def __init__(self, customer_state=None, trans_time=None):
 		self.customer_state = customer_state
-		self.products = products
 		self.trans_time = trans_time
 		self.purchases = 0
 
@@ -51,17 +42,13 @@ class TransactionPurchasesSimulator(object):
 		
 		return sampler.sample()
 
-	def choose_item(self, category):
-		items = self.products[category]
-		return random.choice(items)
-
 	def simulate(self):
 		trans_items = []
 		while True:
 			category = self.choose_category()
 			if category == "stop":
 				break
-			item = self.choose_item(category)
+			item = self.customer_state.choose_item(category)
 			self.customer_state.update_inventory(self.trans_time, item)
 			self.purchases += 1
 			trans_items.append(item)
@@ -69,9 +56,8 @@ class TransactionPurchasesSimulator(object):
 
 
 class TransactionSimulator(object):
-	def __init__(self, customer_state=None, products=None):
+	def __init__(self, customer_state=None):
 		self.customer_state = customer_state
-		self.products = products
 
 	def trans_time_probability(self, proposed_trans_time, last_trans_time):
 		if proposed_trans_time >= last_trans_time:
@@ -96,7 +82,6 @@ class TransactionSimulator(object):
 				break
 			
 			purchase_sim = TransactionPurchasesSimulator(customer_state=self.customer_state,
-								products=self.products,
 								trans_time=trans_time)
 			remaining_before = self.customer_state.get_inventory_amounts(trans_time)
 			purchased_items = purchase_sim.simulate()
@@ -108,25 +93,5 @@ class TransactionSimulator(object):
 						inventory_after=remaining_after)
 			last_trans_time = trans_time
 			yield trans
-
-if __name__ == "__main__":
-	from customers import CustomerGenerator
-
-	generator = CustomerGenerator()
-	customers = generator.generate(10)
-
-	states = []
-	for c in customers:
-		builder = CustomerStateBuilder(c, parameters)
-		s = builder.build_state()
-		states.append(s)
-
-	print
-
-	products_data = products.load_products()
-	trans_sim = TransactionSimulator(customer_state=states[0], products=products_data)
-	for trans in trans_sim.simulate(120.0):
-		print trans
-		print
 
 	

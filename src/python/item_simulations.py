@@ -2,7 +2,57 @@ import random
 
 import numpy as np
 
-class ExhaustableItemCategorySimulation(object):
+from markovmodel import MarkovModelBuilder
+
+class ItemCategoryMarkovModelBuilder(object):
+	def __init__(self, item_category=None, customer=None):
+		self.item_category = item_category
+		self.customer = customer
+
+	def _normalize_field_weights(self, field_weights):
+		weight_sum = 0.0
+		for field, weight in field_weights.iteritems():
+			weight_sum += weight
+
+		for field, weight in list(field_weights.iteritems()):
+			field_weights[field] = weight / weight_sum
+
+		return field_weights
+
+	def _generate_transition_parameters(self):
+		field_weights = dict()
+		field_similarity_weights = dict()
+		for field in self.item_category.fields:
+			field_weights[field] = 1.0 # random.uniform(0.0, 1.0)
+			field_similarity_weights[field] = 1.0 # random.uniform(0.0, 1.0)
+		loopback_weight = 0.9
+
+		return field_weights, field_similarity_weights, loopback_weight
+
+	def create_markov_model(self):
+		field_weights, field_similarity_weights, loopback_weight = \
+			self._generate_transition_parameters()
+		field_weights = self._normalize_field_weights(field_weights)
+
+		builder = MarkovModelBuilder()
+		for rec in self.item_category.items:
+			builder.add_state(tuple(rec.items()))
+			for other_rec in self.item_category.items:
+				weight = 0.0
+				if rec == other_rec:
+					weight = loopback_weight
+				else:
+					for field in self.item_category.fields:
+						if rec[field] == other_rec[field]:
+							weight += field_weights[field] * field_similarity_weights[field]
+						else:
+							weight += field_weights[field] * (1.0 - field_similarity_weights[field])
+					weight = (1.0 - loopback_weight) * weight
+				builder.add_edge_weight(tuple(rec.items()), tuple(other_rec.items()), weight)
+
+		return builder.build_msm()
+
+class ExhaustibleItemCategoryUsageSimulation(object):
 	def __init__(self, initial_amount=None, initial_time=None, daily_usage_rate=None, amount_used_average=None, amount_used_variance=None):
 		"""
 		daily_usage_rate is given in times/day -- used to determine when an item is used
@@ -83,9 +133,8 @@ class ExhaustableItemCategorySimulation(object):
 		return previous_amount
 
 
-class ExhaustibleItemCategory(object):
-	def __init__(self, daily_usage_rate=None, amount_used_average=None, amount_used_variance=None,
-				 transaction_trigger_rate=None, transaction_purchase_rate=None):
+class ExhaustibleItemCategorySimulation(object):
+	def __init__(self, item_category=None, customer=None):
 		"""
 		daily_usage_rate is given in times/day -- used to determine when an item is used
 		
@@ -93,16 +142,23 @@ class ExhaustibleItemCategory(object):
 		much is used per usage.
 		"""
 		
-		self.daily_usage_rate = daily_usage_rate
-		self.amount_used_average = amount_used_average
-		self.amount_used_variance = amount_used_variance
+		num_pets = 0.0
+		for species in item_category.species:
+			num_pets += float(customer.pets[species])
+
+		self.daily_usage_rate = item_category.daily_usage_rate
+		self.amount_used_average = item_category.base_amount_used_average * num_pets
+		self.amount_used_variance = item_category.base_amount_used_variance * num_pets
 		
-		self.transaction_trigger_rate = transaction_trigger_rate
-		self.transaction_purchase_rate = transaction_purchase_rate
-		
+		self.transaction_trigger_rate = item_category.transaction_trigger_rate
+		self.transaction_purchase_rate = item_category.transaction_purchase_rate
 		self.sim = None
+		
+
+		self.purchase_model = ItemCategoryMarkovModelBuilder(item_category=item_category,
+			customer=customer).create_markov_model()
 				
-	def purchase(self, purchase_time, purchased_amount):
+	def record_purchase(self, purchase_time, purchased_amount):
 		"""
 		Increase current amount, from a purchase.
 		
@@ -115,7 +171,7 @@ class ExhaustibleItemCategory(object):
 		if self.sim != None:
 			total_amount += self.sim.amount_at_time(purchase_time)
 		
-		self.sim = ExhaustableItemCategorySimulation(initial_amount=total_amount,
+		self.sim = ExhaustibleItemCategoryUsageSimulation(initial_amount=total_amount,
 											 initial_time=purchase_time,
 											 daily_usage_rate=self.daily_usage_rate,
 											 amount_used_average=self.amount_used_average,
@@ -144,11 +200,26 @@ class ExhaustibleItemCategory(object):
 		transaction_time = max(self.exhaustion_time() - time_until_transaction, 0.0)
 		return transaction_time
 
+	def choose_item_for_purchase(self):
+		return self.purchase_model.progress_state()
+
 
 if __name__ == "__main__":
-	sim = ExhaustableItemCategorySimulation(initial_amount=30.0, initial_time=0.0, daily_usage_rate=1.0,
+	sim = ExhaustibleItemCategoryUsageSimulation(initial_amount=30.0, initial_time=0.0, daily_usage_rate=1.0,
 		amount_used_average=0.5, amount_used_variance=0.2)
 	sim.simulate()
 
 	for time, amount in sim.trajectory:
 		print time, amount
+
+	from products import load_products_json
+	from customers import CustomerGenerator
+
+	item_categories = load_products_json()
+
+	customer = CustomerGenerator().generate(1)[0]
+	print 
+	for item_category in item_categories.itervalues():
+		sim = ExhaustibleItemCategorySimulation(item_category=item_category, customer=customer)
+		for i in xrange(10):
+			print sim.choose_item_for_purchase()
