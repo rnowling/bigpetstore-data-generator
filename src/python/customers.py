@@ -2,8 +2,6 @@ from collections import defaultdict
 
 import random
 
-import parameters
-
 from item_simulations import ExhaustibleItemCategorySimulation	
 
 class Customer(object):
