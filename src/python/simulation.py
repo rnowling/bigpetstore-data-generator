@@ -20,7 +20,8 @@ class Simulator(object):
         self.stores = generator.generate(n=num)
 
     def generate_customers(self, num=None):
-        generator = CustomerGenerator()
+        generator = CustomerGenerator(zipcode_objs=self.zipcode_objs,
+                                      stores=self.stores)
         self.customers = generator.generate(num)
 
     def generate_transactions(self, end_time=None):
@@ -54,6 +55,7 @@ class TransactionWriter(object):
 
             values = [
                 trans.customer.name,
+                trans.customer.location,
                 trans.trans_time,
                 item_str
                 ]
@@ -66,12 +68,20 @@ class TransactionWriter(object):
 if __name__ == "__main__":
     sim = Simulator()
     trans_writer = TransactionWriter(filename="transactions.txt")
-    
+
+    print "Loading data..."
     sim.load_data()
+    
+    print "Generating stores..."
     sim.generate_stores(num=100)
+
+    print "Generating customers..."
     sim.generate_customers(num=10)
 
+    print "Generating transactions..."
     for trans in sim.generate_transactions(end_time=365.0):
         trans_writer.append(trans)
+
+    print
 
     trans_writer.close()
