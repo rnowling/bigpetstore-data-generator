@@ -19,20 +19,17 @@ class Transaction(object):
 
 
 class TransactionPurchasesSimulator(object):
-    def __init__(self, customer_state=None, trans_time=None):
+    def __init__(self, customer_state=None):
         self.customer_state = customer_state
-        self.trans_time = trans_time
-        self.purchases = 0
 
-    def choose_category(self):
-        category_weights = self.customer_state.item_category_weights(self.trans_time)
+    def choose_category(self, trans_time=None, num_purchases=None):
+        category_weights = self.customer_state.item_category_weights(trans_time)
 
-        if self.purchases != 0:
+        if num_purchases != 0:
             category_weights.append(("stop", 0.1))
 
         weight_sum = 0.0
         for category, weight in category_weights:
-            print category, weight
             weight_sum += weight
 
         category_probabilities = []
@@ -46,22 +43,26 @@ class TransactionPurchasesSimulator(object):
     def choose_item(self, category):
         return self.customer_state.choose_item(category)
 
-    def update_usage_simulations(self, item):
-        self.customer_state.update_inventory(self.trans_time, item)
+    def update_usage_simulations(self, trans_time=None, item=None):
+        self.customer_state.update_inventory(trans_time, item)
 
-    def simulate(self):
+    def simulate(self, trans_time=None):
         trans_items = []
+        purchases = 0
 
         while True:
-            category = self.choose_category()
+            category = self.choose_category(trans_time=trans_time,
+                                            num_purchases=purchases)
             
             if category == "stop":
                 break
             
             item = self.choose_item(category)
-            self.update_usage_simulations(item)
             
-            self.purchases += 1
+            self.update_usage_simulations(trans_time=trans_time,
+                                          item=item)
+            
+            purchases += 1
 
             trans_items.append(item)
 
@@ -93,6 +94,7 @@ class TransactionSimulator(object):
     def __init__(self, customer_state=None):
         self.customer_state = customer_state
         self.trans_time_sampler = TransactionTimeSampler(customer_state=customer_state)
+        self.purchase_sim = TransactionPurchasesSimulator(customer_state=self.customer_state) 
     
     def simulate(self, end_time):
         last_trans_time = 0.0
@@ -102,11 +104,8 @@ class TransactionSimulator(object):
             if trans_time > end_time:
                 break
             
-            purchase_sim = TransactionPurchasesSimulator(customer_state=self.customer_state,
-                                trans_time=trans_time)
-
             remaining_before = self.customer_state.get_inventory_amounts(trans_time)
-            purchased_items = purchase_sim.simulate()
+            purchased_items = self.purchase_sim.simulate(trans_time=trans_time)
             remaining_after = self.customer_state.get_inventory_amounts(trans_time)
             trans = Transaction(customer=self.customer_state.customer,
                         purchased_items=purchased_items,
