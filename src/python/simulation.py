@@ -16,7 +16,8 @@ class Simulator(object):
     def generate_transactions(self, customer=None, end_time=None):
         state = CustomerState(item_categories=self.item_categories,
                 customer=customer)
-        trans_sim = TransactionSimulator(customer_state=state)
+        trans_sim = TransactionSimulator(customer_state=state,
+                                         item_categories=self.item_categories)
         for trans in trans_sim.simulate(end_time):
             yield trans
 
@@ -47,7 +48,7 @@ class TransactionWriter(object):
 if __name__ == "__main__":
     sim = Simulator()
     trans_writer = TransactionWriter(filename="transactions.txt")
-    for trans in sim.simulate(num_customers=100, end_time=365.0*4.0):
+    for trans in sim.simulate(num_customers=10, end_time=365.0):
         trans_writer.append(trans)
 
     trans_writer.close()
