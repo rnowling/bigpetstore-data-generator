@@ -2,7 +2,7 @@ from samplers import RouletteWheelSampler
 
 import numpy as np
 
-class LocationSampler(object):
+class ZipcodeSampler(object):
     def __init__(self, zipcode_objs, income_scaling_factor=100.0):
 
         pop_probs = dict()
@@ -49,15 +49,17 @@ class LocationSampler(object):
 class Store(object):
     def __init__(self):
         self.name = None
-        self.location = None
+        self.zipcode = None
+        self.coords = None
 
     def __repr__(self):
-        return "%s,%s" % (self.name, self.location)
+        return "%s,%s,%s" % (self.name, self.zipcode, self.coords)
 
 
 class StoreGenerator(object):
     def __init__(self, zipcode_objs=None, income_scaling_factor=100.0):
-        self.location_sampler = LocationSampler(zipcode_objs=zipcode_objs,
+        self.zipcode_objs = zipcode_objs
+        self.zipcode_sampler = ZipcodeSampler(zipcode_objs=zipcode_objs,
                                                 income_scaling_factor=income_scaling_factor)
         
     def generate(self, n):
@@ -65,7 +67,8 @@ class StoreGenerator(object):
         for i in xrange(n):
             store = Store()
             store.name = "Store_" + str(i)
-            store.location = self.location_sampler.sample()
+            store.zipcode = self.zipcode_sampler.sample()
+            store.coords = self.zipcode_objs[store.zipcode].coords
             stores.append(store)
         return stores
 
