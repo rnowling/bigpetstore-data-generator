@@ -1,31 +1,35 @@
-import products
-
 from customers import CustomerGenerator
 from customer_simulation import CustomerState
-
+from stores import StoreGenerator
+import products
 from transactions import TransactionSimulator
+from zipcodes import load_zipcode_data
 
 
 class Simulator(object):
     def __init__(self):
+        pass
+
+    def load_data(self):
         self.item_categories = products.load_products_json()
+        self.zipcode_objs = load_zipcode_data()
+
+    def generate_stores(self, num=None):
+        generator = StoreGenerator(zipcode_objs=self.zipcode_objs,
+                                   income_scaling_factor=100.0)
+        self.stores = generator.generate(n=num)
 
     def generate_customers(self, num=None):
-        return CustomerGenerator().generate(num)
+        generator = CustomerGenerator()
+        self.customers = generator.generate(num)
 
-    def generate_transactions(self, customer=None, end_time=None):
-        state = CustomerState(item_categories=self.item_categories,
-                customer=customer)
-        trans_sim = TransactionSimulator(customer_state=state,
-                                         item_categories=self.item_categories)
-        for trans in trans_sim.simulate(end_time):
-            yield trans
-
-    def simulate(self, num_customers=None, end_time=None):
-        customers = self.generate_customers(num=num_customers)
-
-        for customer in customers:
-            for trans in self.generate_transactions(customer=customer, end_time=end_time):
+    def generate_transactions(self, end_time=None):
+        for customer in self.customers:
+            state = CustomerState(item_categories=self.item_categories,
+                    customer=customer)
+            trans_sim = TransactionSimulator(customer_state=state,
+                                             item_categories=self.item_categories)
+            for trans in trans_sim.simulate(end_time):
                 yield trans
 
 class TransactionWriter(object):
@@ -62,7 +66,12 @@ class TransactionWriter(object):
 if __name__ == "__main__":
     sim = Simulator()
     trans_writer = TransactionWriter(filename="transactions.txt")
-    for trans in sim.simulate(num_customers=10, end_time=365.0):
+    
+    sim.load_data()
+    sim.generate_stores(num=100)
+    sim.generate_customers(num=10)
+
+    for trans in sim.generate_transactions(end_time=365.0):
         trans_writer.append(trans)
 
     trans_writer.close()
