@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+import math
 import random
 
 from markovmodel import MarkovModelBuilder
@@ -24,9 +25,9 @@ class ItemCategoryMarkovModelBuilder(object):
         field_weights = dict()
         field_similarity_weights = dict()
         for field in self.item_category.fields:
-            field_weights[field] = 1.0 # random.uniform(0.0, 1.0)
-            field_similarity_weights[field] = 1.0 # random.uniform(0.0, 1.0)
-        loopback_weight = 0.9
+            field_weights[field] = random.uniform(0.0, 1.0)
+            field_similarity_weights[field] = random.betavariate(3+math.sqrt(2.0),3-math.sqrt(2.0))
+        loopback_weight = random.betavariate(3+math.sqrt(2.0),3-math.sqrt(2.0))
 
         return field_weights, field_similarity_weights, loopback_weight
 
