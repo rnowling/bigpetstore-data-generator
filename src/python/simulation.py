@@ -34,10 +34,24 @@ class TransactionWriter(object):
 
     def append(self, trans):
         for item in trans.purchased_items:
+            item = dict(item)
+            if "food" in item["category"]:
+                item_str = "%s:%s:%s:%s" % \
+                    (item["category"], item["brand"], item["flavor"], 
+                     item["size"])
+            elif "poop bags" == item["category"]:
+                item_str = "%s:%s:%s:%s" % \
+                    (item["category"], item["brand"], item["color"], 
+                     item["size"])
+            else:
+                item_str = "%s:%s:%s" % \
+                    (item["category"], item["brand"], item["size"])
+            
+
             values = [
                 trans.customer.name,
                 trans.trans_time,
-                item
+                item_str
                 ]
             string = ",".join(map(str, values)) + "\n"
             self.fl.write(string)

@@ -22,7 +22,7 @@ class CustomerGenerator(object):
         customers = list()
         for i in xrange(n):
             customer = Customer()
-            customer.name = "Customer " + str(i)
+            customer.name = "Customer_" + str(i)
             
             num_pets = random.randint(1, 10)
             num_dogs = random.randint(0, num_pets)
