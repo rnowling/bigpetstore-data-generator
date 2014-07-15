@@ -1,4 +1,4 @@
-from item_simulations import ExhaustibleItemCategorySimulation
+from item_simulations import ItemCategorySimulation
 
 class CustomerState(object):
     def __init__(self, item_categories=None, customer=None):
@@ -10,7 +10,7 @@ class CustomerState(object):
             for species in model.species:
                 num_pets += customer.pets[species]
             if num_pets > 0:
-                self.item_sims[category] = ExhaustibleItemCategorySimulation(item_category=model,
+                self.item_sims[category] = ItemCategorySimulation(item_category=model,
                     customer=customer)
 
     def propose_transaction_time(self):

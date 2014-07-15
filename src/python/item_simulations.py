@@ -2,7 +2,7 @@ import random
 
 import numpy as np
 
-class ExhaustibleItemCategoryUsageSimulation(object):
+class ItemCategoryUsageSimulation(object):
     def __init__(self, initial_amount=None, initial_time=None, daily_usage_rate=None, amount_used_average=None, amount_used_variance=None):
         """
         daily_usage_rate is given in times/day -- used to determine when an item is used
@@ -83,7 +83,7 @@ class ExhaustibleItemCategoryUsageSimulation(object):
         return previous_amount
 
 
-class ExhaustibleItemCategorySimulation(object):
+class ItemCategorySimulation(object):
     def __init__(self, item_category=None, customer=None):
         """
         daily_usage_rate is given in times/day -- used to determine when an item is used
@@ -117,11 +117,11 @@ class ExhaustibleItemCategorySimulation(object):
         if self.sim != None:
             total_amount += self.sim.amount_at_time(purchase_time)
         
-        self.sim = ExhaustibleItemCategoryUsageSimulation(initial_amount=total_amount,
-                                             initial_time=purchase_time,
-                                             daily_usage_rate=self.daily_usage_rate,
-                                             amount_used_average=self.amount_used_average,
-                                             amount_used_variance=self.amount_used_variance)
+        self.sim = ItemCategoryUsageSimulation(initial_amount=total_amount,
+                                               initial_time=purchase_time,
+                                               daily_usage_rate=self.daily_usage_rate,
+                                               amount_used_average=self.amount_used_average,
+                                               amount_used_variance=self.amount_used_variance)
         
         self.sim.simulate()
 
@@ -151,7 +151,7 @@ class ExhaustibleItemCategorySimulation(object):
 
 
 if __name__ == "__main__":
-    sim = ExhaustibleItemCategoryUsageSimulation(initial_amount=30.0, initial_time=0.0, daily_usage_rate=1.0,
+    sim = ItemCategoryUsageSimulation(initial_amount=30.0, initial_time=0.0, daily_usage_rate=1.0,
         amount_used_average=0.5, amount_used_variance=0.2)
     sim.simulate()
 

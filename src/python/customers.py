@@ -2,8 +2,6 @@ from collections import defaultdict
 
 import random
 
-from item_simulations import ExhaustibleItemCategorySimulation  
-
 class Customer(object):
     def __init__(self):
         self.name = None
