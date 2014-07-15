@@ -17,8 +17,6 @@ class Customer(object):
                         "cat" : 0
                     }
 
-        self.product_repetition_weight = None
-
     def __repr__(self):
         return "(%s, %s dogs, %s cats, %s)" % \
             (self.name, self.pets["dog"], 
