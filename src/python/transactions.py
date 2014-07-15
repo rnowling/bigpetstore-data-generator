@@ -67,35 +67,44 @@ class TransactionPurchasesSimulator(object):
 
 		return trans_items
 
-
-class TransactionSimulator(object):
+class TransactionTimeSampler(object):
 	def __init__(self, customer_state=None):
 		self.customer_state = customer_state
 
-	def trans_time_probability(self, proposed_trans_time, last_trans_time):
+	def propose_transaction_time(self):
+		return self.customer_state.propose_transaction_time()
+
+	def transaction_time_probability(self, proposed_trans_time, last_trans_time):
 		if proposed_trans_time >= last_trans_time:
 			return 1.0
 		else:
 			return 0.0
 
-	def next_transaction_time(self, last_trans_time):
+	def sample(self, last_trans_time):
 		while True:
-			proposed_time = self.customer_state.propose_transaction_time()
-			prob = self.trans_time_probability(proposed_time, last_trans_time)
+			proposed_time = self.propose_transaction_time()
+			prob = self.transaction_time_probability(proposed_time, last_trans_time)
 			r = random.random()
 			if r < prob:
 				return proposed_time
+
+
+class TransactionSimulator(object):
+	def __init__(self, customer_state=None):
+		self.customer_state = customer_state
+		self.trans_time_sampler = TransactionTimeSampler(customer_state=customer_state)
 	
 	def simulate(self, end_time):
 		last_trans_time = 0.0
 		while True:
-			trans_time = self.next_transaction_time(last_trans_time)
+			trans_time = self.trans_time_sampler.sample(last_trans_time)
 
 			if trans_time > end_time:
 				break
 			
 			purchase_sim = TransactionPurchasesSimulator(customer_state=self.customer_state,
 								trans_time=trans_time)
+
 			remaining_before = self.customer_state.get_inventory_amounts(trans_time)
 			purchased_items = purchase_sim.simulate()
 			remaining_after = self.customer_state.get_inventory_amounts(trans_time)
