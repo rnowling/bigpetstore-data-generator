@@ -43,16 +43,28 @@ class TransactionPurchasesSimulator(object):
 		
 		return sampler.sample()
 
+	def choose_item(self, category):
+		return self.customer_state.choose_item(category)
+
+	def update_usage_simulations(self, item):
+		self.customer_state.update_inventory(self.trans_time, item)
+
 	def simulate(self):
 		trans_items = []
+
 		while True:
 			category = self.choose_category()
+			
 			if category == "stop":
 				break
-			item = self.customer_state.choose_item(category)
-			self.customer_state.update_inventory(self.trans_time, item)
+			
+			item = self.choose_item(category)
+			self.update_usage_simulations(item)
+			
 			self.purchases += 1
+
 			trans_items.append(item)
+
 		return trans_items
 
 
