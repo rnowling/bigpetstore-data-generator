@@ -41,10 +41,6 @@ class CustomerState(object):
             amounts[category] = remaining_amount
         return amounts
 
-    def choose_item(self, category):
-        return self.item_sims[category].choose_item_for_purchase()
-
-
     def __repr__(self):
         return "(%s, %s dogs, %s cats)" % (self.customer.name, self.customer.pets["dog"], self.customer.pets["cat"])
 
