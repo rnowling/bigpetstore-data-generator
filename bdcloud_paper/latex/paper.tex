@@ -165,6 +165,7 @@
 % http://www.tug.org/applications/pdftex
 
 
+\usepackage{color}
 
 
 
@@ -359,16 +360,16 @@
 % use a multiple column layout for up to three different
 % affiliations
 \author{\IEEEauthorblockN{Ronald J. Nowling}
-\IEEEauthorblockA{Red Hat,\\
-Raleigh, NC \\
+\IEEEauthorblockA{Red Hat, Inc.\\
+Raleigh, NC 27601\\
 Computer Science \& Engineering,\\
 University of Notre Dame,\\
 Notre Dame, IN 46617\\
 Email: rnowling@redhat.com}
 \and
 \IEEEauthorblockN{Jay Vyas}
-\IEEEauthorblockA{Red Hat\\
-Raleigh, NC\\
+\IEEEauthorblockA{Red Hat, Inc.\\
+Raleigh, NC 27601\\
 Email: jvyas@redhat.com}}
 
 % conference papers do not typically use \thanks and this command
@@ -496,22 +497,30 @@ The customers’ locations are modeled so that customers are placed within  The 
   \label{fig:trans_sim}
 \end{figure}
 
-\subsubsection{Transaction Times}
+\subsubsection{Transaction Times} \label{sec:transaction-times}
 Transaction records consist of a customer, a store, a date and time, and a list of items purchased and their prices.  
 
 A transaction model is created for each customer and integrated over the simulation's timeframe to generate transactions.  Transactions are triggered when a customer runs out of items such as dog food as well as a random process describing the frequency of ``impromptu'' shopping trips.
 
 Transaction times are simulated using a Monte Carlo method (Figure~\ref{fig:trans_sim}).  The usage over time of each category is simulated, from which transaction times are found for each item category. The earliest transaction time is taken as the proposed transaction time.  The probability of the transaction time is calculated using a PDF.  If rejected, new transaction times are proposed.  Otherwise, the purchased items are modeled using a separate process (discussed below). After the items are chosen, the process begins again with the simulation of the item category usages.
 
-In the first stage of the process, the usage of exhaustible items over time is modeled using a simple stochastic differential equation (SDE):
+In the first stage of the process, the usage of items over time is modeled using a simple stochastic differential equation (SDE):
 
 \begin{equation}
 \frac{da_i}{dt} = -\mu_i + \sigma_i\, dW_i(t)
 \end{equation}
 
-where $a_i$ is the amount of item category $i$ ``stuff'' remaining at time $t$. The variable $u_i$ gives the average usage rate and $\sigma^2_i$ gives the variance of the usage rate for item category $i$. The exhaustion time $ T_{E,i}$ for each item category is found from the usage simulations.
+where $a_i$ is the amount of item category $i$ ``stuff'' remaining at time $t$. The variable $u_i$ gives the average usage rate and $\sigma^2_i$ gives the variance of the usage rate for item category $i$. The SDE is integrated using the Euler-Maruyama method \textcolor{red}{reference} with timestep $\Delta t_n$ sampled from a Poisson process:
 
-The proposed transaction time is found from the exhaustion times.  For each item cateogry, the offset time $T_{O, i}$ between when a customer would visit the store and the exhaustion time is sampled from an Exponential distribution parameterized separately for each customer $c$. A proposed transaction time $T_{P, i}$ for each item category is found by subtracting the offset time $T_{O, i}$ from the exhaustion time $T_{E, i}$.  The earlist proposed transaction time is taken as the overall proposed transaction time $T_T$.
+\begin{align}
+&a_{n+1, i} = a_{n,i} - \mu_{i, c} \, \Delta t_n + \sigma_{i, c} \, \sqrt{\Delta t_n} R_n \\
+&\Delta t_n \sim \text{Exp}(\lambda_i) \nonumber \\
+&R_n \sim \text{N}(0, 1) \nonumber
+\end{align}
+
+where $\lambda_i$ is the item category's average usage rate, $\mu_i$ is the item category's average amount used per use, and $\sigma^2_i$ is the variance of the amount of the item category used per use. The parameter $\lambda_i$ is defined for each item cateogry.  The parameters $\mu_{i, c}$, and $\sigma^2_{i,c}$ are found based on a base rate for each item category multiplied by the number of pets of the appropriate species the customer has.  The exhaustion time $T_{E,i}$ for each item category is found by simulating the usage until $a_n = 0$.
+
+The proposed transaction time is found from the exhaustion times.  For each item cateogry, the offset time $T_{O, i}$ between when a customer would visit the store and the exhaustion time is sampled from an exponential distribution parameterized separately for each customer $c$. A proposed transaction time $T_{P, i}$ for each item category is found by subtracting the offset time $T_{O, i}$ from the exhaustion time $T_{E, i}$.  The earlist proposed transaction time is taken as the overall proposed transaction time $T_T$.
 
 \begin{align}
 &\beta_c \sim \text{U}(a, b) \\
@@ -537,28 +546,21 @@ The proposed transaction time is accepted if $p(t=T_T) < r$, where $r \sim \text
 
 \subsubsection{Shopping Cart Items}
 
-A customer’s purchases in each transaction are modeled using a layered Hidden Markov Model (HMM) (Figure~\ref{fig:shopping_cart_sim}).  The HMM has three states: the start state, the purchase states, and the stop state. There are an infinite number of purchase states, identified by the exhaustion times of the customer's item categories, the transaction time, and the number of items purchased in the current transaction. The observables of the purchase states correspond to the item categories and are Markov models for choosing the item to be purchased from the category. The observables are assigned probabilities based on the amounts of time (based on the usage simulations) until the customer uses the remaining amount of each item category. 
-
-Markov Models are used to model the customer's purchasing behavior for each item category.  Each state corresponds to an item in that category. The transition probabilities are defined so-as to model the customer's buying preferences.  
+A customer’s purchases in each transaction are modeled using a layered Hidden Markov Model (HMM) (Figure~\ref{fig:shopping_cart_sim}).  The HMM has three states: the start state, the purchase states, and the stop state. There are an infinite number of purchase states, identified by the exhaustion times of the customer's item categories, the transaction time, and the number of items purchased in the current transaction. The observables of the purchase states correspond to the item categories and are Markov models for choosing the item to be purchased from the category. The observables are \textcolor{red}{assigned probabilities} based on the amounts of time (based on the usage simulations) until the customer uses the remaining amount of each item category. 
 
 \begin{equation}
 Pr(X_{n+1}=x|X_n) = \dots
 \end{equation} 
 
-After an item category is chosen from the HMM, a Markov model is used to model the customer's buying habits with respect to products in that item category.  Each product in that item category is represented as a state. The current state is that last item purchased in this category, regardless of which transaction the purchase occurred in. The transition probabilities are assigned according to the customer's buying habits.  For example, if a customer tends to buy the same brand of dog food repeatedly, the outgoing edges to all products of the same brand as the product in the current state will be higher than those for other brands' products. If the customer does not care about flavor, the outgoing edges to all products from the current brand will be equal, otherwise the edge weights can be adjusted to prefer a specific combination of brand and flavor.  Likewise, if a customer cares more about flavor or cost, the edge weights will be assigned appropriately.
+Markov Models are used to model the customer's purchasing behavior for each item category.  Each state corresponds to an item in that category. The transition probabilities are assigned according to the customer's buying habits.  For example, if a customer tends to buy the same brand of dog food repeatedly, the outgoing edges to all products of the same brand as the product in the current state will be higher than those for other brands' products. If the customer does not care about flavor, the outgoing edges to all products from the current brand will be equal, otherwise the edge weights can be adjusted to prefer a specific combination of brand and flavor.  Likewise, if a customer cares more about flavor or cost, the edge weights will be assigned appropriately.  To simulate an item purchase, the Markov model is transitioned forward by one state.  The current states of the Markov models are kept between purchases.
 
+\begin{equation}
+Pr(X_{n+1}=x|X_n) = \dots
+\end{equation} 
 
+After an item is chosen, the item category's exhaustion time is updated by propogating the item category usage SDE described in Section~\ref{sec:transaction-times}. \textcolor{red}{state transition, stop state}
 
-The item category HMM could be extended to consider additional factors such as the amount of money spent so far in the transaction and the customer's spending habits.
-
-[figure]
-
-
-[example MM]
-
-[equation for determining edge weights]
-	
-To model a purchase, the item category Markov model is incremented by one state transition.  After an item is purchased, the customer's inventory is updated and the appropriate usage simulation is re-run.  Afterwards, the process repeats until the stop state is chosen in the HMM. 
+The HMM could be extended to consider additional factors such as the amount of money spent so far in the transaction and the customer's spending habits.
 
 \subsubsection{Other Fields}
 
