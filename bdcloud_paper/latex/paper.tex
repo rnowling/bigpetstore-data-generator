@@ -448,7 +448,7 @@ Models for generating synthetic data overcome these obstacles.  The code for gen
 
 Given that the driving motivation behind so much of the investment in big data software solutions is “to derive insight from data”, there is thus an obvious, gaping hole in the existing ecosystem: We need a tool that generates meaningful data which contains informational complexity that can be used to derive global patterns in a data set, which can be used to scalably and reliably generate large data sets on the fly - so that we can use it for benchmarking, comparison, and demonstration of the different algorithmic approaches to mining large data sets.
 
-\section{Overview of Model \& Simulations}
+\section{Overview of Models \& Simulations}
 
 \subsection{Stores}
 
@@ -561,21 +561,7 @@ After an item is chosen, the item category's exhaustion time is updated by propo
 The HMM can be extended to consider additional factors such as the amount of money spent so far in the transaction and the customer's spending habits.
 
 \section{Implementation}
-Prototype using Python
-
-\subsection{Output Format}
-
-In line with the goal of generating data for analytics, the final output represents minimal information.  Although the model and simulation incorporate many internal parameters and state variables, these are ignored in the final output.  The final output consists of a table of transaction items like so:
-
-* Customer Name
-* Customer Location
-* Store Location
-* Transaction Number
-* Transaction Date/time
-* Item details (string)
-* Item cost
-
-[show example output]
+The models and simulations were implemented using Python. The source code is available on GitHub \textcolor{red}{reference} at \url{https://github.com/rnowling/bigpetstore-data-generator} under the Apache 2 license.
 
 \section{Example Analysis of Generated Data}
 \subsection{Size, Scale}
@@ -592,8 +578,6 @@ In line with the goal of generating data for analytics, the final output represe
 * stores -- distance, one or multiple stores?
 * brand loyalty
 
-\section{Availability}
-GitHub, Apache license
 
 \section{Discussion and Conclusion}
 implementation
@@ -605,23 +589,16 @@ implementation
 
 
 % no \IEEEPARstart
-This demo file is intended to serve as a ``starter file''
-for IEEE conference papers produced under \LaTeX\ using
-IEEEtran.cls version 1.7 and later.
+%This demo file is intended to serve as a ``starter file''
+%for IEEE conference papers produced under \LaTeX\ using
+%IEEEtran.cls version 1.7 and later.
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
-I wish you the best of success.
+%I wish you the best of success.
 
-\hfill mds
+%\hfill mds
  
-\hfill January 11, 2007
-
-\subsection{Subsection Heading Here}
-Subsection text here.
-
-
-\subsubsection{Subsubsection Heading Here}
-Subsubsection text here.
+%\hfill January 11, 2007
 
 
 % An example of a floating figure using the graphicx package.
@@ -752,6 +729,12 @@ The authors would like to thank...
 \begin{thebibliography}{1}
 
 \bibitem{IEEEhowto:kopka}
+%\subsection{Subsection Heading Here}
+%Subsection text here.
+
+
+%\subsubsection{Subsubsection Heading Here}
+%Subsubsection text here.
 H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
   0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
 
