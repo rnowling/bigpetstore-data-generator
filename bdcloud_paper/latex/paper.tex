@@ -500,7 +500,7 @@ A transaction model is created for each customer and integrated over the simulat
 
 \begin{figure}[!t]
   \centering
-  \includegraphics[width=3.75in]{figures/transaction_simulation.eps}
+  \includegraphics[width=3.5in]{figures/transaction_simulation.eps}
   \caption{Flowchart of Transaction Monte Carlo Simulation}
   \label{fig:trans_sim}
 \end{figure}
@@ -530,7 +530,7 @@ The proposed transaction time is found from the exhaustion times.  For each item
 \begin{align}
 &\beta_c \sim \text{U}(a, b) \\
 &T_{O, i} \sim \text{Exp}(\beta^{-1}_c) \\
-&T_{P, i} = T_{E,i} - T_{P, i} \\
+&T_{P, i} = T_{E,i} - T_{O, i} \\
 &T_T = \min_i \, \{  T_{P, i}\}
 \end{align}
 
@@ -545,17 +545,26 @@ The proposed transaction time is accepted if $p(t=T_T) < r$, where $r \sim \text
 \begin{figure*}[!t]
   \centering
   \includegraphics[width=6in]{figures/shopping_cart_simulation.eps}
-  \caption{Shopping Cart Hidden Markov Model}
+  \caption{Example Shopping Cart Hidden Markov Model}
   \label{fig:shopping_cart_sim}
 \end{figure*}
 
 \subsubsection{Shopping Cart Items} \label{sec:transaction-purchases}
 
-A customer’s purchases in each transaction are modeled using a layered Hidden Markov Model (HMM) (Figure~\ref{fig:shopping_cart_sim}).  The HMM has three states: the start state, the purchase states, and the stop state. There are an infinite number of purchase states, identified by the exhaustion times of the customer's item categories, the transaction time, and the number of items purchased in the current transaction. The observables of the purchase states correspond to the item categories and are Markov models for choosing the item to be purchased from the category. The observables are \textcolor{red}{assigned probabilities} based on the amounts of time (based on the usage simulations) until the customer uses the remaining amount of each item category. 
+A customer's purchases in each transaction are modeled using a layered Hidden Markov Model (HMM) (Figure~\ref{fig:shopping_cart_sim}).  The HMM has three states: the start state, the purchase states, and the stop state. There are an infinite number of purchase states, identified by the exhaustion times of the customer's item categories, the transaction time, and the number of items purchased in the current transaction. The observables of the states correspond to the item categories.  Each item category $i$ is assigned a weight $w_i$ according to the amount of time between the transaction time $T_t$ and $T_{E,i}$ when each item category will be exhausted (based on the usage simulations):
 
 \begin{equation}
-Pr(X_{n+1}=x|X_n) = \dots
-\end{equation} 
+w_i = - \lambda_i \exp(-\lambda_i (T_{E, i}- T_{T}))
+\end{equation}
+
+The probability $p(X=i)$ of choosing item category $i$ is given by the normalizing the weight $w_i$ by the sum of all of the weights $W$:
+
+\begin{align}
+&p(X=i) = W^{-1} w_i \\
+&W = \sum_i w_i \nonumber
+\end{align}
+
+The item category for the purchase is chosen using a Roulette Wheel sampler.
 
 Markov Models are used to model the customer's purchasing behavior for each item category.  Each state corresponds to an item in that category. The transition probabilities are assigned according to the customer's buying habits.  For example, if a customer tends to buy the same brand of dog food repeatedly, the outgoing edges to all products of the same brand as the product in the current state will be higher than those for other brands' products. If the customer does not care about flavor, the outgoing edges to all products from the current brand will be equal, otherwise the edge weights can be adjusted to prefer a specific combination of brand and flavor.  Likewise, if a customer cares more about flavor or cost, the edge weights will be assigned appropriately.  To simulate an item purchase, the Markov model is transitioned forward by one state.  The current states of the Markov models are kept between purchases.
 
