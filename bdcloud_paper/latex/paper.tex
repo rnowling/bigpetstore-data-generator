@@ -452,13 +452,28 @@ Given that the driving motivation behind so much of the investment in big data s
 \subsection{Stores}
 
 
-Store records contain a unique identifier and a location in the form of a 5-digit zip code.  The locations of the stores are modeled by a PMF that gives the probability that a store’s location is the given zip code. We’ve written the PMF to give to zip codes in high-population, high-income areas the highest probabilities. The PMF is composed of two individual PMFs. One PMF determines the probability of each zip code as the population of that zip code over the total population:
+Store records contain a unique identifier and a location in the form of a 5-digit zip code.  The locations of the stores are modeled by a PMF that gives the probability that a store's location is the given zip code. We've written the PMF to give to zip codes in high-population, high-income areas the highest probabilities. The PMF is composed of two individual PMFs. One PMF determines the probability of each zip code as the population of that zip code over the total population:
+
+\begin{equation}
+p(\text{location}=z | \text{population}(z)) = \frac{\text{population}(z)}{\sum_{i} \text{population}(i)}
+\end{equation}
 
 The second PMF scales the probabilities of the zip codes by their incomes.  The zip code with the highest-income has a probability s-times larger than that of the lowest-income zip code. The values in-between are interpolated using an exponential function:
 
+
+\begin{equation}
+p(\text{location}=z | \text{income}(z)) = s ^ {\big( \frac{\text{income} - \min_i{\textrm{income}(i)}} {\max_i{\textrm{income}(i)} - \min_i{\textrm{income}(i)}} - 1 \big)}
+\end{equation}
+
 The combined PMF is given as: 
 
-where Z is the normalization factor.  Given the small size (~35,000 zip codes) of the data set, Z can be found directly by iterating over all of the zip codes and summing the scores.
+\begin{align}
+p(\text{location}=z) = &Z^-1 p(\text{location}=z | \text{population}(z)) \nonumber \\
+&p(\text{location}=z | \text{income}(z))
+\end{align}
+
+
+where $Z$ is the normalization factor.  Given the small size ($\approx$30,000 zip codes) of the data set, $Z$ can be found directly by iterating over all of the zip codes and summing the scores.
 
 The PMFs are parameterized using external data sets.  The list of zip codes came from a database of zip code latitude and longitudes.  The population and household income data [reference] for the zip codes were taken from from the U.S. Census. 
 
@@ -474,44 +489,78 @@ The customers’ locations are modeled so that customers are placed within  The 
 
 \subsection{Transactions}
 
-\begin{figure*}[!t]
+\begin{figure}[!t]
   \centering
-  \includegraphics[width=5.0in]{figures/transaction_modelseps.eps}
-  \caption{Flowchart of Transaction Time \& Purchases Simulations}
-  \label{fig:fig_sim}
-\end{figure*}
+  \includegraphics[width=3.75in]{figures/transaction_simulation.eps}
+  \caption{Flowchart of Transaction Monte Carlo Simulation}
+  \label{fig:trans_sim}
+\end{figure}
 
 \subsubsection{Transaction Times}
 Transaction records consist of a customer, a store, a date and time, and a list of items purchased and their prices.  
 
-A transaction model is created for each customer and integrated over the simulation's timeframe to generate transactions.  Transactions are triggered when a customer runs out of items such as dog food as well as a random process describing the frequency of "impromptu" shopping trips.
+A transaction model is created for each customer and integrated over the simulation's timeframe to generate transactions.  Transactions are triggered when a customer runs out of items such as dog food as well as a random process describing the frequency of ``impromptu'' shopping trips.
 
-Transaction times are modeled using a Monte Carlo method (Figure 1a).  The usage over time of each category is simulated, from which transaction times are found for each item category. The earliest transaction time is taken as the proposed transaction time.  The probability of the transaction time is calculated using a PDF.  If rejected, new transaction times are proposed.  Otherwise, the purchased items are modeled using a separate process (discussed below). After the items are chosen, the process begins again with the simulation of the item category usages.
+Transaction times are simulated using a Monte Carlo method (Figure~\ref{fig:trans_sim}).  The usage over time of each category is simulated, from which transaction times are found for each item category. The earliest transaction time is taken as the proposed transaction time.  The probability of the transaction time is calculated using a PDF.  If rejected, new transaction times are proposed.  Otherwise, the purchased items are modeled using a separate process (discussed below). After the items are chosen, the process begins again with the simulation of the item category usages.
 
 In the first stage of the process, the usage of exhaustible items over time is modeled using a simple stochastic differential equation (SDE):
 
-where $a_i$ is the amount of item category $i$ ``stuff'' remaining at time $t$. The variable $u_i$ gives the average usage rate and $\sigma^2_i$ gives the variance of the usage rate for item category $i$. From the usage simulations, the exhaustion time for each exhaustible item category is found.
+\begin{equation}
+\frac{da_i}{dt} = -\mu_i + \sigma_i\, dW_i(t)
+\end{equation}
 
-The transaction times are sampled from a collection of Poisson processes, one for each item category as well as one for impromptu shopping trips, modeling the arrival time relative to the exhaustion time.  In other words, the time at which the customer visits the store is found by sampling arrival times from an exponential distribution (parameterized separately for each item category) and subtracting the arrival times from the exhaustion times.  The earliest arrival time is taken as the proposed transaction time.
+where $a_i$ is the amount of item category $i$ ``stuff'' remaining at time $t$. The variable $u_i$ gives the average usage rate and $\sigma^2_i$ gives the variance of the usage rate for item category $i$. The exhaustion time $ T_{E,i}$ for each item category is found from the usage simulations.
 
-The acceptance probability of the proposed transaction time is modeled using a PDF that incorporates factors such as store hours.  The PDF could be extended to incorporate additional factors including time-dependent events such as sales, weather, and the amount of money the customer has available at the time.
+The proposed transaction time is found from the exhaustion times.  For each item cateogry, the offset time $T_{O, i}$ between when a customer would visit the store and the exhaustion time is sampled from an Exponential distribution parameterized separately for each customer $c$. A proposed transaction time $T_{P, i}$ for each item category is found by subtracting the offset time $T_{O, i}$ from the exhaustion time $T_{E, i}$.  The earlist proposed transaction time is taken as the overall proposed transaction time $T_T$.
 
-Until the transaction time is accepted, the process repeatedly samples new transaction times from the Poisson processes. If the transaction time is accepted, a separate model (discussed below) is used to choose the items purchased.  Afterwards, the process starts over with the simulation of the items' usages. The process is repeated until a transaction later than the end time of the simulation is generated.
+\begin{align}
+&\beta_c \sim \text{U}(a, b) \\
+&T_{O, i} \sim \text{Exp}(\beta^{-1}_c) \\
+&T_{P, i} = T_{E,i} - T_{P, i} \\
+&T_T = \min_i \, \{  T_{P, i}\}
+\end{align}
+
+The acceptance probability $p(t=T_T)$ of the proposed transaction time $T_T$ is modeled using a PDF that incorporates factors such as store hours.  The PDF could be extended to incorporate additional factors including time-dependent events such as sales, weather, and the amount of money the customer has available at the time.
+
+\begin{equation}
+p(t=T_T) = p(t=T_T | \text{store hours})
+\end{equation}
+
+The proposed transaction time is accepted if $p(t=T_T) < r$, where $r \sim \text{U}(0, 1)$. Until the proposed transaction time is accepted, a new proposed transaction time is generated by sampling new offset times. If the proposed transaction time is accepted, the shopping cart of items is generated through a separate simulation discussed below. Transactions are generated until the accepted transaction time is later than the end time given as a simulation parameter.
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=6in]{figures/shopping_cart_simulation.eps}
+  \caption{Shopping Cart Hidden Markov Model}
+  \label{fig:shopping_cart_sim}
+\end{figure*}
+
+\subsubsection{Shopping Cart Items}
+
+A customer’s purchases in each transaction are modeled using a layered Hidden Markov Model (HMM) (Figure~\ref{fig:shopping_cart_sim}).  The HMM has three states: the start state, the purchase states, and the stop state. There are an infinite number of purchase states, identified by the exhaustion times of the customer's item categories, the transaction time, and the number of items purchased in the current transaction. The observables of the purchase states correspond to the item categories and are Markov models for choosing the item to be purchased from the category. The observables are assigned probabilities based on the amounts of time (based on the usage simulations) until the customer uses the remaining amount of each item category. 
+
+Markov Models are used to model the customer's purchasing behavior for each item category.  Each state corresponds to an item in that category. The transition probabilities are defined so-as to model the customer's buying preferences.  
+
+\begin{equation}
+Pr(X_{n+1}=x|X_n) = \dots
+\end{equation} 
+
+After an item category is chosen from the HMM, a Markov model is used to model the customer's buying habits with respect to products in that item category.  Each product in that item category is represented as a state. The current state is that last item purchased in this category, regardless of which transaction the purchase occurred in. The transition probabilities are assigned according to the customer's buying habits.  For example, if a customer tends to buy the same brand of dog food repeatedly, the outgoing edges to all products of the same brand as the product in the current state will be higher than those for other brands' products. If the customer does not care about flavor, the outgoing edges to all products from the current brand will be equal, otherwise the edge weights can be adjusted to prefer a specific combination of brand and flavor.  Likewise, if a customer cares more about flavor or cost, the edge weights will be assigned appropriately.
 
 
-\subsubsection{Purchased Items}
 
-A customer’s purchases in each transaction are modeled using a Hidden Markov Model (HMM) for the item categories layered on top of separate Markov Models for each item category (Figure 1b).  The current state is the combination of the customer’s current inventory and purchasing preferences. The observables are the item categories and a "stop" state. The observables are assigned probabilities based on which items the user is running out of (based on the usage simulations) and the average number of items purchased per transaction. The item category HMM could be extended to consider additional factors such as the amount of money spent so far in the transaction and the customer's spending habits.
+The item category HMM could be extended to consider additional factors such as the amount of money spent so far in the transaction and the customer's spending habits.
 
 [figure]
 
-After an item category is chosen from the HMM, a Markov model is used to model the customer's buying habits with respect to products in that item category.  Each product in that item category is represented as a state. The current state is that last item purchased in this category, regardless of which transaction the purchase occurred in. The transition probabilities are assigned according to the customer's buying habits.  For example, if a customer tends to buy the same brand of dog food repeatedly, the outgoing edges to all products of the same brand as the product in the current state will be higher than those for other brands' products. If the customer does not care about flavor, the outgoing edges to all products from the current brand will be equal, otherwise the edge weights can be adjusted to prefer a specific combination of brand and flavor.  Likewise, if a customer cares more about flavor or cost, the edge weights will be assigned appropriately.
 
 [example MM]
 
 [equation for determining edge weights]
 	
 To model a purchase, the item category Markov model is incremented by one state transition.  After an item is purchased, the customer's inventory is updated and the appropriate usage simulation is re-run.  Afterwards, the process repeats until the stop state is chosen in the HMM. 
+
+\subsubsection{Other Fields}
 
 \section{Implementation}
 Prototype using Python
