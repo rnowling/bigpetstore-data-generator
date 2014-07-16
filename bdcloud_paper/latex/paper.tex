@@ -353,7 +353,7 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Domain-Driven Generative Data Model for BigPetStore}
+\title{Domain-Driven, Generative Data Model for BigPetStore}
 
 
 % author names and affiliations
@@ -440,11 +440,11 @@ Big data applications process large, continuously-changing data sets with the ge
 
 Over time, more high-quality data sets are becoming publicly available, but these data sets often carry burdens that force developers to make undesirable trade offs. Since few data sets are scalable, allowing the user to pick how much data they want, users are forced to choose between small data sets which are useful for development and testing on a local machine, but not for production-scale tests or benchmarking, or large data sets which are prohibitively expensive to host, transfer, and store. Furthermore, access to large data sets can be unreliable due to dependence on third party benefactors for hosting and requires significant amounts of bandwidth to download.  Several companies (such as Twitter \textcolor{red}{reference}) offer access to their data but the costs and usage restrictions can be undesirable.
 
-\emph{Ab initio} mathematical models for generating synthetic data overcomes several of these obstacles.  The code for generating the data is often small, enabling free hosting, licensing restrictions are often avoided, and the data size can be scaled, enabling seamless usage of the same data set across a range of scenarios.  Common synthetic data set generators such as TeraGen and the Intel Hadoop Benchmark \textcolor{red}{reference} can generate data sets quickly and at any scale, but they are over-specialized for benchmarking, resulting in semantically-void data that lacks usefulness for analytics examples. The lack of frameworks for generating semantically-rich data at arbitrary scale denies developers access to consistent data sets that can be used across a range of environments \textcolor{red}{Huppler, Pavlo}. 
+\emph{Ab initio} mathematical models for generating synthetic data overcomes several of these obstacles.  The code for generating the data is often small, enabling free hosting, licensing restrictions are often avoided, and the data size can be scaled, enabling seamless usage of the same data set across a range of scenarios.  Common synthetic data set generators such as TeraGen and the Intel Hadoop Benchmark \textcolor{red}{reference} can generate data sets quickly and at any scale, but they are over-specialized for benchmarking, resulting in semantically-void data that lacks usefulness for analytics examples. The lack of frameworks for generating semantically-rich data at arbitrary scale denies developers access to consistent data sets that can be used across a range of environments \textcolor{red}{Huppler, Pavlo}.  \textcolor{red}{standard benchmarks}
 
 Attempts have been made to find a middle-ground.  Myriad and PDGF provide primitives for specifying generative data models \textcolor{red}{reference}. Alexandrov, et al. proposed Oligos, an approach for generating synthetic data from models trained on reference databases with real data \textcolor{red}{reference}. Oligos appears promising but will need to overcome several difficult challenges in automatically characterizing complex reference data to determine relevant constraints and learn accurate models.  Until such methods have reached maturity, development of a customized domain-driven model is best suited for generating for satisfying the needs of big data software and algorithms development.
 
-The BigPetStore application aims to be a big data application blueprint built around a fictional chain of pet stores, which incorporates a data generator and complex examples of cleaning, aggregation, and analytics using well-known tools such as Hive and Mahout from across the Hadoop and Spark ecosystems \textcolor{red}{reference}. BigPetStore's usefulness has been demonstrated by its incorporation into the Apache BigTop distribution for testing and as a reference application \textcolor{red}{reference}.  
+The BigPetStore application aims to be a big data application blueprint built around a fictional chain of pet stores, which incorporates a data generator and complex examples of cleaning, aggregation, and analytics using well-known tools such as Hive and Mahout from across the Hadoop and Spark ecosystems \textcolor{red}{reference}. BigPetStore's usefulness has been demonstrated by its incorporation into the Apache BigTop distribution \cite{BigTop} for testing and as a reference application.  
 
 In this work, we present a new domain-drive model and simulation for generating arbitrarily large, complex data for testing and benchmarking of software tools in the big data space. Compared with BigPetStore's previous data generator, our model and implementation can generate data which contains geospatial, temporal, and quantitative features, similar to the type of data which businesses and organizations might typically encounter. Combining the features of the TeraGen (scalability) \textcolor{red}{reference} and MovieLens (semantically rich) \textcolor{red}{reference} input data sets commonly used for big data benchmarking, we present a scalable synthetic data set generation implementation which can be used to benchmark lower level tasks (such as sorting) as well as higher level tasks (such as clustering, recommending, and search indexing) at arbitrary scale.  To validate this approach, we apply it as a drop in replacement for the current version of BigPetStore which has already been utilized to test several Hadoop deployments at terabyte scale, and is actively being adopted by a variety of companies in the software industry, and confirm that it generates data with desirable properties (global patterns and region specific transactions).
 
@@ -515,7 +515,7 @@ In the first stage of the process, the usage of items over time is modeled using
 \frac{da_i}{dt} = -\mu_i + \sigma_i\, dW_i(t)
 \end{equation}
 
-where $a_i$ is the amount of item category $i$ ``stuff'' remaining at time $t$. The variable $u_i$ gives the average usage rate and $\sigma^2_i$ gives the variance of the usage rate for item category $i$. The SDE is numerically integrated using the Euler-Maruyama method \textcolor{red}{reference} with timestep $\Delta t_n$ sampled from a Poisson process:
+where $a_i$ is the amount of item category $i$ ``stuff'' remaining at time $t$. The variable $u_i$ gives the average usage rate and $\sigma^2_i$ gives the variance of the usage rate for item category $i$. The SDE is numerically integrated using the Euler-Maruyama method\cite{Klouden13} with timestep $\Delta t_n$ sampled from a Poisson process:
 
 \begin{align}
 &a_{n+1, i} = a_{n,i} - \mu_{i, c} \, \Delta t_n + \sigma_{i, c} \, \sqrt{\Delta t_n} R_n \\
@@ -540,7 +540,7 @@ The acceptance probability $p(t=T_T)$ of the proposed transaction time $T_T$ is 
 p(t=T_T) = p(t=T_T | \text{store hours})
 \end{equation}
 
-The proposed transaction time is accepted if $p(t=T_T) < r$, where $r \sim \text{U}(0, 1)$. Until the proposed transaction time is accepted, a new proposed transaction time is generated by sampling new offset times. If the proposed transaction time is accepted, the shopping cart of items is generated through a separate simulation discussed below. Transactions are generated until the accepted transaction time is later than the end time given as a simulation parameter.
+The proposed transaction time is accepted if $p(t=T_T) < r$, where $r \sim \text{U}(0, 1)$. Until the proposed transaction time is accepted, a new proposed transaction time is generated by sampling new offset times. If the proposed transaction time is accepted, the shopping cart of items is generated through a separate simulation discussed in Section~\ref{sec:transaction-purchases} below. Transactions are generated until the accepted transaction time is later than the end time given as a simulation parameter.
 
 \begin{figure*}[!t]
   \centering
@@ -577,7 +577,7 @@ After an item is chosen, the item category's exhaustion time is updated by propo
 The HMM can be extended to consider additional factors such as the amount of money spent so far in the transaction and the customer's spending habits.
 
 \section{Implementation}
-The models and simulations were implemented using Python. The source code is available on GitHub \textcolor{red}{reference} at \url{https://github.com/rnowling/bigpetstore-data-generator} under the Apache 2 license.
+The models and simulations were implemented using Python. The source code is available on GitHub \cite{GitHub} at \url{https://github.com/rnowling/bigpetstore-data-generator} under the Apache 2 license.
 
 \section{Example Analysis of Generated Data}
 Transaction data for 10 stores, 10,000 customers, and 4 years of simulated time totaling 100 MB was generated using the Python implementation. 
@@ -763,26 +763,27 @@ The authors would like to thank...
 % http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
 % The IEEEtran BibTeX style support page is at:
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
-%\bibliographystyle{IEEEtran}
+\bibliographystyle{plain}
 % argument is your BibTeX string definitions and bibliography database(s)
-%\bibliography{IEEEabrv,../bib/paper}
+%\bibliography{IEEEabrv,paper}
+\bibliography{paper}
 %
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-\begin{thebibliography}{1}
+%\begin{thebibliography}{1}
 
-\bibitem{IEEEhowto:kopka}
+%\bibitem{IEEEhowto:kopka}
 %\subsection{Subsection Heading Here}
 %Subsection text here.
 
 
 %\subsubsection{Subsubsection Heading Here}
 %Subsubsection text here.
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+%H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+%  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
 
-\end{thebibliography}
+%\end{thebibliography}
 
 
 
