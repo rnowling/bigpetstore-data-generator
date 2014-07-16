@@ -510,7 +510,7 @@ In the first stage of the process, the usage of items over time is modeled using
 \frac{da_i}{dt} = -\mu_i + \sigma_i\, dW_i(t)
 \end{equation}
 
-where $a_i$ is the amount of item category $i$ ``stuff'' remaining at time $t$. The variable $u_i$ gives the average usage rate and $\sigma^2_i$ gives the variance of the usage rate for item category $i$. The SDE is integrated using the Euler-Maruyama method \textcolor{red}{reference} with timestep $\Delta t_n$ sampled from a Poisson process:
+where $a_i$ is the amount of item category $i$ ``stuff'' remaining at time $t$. The variable $u_i$ gives the average usage rate and $\sigma^2_i$ gives the variance of the usage rate for item category $i$. The SDE is numerically integrated using the Euler-Maruyama method \textcolor{red}{reference} with timestep $\Delta t_n$ sampled from a Poisson process:
 
 \begin{align}
 &a_{n+1, i} = a_{n,i} - \mu_{i, c} \, \Delta t_n + \sigma_{i, c} \, \sqrt{\Delta t_n} R_n \\
