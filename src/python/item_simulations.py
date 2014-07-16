@@ -37,23 +37,19 @@ class ItemCategoryUsageSimulation(object):
         """
         
         # given in days since last usage
-        timestep = random.expovariate(1.0 / self.daily_usage_rate)
+        timestep = random.expovariate(self.daily_usage_rate)
         
-        # Might be more realistic to model usage
-        # in units/time used since items are used
-        # in discrete rather than continuous
-        # quantities
+
+        r = random.normalvariate(0.0, 1.0)
         
         # given in units/day
-        usage_rate = random.normalvariate(self.amount_used_average, self.amount_used_variance)
+        usage_amount = self.amount_used_average * timestep \
+            + np.sqrt(self.amount_used_variance * timestep) * r
         
         # can't use a negative amount :)
-        if usage_rate < 0.0:
-            usage_rate = 0.0
-        
-        # given in units
-        usage_amount = usage_rate * np.sqrt(timestep)
-        
+        if usage_amount < 0.0:
+            usage_amount = 0.0
+                
         self.remaining_amount -= min(usage_amount, self.remaining_amount)
         
         self.time += timestep
