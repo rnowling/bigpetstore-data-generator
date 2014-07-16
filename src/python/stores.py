@@ -3,7 +3,7 @@ from samplers import RouletteWheelSampler
 import numpy as np
 
 class ZipcodeSampler(object):
-    def __init__(self, zipcode_objs, income_scaling_factor=100.0):
+    def __init__(self, zipcode_objs, income_scaling_factor=None):
 
         pop_probs = dict()
         income_probs = dict()
@@ -57,7 +57,7 @@ class Store(object):
 
 
 class StoreGenerator(object):
-    def __init__(self, zipcode_objs=None, income_scaling_factor=100.0):
+    def __init__(self, zipcode_objs=None, income_scaling_factor=None):
         self.zipcode_objs = zipcode_objs
         self.zipcode_sampler = ZipcodeSampler(zipcode_objs=zipcode_objs,
                                                 income_scaling_factor=income_scaling_factor)

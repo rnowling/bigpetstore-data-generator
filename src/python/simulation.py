@@ -1,5 +1,6 @@
 from customers import CustomerGenerator
 from customer_simulation import CustomerState
+import simulation_parameters as sim_param
 from stores import StoreGenerator
 import products
 from transactions import TransactionSimulator
@@ -16,7 +17,7 @@ class Simulator(object):
 
     def generate_stores(self, num=None):
         generator = StoreGenerator(zipcode_objs=self.zipcode_objs,
-                                   income_scaling_factor=100.0)
+                                   income_scaling_factor=sim_param.STORE_INCOME_SCALING_FACTOR)
         self.stores = generator.generate(n=num)
 
     def generate_customers(self, num=None):
@@ -109,13 +110,13 @@ if __name__ == "__main__":
         store_writer.append(store)
 
     print "Generating customers..."
-    sim.generate_customers(num=1000)
+    sim.generate_customers(num=100)
 
     for customer in sim.customers:
         customer_writer.append(customer)
 
     print "Generating transactions..."
-    for trans in sim.generate_transactions(end_time=365.0*4.0):
+    for trans in sim.generate_transactions(end_time=365.0*1.0):
         trans_writer.append(trans)
 
     print
