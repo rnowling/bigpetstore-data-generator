@@ -95,9 +95,10 @@ class ItemCategorySimulation(object):
         self.daily_usage_rate = item_category.daily_usage_rate
         self.amount_used_average = item_category.base_amount_used_average * num_pets
         self.amount_used_variance = item_category.base_amount_used_variance * num_pets
+
+        self.average_transaction_trigger_time = customer.average_transaction_trigger_time
+        self.average_purchase_trigger_time = customer.average_purchase_trigger_time
         
-        self.transaction_trigger_rate = item_category.transaction_trigger_rate
-        self.transaction_purchase_rate = item_category.transaction_purchase_rate
         self.sim = None
                         
     def record_purchase(self, purchase_time, purchased_amount):
@@ -134,11 +135,12 @@ class ItemCategorySimulation(object):
 
     def purchase_weight(self, time):
         remaining_time = max(self.exhaustion_time() - time, 0.0)
-        lambd = 1.0 / self.transaction_purchase_rate
+        lambd = 1.0 / self.average_purchase_trigger_time
         return lambd * np.exp(-lambd * remaining_time)
         
     def propose_transaction_time(self):
-        time_until_transaction = random.expovariate(1.0 / self.transaction_trigger_rate)
+        lambd = 1.0 / self.average_transaction_trigger_time
+        time_until_transaction = random.expovariate(lambd)
         transaction_time = max(self.exhaustion_time() - time_until_transaction, 0.0)
         return transaction_time
 

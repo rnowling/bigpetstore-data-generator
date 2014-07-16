@@ -8,10 +8,14 @@ import numpy as np
 
 from samplers import RouletteWheelSampler
 
+import simulation_parameters as sim_param
+
 class Customer(object):
     def __init__(self):
         self.name = None
         self.location = None
+        self.average_transaction_trigger_time = None
+        self.average_purchase_trigger_time = None
         self.pets = {
                         "dog" : 0,
                         "cat" : 0
@@ -23,7 +27,7 @@ class Customer(object):
              self.pets["cat"], self.location)
 
 class LocationSampler(object):
-    def __init__(self, stores=None, zipcode_objs=None, avg_distance=5.0):
+    def __init__(self, stores=None, zipcode_objs=None, avg_distance=None):
         lambd = 1.0 / avg_distance
         self.stores = stores
         self.zipcode_objs = zipcode_objs
@@ -74,7 +78,8 @@ class LocationSampler(object):
 class CustomerGenerator(object):
     def __init__(self, zipcode_objs=None, stores=None):
         self.location_sampler = LocationSampler(stores=stores,
-                                                zipcode_objs=zipcode_objs)
+                                                zipcode_objs=zipcode_objs,
+                                                avg_distance=sim_param.AVERAGE_CUSTOMER_STORE_DISTANCE)
 
 
     def generate(self, n):
@@ -84,9 +89,22 @@ class CustomerGenerator(object):
             customer.name = "Customer_" + str(i)
             customer.location = self.location_sampler.sample()
             
-            num_pets = random.randint(1, 10)
+            num_pets = random.randint(sim_param.MIN_PETS, sim_param.MAX_PETS)
             num_dogs = random.randint(0, num_pets)
             num_cats = num_pets - num_dogs
+
+            # days
+            r = random.normalvariate(sim_param.TRANSACTION_TRIGGER_TIME_AVERAGE,
+                                     sim_param.TRANSACTION_TRIGGER_TIME_VARIANCE)
+            r = max(r, sim_param.TRANSACTION_TRIGGER_TIME_MIN)
+            r = min(r, sim_param.TRANSACTION_TRIGGER_TIME_MAX)
+            customer.average_transaction_trigger_time = r
+
+            r = random.normalvariate(sim_param.PURCHASE_TRIGGER_TIME_AVERAGE,
+                                     sim_param.PURCHASE_TRIGGER_TIME_VARIANCE)
+            r = max(r, sim_param.PURCHASE_TRIGGER_TIME_MIN)
+            r = min(r, sim_param.PURCHASE_TRIGGER_TIME_MAX)        
+            customer.average_purchase_trigger_time = r
             
             customer.pets["dog"] = num_dogs
             customer.pets["cat"] = num_cats
