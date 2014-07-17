@@ -21,9 +21,12 @@ class ItemCategoryMarkovModelBuilder(object):
         self.field_weights = dict()
         self.field_similarity_weights = dict()
         for field in self.item_category.fields:
-            self.field_weights[field] = random.choice([0.1, 0.25, 0.5, 0.75, 0.9])
-            self.field_similarity_weights[field] = random.choice([0.1, 0.25, 0.5, 0.76, 0.9])
-        self.loopback_weight = random.choice([0.25, 0.5, 0.9])
+            avg = random.choice([0.15, 0.85])
+            self.field_weights[field] = min(0.95, max(0.05, random.normalvariate(avg, 0.1)))
+            avg = random.choice([0.15, 0.85])
+            self.field_similarity_weights[field] = min(0.95, max(0.05, random.normalvariate(avg, 0.1)))
+        avg = random.choice([0.25, 0.75])
+        self.loopback_weight = min(0.95, max(0.05, random.normalvariate(avg, 0.1)))
 
     def similarity_weight(self, rec1, rec2):
         weight = 0.0
