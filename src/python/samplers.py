@@ -11,7 +11,7 @@ class RouletteWheelSampler(object):
     def sample(self):
         r = random.random()
         for end, x in self._wheel:
-            if r < end:
+            if r <= end:
                 return x
         # we should never get here since probabilities
         # should sum to 1
