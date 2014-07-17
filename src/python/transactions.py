@@ -11,45 +11,48 @@ class ItemCategoryMarkovModelBuilder(object):
         self.item_category = item_category
         self.customer = customer
 
-    def _normalize_field_weights(self, field_weights):
-        weight_sum = 0.0
-        for field, weight in field_weights.iteritems():
-            weight_sum += weight
+    def _normalize_field_weights(self):
+        weight_sum = sum(self.field_weights.itervalues())
 
-        for field, weight in list(field_weights.iteritems()):
-            field_weights[field] = weight / weight_sum
-
-        return field_weights
+        for field, weight in list(self.field_weights.iteritems()):
+            self.field_weights[field] = weight / weight_sum
 
     def _generate_transition_parameters(self):
-        field_weights = dict()
-        field_similarity_weights = dict()
+        self.field_weights = dict()
+        self.field_similarity_weights = dict()
         for field in self.item_category.fields:
-            field_weights[field] = random.uniform(0.0, 1.0)
-            field_similarity_weights[field] = random.betavariate(3+math.sqrt(2.0),3-math.sqrt(2.0))
-        loopback_weight = random.betavariate(3+math.sqrt(2.0),3-math.sqrt(2.0))
+            self.field_weights[field] = random.choice([0.1, 0.25, 0.5, 0.75, 0.9])
+            self.field_similarity_weights[field] = random.choice([0.1, 0.25, 0.5, 0.76, 0.9])
+        self.loopback_weight = random.choice([0.25, 0.5, 0.9])
 
-        return field_weights, field_similarity_weights, loopback_weight
+    def similarity_weight(self, rec1, rec2):
+        weight = 0.0
+        for field in self.item_category.fields:
+            if rec1[field] == rec2[field]:
+                weight += self.field_weights[field] * self.field_similarity_weights[field]
+            else:
+                weight += self.field_weights[field] * (1.0 - self.field_similarity_weights[field])
+        return weight
 
     def create_markov_model(self):
-        field_weights, field_similarity_weights, loopback_weight = \
-            self._generate_transition_parameters()
-        field_weights = self._normalize_field_weights(field_weights)
+        self._generate_transition_parameters()
+        self._normalize_field_weights()
 
         builder = MarkovModelBuilder()
+
         for rec in self.item_category.items:
             builder.add_state(tuple(rec.items()))
+            weight_sum = 0.0
+            for other_rec in self.item_category.items:
+                if rec != other_rec:
+                    weight_sum += self.similarity_weight(rec, other_rec)
+
             for other_rec in self.item_category.items:
                 weight = 0.0
-                if rec == other_rec:
-                    weight = loopback_weight
+                if rec != other_rec:
+                    weight = (1.0 - self.loopback_weight) * self.similarity_weight(rec, other_rec) / weight_sum
                 else:
-                    for field in self.item_category.fields:
-                        if rec[field] == other_rec[field]:
-                            weight += field_weights[field] * field_similarity_weights[field]
-                        else:
-                            weight += field_weights[field] * (1.0 - field_similarity_weights[field])
-                    weight = (1.0 - loopback_weight) * weight
+                    weight = self.loopback_weight
                 builder.add_edge_weight(tuple(rec.items()), tuple(other_rec.items()), weight)
 
         return builder.build_msm()
@@ -84,6 +87,8 @@ class TransactionPurchasesSimulator(object):
                                                customer=customer_state.customer)
                 self.item_purchases_msms[category_label] = builder.create_markov_model()
 
+                msm = self.item_purchases_msms[category_label]
+
     def choose_category(self, trans_time=None, num_purchases=None):
         category_weights = self.customer_state.item_category_weights(trans_time)
 
@@ -103,7 +108,8 @@ class TransactionPurchasesSimulator(object):
         return sampler.sample()
 
     def choose_item(self, category):
-        return self.item_purchases_msms[category].progress_state()
+        item = self.item_purchases_msms[category].progress_state()
+        return item
 
     def update_usage_simulations(self, trans_time=None, item=None):
         self.customer_state.update_inventory(trans_time, item)
@@ -127,7 +133,7 @@ class TransactionPurchasesSimulator(object):
             purchases += 1
 
             trans_items.append(item)
-
+        
         return trans_items
 
 class TransactionTimeSampler(object):
