@@ -586,7 +586,7 @@ First, we wanted to identify how close most customers live to a store since adve
 
 \textcolor{red}{figure}
 
-Secondly, we profiled our customers' purchasing habits to optimize the advertising campaign's effectivness by customizing the advertized products for each customer.  For each customer, we generated a feature vector by computing the frequency with which they would purchase the same brand or flavor from one transaction to the next.  We clustered the customers' feature vectors using the KMean algorithm with a range of cluster counts. The clustering identified 16 centers, determined by the convergence of the error.
+Secondly, we profiled our customers' purchasing habits to optimize the advertising campaign's effectivness by customizing the advertized products for each customer.  For each customer, we generated a feature vector by computing the frequency with which they would purchase the same brand or flavor from one transaction to the next.  We clustered the customers' feature vectors using the KMean algorithm with a range of cluster counts. Twenty clusters converged the error.
 
 \begin{figure}[!t]
   \centering
@@ -598,28 +598,8 @@ Secondly, we profiled our customers' purchasing habits to optimize the advertisi
 Analysis of the feature vectors and clusters revealed four predominant purchasing profiles (Figure~\ref{fig:cluster_analysis}).  High frequencies of purchasing the same flavors repeatedly were tightly-correlated with high frequencies of purchasing the same brands -- these customers were likely to be happy with a particular item and kept purchasing the same item repeatedly.  For our advertising campaign, it would be unlikely to get these customers to purchase different items, so we should create incentives to purchase larger quantites, especially when inventory levels are high and needed to be depleted.  Other customers had a tendency to purchase either the same flavor or brand repeatedly, but varied in their choice of the other.  For customers who prefer a particular brand, we should target our advertising campaign to suggest other flavors sold by that brand.  Likewise, for customers who prefer a particular flavor, we should target our advertising campaign to suggest other brands with that flavor.  Lastly, some customers had very low frequencies of purchasing neither the same brand nr flavor.  Other factors, such as cost, not represented in this analysis may be driving these customers' purchasing habits and will need further study.
 
 
-\subsection{Customer Locations}
-
-
-\subsection{Customer Purchasing Profiles}
-
-%\begin{figure*}[!t]
-%  \centerline{\subfloat[Case I}{\includegraphics[width=2.5in]{figures/cluster_error.eps}
-%    \label{fig:cluster_error}}
-%  \hfil
-%  \subfloat[Case II]{\includegraphics[width=2.5in]{figures/cluster_analysis.eps}
-%    \label{fig:cluster_analysis}}}
-%  \caption{Clustering of Brand and Flavor Preferences}
-%  \label{fig:clustering}
-%\end{figure*}
-
-
-
-* stores -- distance, one or multiple stores?
-* brand loyalty
-
 \section{Scaling of Data Size and Run Time}
-BigPetStore aims to scale from a local desktop to a large cluster. As a result, we benchmarked the generation of data on a laptop with a 2 GHz Intel Core i7 CPU, 8 GB of RAM, and a 256 GB SSD using the Python implementation with a single thread. Using the test setup, between 1,500 and 2,000 transactions can be generated per second (Table~\ref{tab:benchmarks}).
+BigPetStore aims to scale from a local desktop to a large cluster. As a result, we benchmarked the generation of data on a laptop with a 2 GHz Intel Core i7 CPU, 8 GB of RAM, and a 256 GB SSD using the Python implementation with a single thread. Using the test setup, between 1,500 and 2,000 transactions can be generated per second (Table~\ref{tab:benchmarks}). As the customers' transaction simulations are independent of one another, the transaction generation can easily be parallelized so that 1,500-2,000 transactions can be generated per thread per second.
 
 \begin{table}[!t]
 %% increase table row spacing, adjust to taste
