@@ -580,13 +580,26 @@ The HMM can be extended to consider additional factors such as the amount of mon
 The models and simulations were implemented using Python. The source code is available on GitHub \cite{GitHub} at \url{https://github.com/rnowling/bigpetstore-data-generator} under the Apache 2 license.
 
 \section{Example Analysis of Generated Data}
-Transaction data for 10 stores, 10,000 customers, and 4 years of simulated time totaling 100 MB was generated using the Python implementation. 
+Using data for 10 stores, 10,000 customers, and five years of transactions generated from the model, we performed two example analyses in support of a fictional advertising campaign. The analyses were designed to be realistic and driven by real-world business concerns.  Due to limited advertising budgets, businesses need to decide who to target and what sort of advertisements are likely to be effective for each type of customer.  We analyzed data generated from the model to determine where the advertising campaigns should be targeted geographically and identify customer purchasing profiles.
 
-\subsection{Store Locations}
-[locations, population, median household income]
+First, we wanted to identify how close most customers live to a store since advertising to people who live or work too far away from a store is unlikely to be effective and will increase our costs. We analyzed the distribution of distances between customers' homes and their nearest stores.  We found that most customers tend to live within 10 miles of their closest store, suggesting that we should limit our advertising to a 10-mile radius around each our store.
 
-\subsection{Customers}
-[distances to stores]
+\textcolor{red}{figure}
+
+Secondly, we profiled our customers' purchasing habits to optimize the advertising campaign's effectivness by customizing the advertized products for each customer.  For each customer, we generated a feature vector by computing the frequency with which they would purchase the same brand or flavor from one transaction to the next.  We clustered the customers' feature vectors using the KMean algorithms with a range of cluster counts. The clustering identified 16 centers, determined by the convergence of the error.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=3.5in]{figures/cluster_analysis.eps}
+  \caption{Clustering of Brand and Flavor Purchasing Preferences}
+  \label{fig:cluster_analysis}
+\end{figure}
+
+Analysis of the feature vectors and clusters revealed four predominant purchasing profiles (Figure~\ref{fig:cluster_analysis}).  High frequencies of purchasing the same flavors repeatedly were tightly-correlated with high frequencies of purchasing the same brands -- these customers were likely to be happy with a particular item and kept purchasing the same item repeatedly.  For our advertising campaign, it would be unlikely to get these customers to purchase different items, so we should create incentives to purchase larger quantites, especially when inventory levels are high and needed to be depleted.  Other customers had a tendency to purchase either the same flavor or brand repeatedly, but varied in their choice of the other.  For customers who prefer a particular brand, we should target our advertising campaign to suggest other flavors sold by that brand.  Likewise, for customers who prefer a particular flavor, we should target our advertising campaign to suggest other brands with that flavor.  Lastly, some customers had very low frequencies of purchasing neither the same brand nr flavor.  These customers may be driven by other factors, such as cost, not represented in this analysis and will need further study.
+
+
+\subsection{Customer Locations}
+
 
 \subsection{Customer Purchasing Profiles}
 
@@ -600,12 +613,6 @@ Transaction data for 10 stores, 10,000 customers, and 4 years of simulated time 
 %  \label{fig:clustering}
 %\end{figure*}
 
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=3.5in]{figures/cluster_analysis.eps}
-  \caption{Clustering of Brand and Flavor Purchasing Preferences}
-  \label{fig:cluster_analysis}
-\end{figure}
 
 
 * stores -- distance, one or multiple stores?
