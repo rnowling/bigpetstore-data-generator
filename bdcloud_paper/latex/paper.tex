@@ -601,9 +601,34 @@ The item category for the purchase is chosen using a Roulette Wheel sampler.
 
 Markov Models are used to model the customer's purchasing behavior for each item category.  Each state corresponds to an item in that category. The transition probabilities are assigned according to the customer's buying habits.  For example, if a customer tends to buy the same brand of dog food repeatedly, the outgoing edges to all products of the same brand as the product in the current state will be higher than those for other brands' products. If the customer does not care about flavor, the outgoing edges to all products from the current brand will be equal, otherwise the edge weights can be adjusted to prefer a specific combination of brand and flavor.  Likewise, if a customer cares more about flavor or cost, the edge weights will be assigned appropriately.  To simulate an item purchase, the Markov model is transitioned forward by one state.  The current states of the Markov models are kept between purchases.
 
+\textcolor{red}{description. min, max}
+
+\begin{align}
+Pr(X_{n+1}&=x|X_n=y) = \\
+& \left\{ 
+  \begin{array}{l l}
+   (1.0 - w_l) W^{-1} \sum_f w_f w_{f,s}(x, y)  & \quad \text{if $x \neq y$}\\
+   w_l & \quad \text{if $x = y$}
+  \end{array} \right.
+\end{align}
+
 \begin{equation}
-Pr(X_{n+1}=x|X_n) = \dots
+w_{f,s}(x,y) = \left\{ 
+  \begin{array}{l l}
+   w_{f,s}  & \quad \text{if $x$.$f$ = $y$.$f$}\\
+   1 - w_{f, s} & \quad \text{if $x$.$f$ $\neq$ $y$.$f$}
+  \end{array} \right.
 \end{equation} 
+
+\begin{align}
+&w_l \sim N(\mu, \sigma^2) \\
+&w_f \sim N(\mu, \sigma^2) \\
+&w_{f, s} \sim N(\mu, \sigma^2)
+\end{align}
+
+\begin{equation}
+W = \sum_i \sum_{j \neq i} \sum_f w_f w_{f,s}(i, j)
+\end{equation}
 
 After an item is chosen, the item category's exhaustion time is updated by propogating the item category usage SDE described in Section~\ref{sec:transaction-times}. \textcolor{red}{state transition, stop state}
 
