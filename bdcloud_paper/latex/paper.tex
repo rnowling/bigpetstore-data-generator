@@ -445,7 +445,7 @@ Over time, more high-quality data sets are becoming publicly available, but thes
 
 Methods for generating synthetic data offer multiple advantages over pre-generated data sets.  The code for generating the data is often small, making it easy and cheap to host, transfer, and store. Licensing restrictions and data privacy issues are avoided with synthetic data sets.  And, the size of the data sets can be scaled arbitrarily, enabling seamless usage of the same data set across a range of situations.  
 
-Several synethic data set generators exist.  TeraGen and the Intel Hadoop Benchmark Suite \cite{Huang2010} can generate data sets quickly and at any scale. Targetted towards specific benchmarks such as Map-Reduce jobs and Hive queries, the resulting data is semantically-void and not useful for other tasks.  Multiple frameworks exist for generating synthetic data sets that satisfy relational database schemas \cite{Ghazal2013,Rabl2011a,Frank2012,Rabl2011,Gray1994,Bruno2005,Hoag2007}. Several approaches use domain-specific langugages \cite{Bruno2005,Hoag2007} to allow users to specify additional constraints such as which distributions to sample from or allow modeling basic relationships between fields such as simple arithmetic equations \cite{Alexandrov2012}. Arasu, et al. \cite{Arasu2011} demonstrated how constraint-solving techniques could be used as an alternative to procedural approaches. These frameworks allow for reproducing the structural properties of real data, but the frameworks are not expressive enough to describe the dynamic generation processes and latent variables that would be needed to embed the desired informational complexity and rich semantics needed for analytics.
+Several synthetic data set generators exist.  TeraGen and the Intel Hadoop Benchmark Suite \cite{Huang2010} can generate data sets quickly and at any scale. Targeted towards specific benchmarks such as Map-Reduce jobs and Hive queries, the resulting data is semantically-void and not useful for other tasks.  Multiple frameworks exist for generating synthetic data sets that satisfy relational database schemas \cite{Ghazal2013,Rabl2011a,Frank2012,Rabl2011,Gray1994,Bruno2005,Hoag2007}. Several approaches use domain-specific languages \cite{Bruno2005,Hoag2007} to allow users to specify additional constraints such as which distributions to sample from or allow modeling basic relationships between fields such as simple arithmetic equations \cite{Alexandrov2012}. Arasu, et al. \cite{Arasu2011} demonstrated that constraint-solving techniques could be used as an alternative to procedural approaches. These frameworks allow for reproducing the structural properties of real data, but the frameworks are not expressive enough to describe the dynamic generation processes and latent variables that would be needed to embed the desired informational complexity and rich semantics needed for analytics.
 
 Realizing the difficulty in creating a generic framework capable of modeling the semantics of deep domain knowledge, recent work\cite{Alexandrov2013} has focused on generating synthetic data sets that satisfy characteristics learned from a real reference data sets. Such approaches appear promising but will need to overcome the difficulties of accurately training models, especially on raw data instead of features.
 
@@ -463,7 +463,7 @@ In this work, we present a new domain-driven model and simulation for generating
 %Given that the driving motivation behind so much of the investment in big data software solutions is ``to derive insight from data,'' there is thus an obvious, gaping hole in the existing ecosystem: We need a tool that generates meaningful data which contains informational complexity that can be used to derive global patterns in a data set, which can be used to scalably and reliably generate large data sets on the fly - so that we can use it for benchmarking, comparison, and demonstration of the different algorithmic approaches to mining large data sets.
 
 \section{Overview of Model \& Simulation Procedures}
-Our generatorive model combines various well-known mathematical modeling techniques to simulate the factors affecting customers' purchasing habits.  Each part of the model is derived from \emph{ab initio} assumptions.  In several cases, real data is used to parameterize parts of the model. 
+Our generative model combines various well-known mathematical modeling techniques to simulate the factors affecting customers' purchasing habits.  Each part of the model is derived from \emph{ab initio} assumptions.  In several cases, real data is used to parameterize parts of the model. 
 
 \textcolor{red}{relational data model diagram?}
 
@@ -503,7 +503,7 @@ Customer records consist of a unique identifier, a name, a location given as a 5
 
 \textcolor{red}{names}
 
-For each proposed customer location zipcode $z$, we compute the distance between $z$ and every store's zipcode to find the closest store.  We compute the distance $d$ between $z$ and the zipcode $s_z$ of the closest store.  The weight $w_z$ for each zipcode $z$ is modeled using an exponential distribution with the average distance $\beta$.
+For each proposed customer location zip code $z$, we compute the distance between $z$ and every store's zip code to find the closest store.  We compute the distance $d$ between $z$ and the zip code $s_z$ of the closest store.  The weight $w_z$ for each zip code $z$ is modeled using an exponential distribution with the average distance $\beta$.
 
 \begin{align}
 &w_z = \beta^{-1} \exp(-\beta^{-1} \, d_m(z)) \\
@@ -528,7 +528,7 @@ N_c = N_p - N_d \nonumber
 \end{align}
 
 \subsection{Transactions}
-A transaction model is created for each customer and integrated over the simulation's timeframe to generate transactions. Transaction records consist of a customer, a store, a date and time, and a list of items purchased and their prices.  The store is set to the store located closest to the customer. The date and time is given as a floating-point number with units of days since the start of the simulation.  (Timezones are not taken into account.)  Transaction times are generated from a Monte Carlo process based on the customer will use up items such as dog food (Section~\ref{sec:transaction-times}).  The purchased items are generated by a Hidden Markov Model (HMM) parameterized by the transaction time and amount of time remaining for the items in the customer's inventory (Section~\ref{sec:transaction-purchases}).
+A transaction model is created for each customer and integrated over the simulation's time frame to generate transactions. Transaction records consist of a customer, a store, a date and time, and a list of items purchased and their prices.  The store is set to the store located closest to the customer. The date and time is given as a floating-point number with units of days since the start of the simulation.  (Time zones are not taken into account.)  Transaction times are generated from a Monte Carlo process based on the customer will use up items such as dog food (Section~\ref{sec:transaction-times}).  The purchased items are generated by a Hidden Markov Model (HMM) parameterized by the transaction time and amount of time remaining for the items in the customer's inventory (Section~\ref{sec:transaction-purchases}).
 
 \begin{figure}[!t]
   \centering
@@ -547,7 +547,7 @@ In the first stage of the process, the usage of items over time is modeled using
 \frac{da_i}{dt} = -\mu_i + \sigma_i\, dW_i(t)
 \end{equation}
 
-where $a_i$ is the amount of item category $i$ ``stuff'' remaining at time $t$. The variable $u_i$ gives the average usage rate and $\sigma^2_i$ gives the variance of the usage rate for item category $i$. The SDE is numerically integrated using the Euler-Maruyama method\cite{Klouden13} with timestep $\Delta t_n$ sampled from a Poisson process:
+where $a_i$ is the amount of item category $i$ ``stuff'' remaining at time $t$. The variable $u_i$ gives the average usage rate and $\sigma^2_i$ gives the variance of the usage rate for item category $i$. The SDE is numerically integrated using the Euler-Maruyama method\cite{Klouden13} with time step $\Delta t_n$ sampled from a Poisson process:
 
 \begin{align}
 &a_{n+1, i} = a_{n,i} - \mu_{i, c} \, \Delta t_n + \sigma_{i, c} \, \sqrt{\Delta t_n} R_n \\
@@ -555,9 +555,9 @@ where $a_i$ is the amount of item category $i$ ``stuff'' remaining at time $t$. 
 &R_n \sim \text{N}(0, 1) \nonumber
 \end{align}
 
-where $\lambda_i$ is the item category's average usage rate, $\mu_i$ is the item category's average amount used per use, and $\sigma^2_i$ is the variance of the amount of the item category used per use. The parameter $\lambda_i$ is defined for each item cateogry.  The parameters $\mu_{i, c}$, and $\sigma^2_{i,c}$ are found based on a base rate for each item category multiplied by the number of pets of the appropriate species the customer has.  The exhaustion time $T_{E,i}$ for each item category is found by simulating the usage until $a_n = 0$.
+where $\lambda_i$ is the item category's average usage rate, $\mu_i$ is the item category's average amount used per use, and $\sigma^2_i$ is the variance of the amount of the item category used per use. The parameter $\lambda_i$ is defined for each item category.  The parameters $\mu_{i, c}$, and $\sigma^2_{i,c}$ are found based on a base rate for each item category multiplied by the number of pets of the appropriate species the customer has.  The exhaustion time $T_{E,i}$ for each item category is found by simulating the usage until $a_n = 0$.
 
-The proposed transaction time is found from the exhaustion times.  For each item cateogry, the offset time $T_{O, i}$ between when a customer would visit the store and the exhaustion time is sampled from an exponential distribution parameterized separately for each customer $c$. A proposed transaction time $T_{P, i}$ for each item category is found by subtracting the offset time $T_{O, i}$ from the exhaustion time $T_{E, i}$.  The earlist proposed transaction time is taken as the overall proposed transaction time $T_T$.
+The proposed transaction time is found from the exhaustion times.  For each item category, the offset time $T_{O, i}$ between when a customer would visit the store and the exhaustion time is sampled from an exponential distribution parameterized separately for each customer $c$. A proposed transaction time $T_{P, i}$ for each item category is found by subtracting the offset time $T_{O, i}$ from the exhaustion time $T_{E, i}$.  The earliest proposed transaction time is taken as the overall proposed transaction time $T_T$.
 
 \begin{align}
 &\beta_c \sim \text{U}(a, b) \\
@@ -629,7 +629,7 @@ w_{f,s}(x,y) = \left\{
 W = \sum_i \sum_{j \neq i} \sum_f w_f w_{f,s}(i, j)
 \end{equation}
 
-After an item is chosen, the item category's exhaustion time is updated by propogating the item category usage SDE described in Section~\ref{sec:transaction-times}. \textcolor{red}{state transition, stop state}
+After an item is chosen, the item category's exhaustion time is updated by propagating the item category usage SDE described in Section~\ref{sec:transaction-times}. \textcolor{red}{state transition, stop state}
 
 The HMM can be extended to consider additional factors such as the amount of money spent so far in the transaction and the customer's spending habits.
 
@@ -651,7 +651,7 @@ First, we wanted to identify how close most customers live to a store since adve
   \label{fig:cluster_analysis}
 \end{figure}
 
-Secondly, we profiled our customers' purchasing habits to optimize the advertising campaign's effectivness by customizing the advertized products for each customer.  For each customer, we generated a feature vector by computing the frequency with which they would purchase the same brand or flavor from one transaction to the next.  We clustered the customers' feature vectors using the KMean algorithm with a range of cluster counts. Twenty clusters converged the error.
+Secondly, we profiled our customers' purchasing habits to optimize the advertising campaign's effectiveness by customizing the advertised products for each customer.  For each customer, we generated a feature vector by computing the frequency with which they would purchase the same brand or flavor from one transaction to the next.  We clustered the customers' feature vectors using the KMeans algorithm with a range of cluster counts. Twenty clusters converged the error.
 
 \begin{figure}[!t]
   \centering
@@ -660,7 +660,7 @@ Secondly, we profiled our customers' purchasing habits to optimize the advertisi
   \label{fig:cluster_analysis}
 \end{figure}
 
-Analysis of the feature vectors and clusters revealed four predominant purchasing profiles (Figure~\ref{fig:cluster_analysis}).  High frequencies of purchasing the same flavors repeatedly were tightly-correlated with high frequencies of purchasing the same brands -- these customers were likely to be happy with a particular item and kept purchasing the same item repeatedly.  For our advertising campaign, it would be unlikely to get these customers to purchase different items, so we should create incentives to purchase larger quantites, especially when inventory levels are high and needed to be depleted.  Other customers had a tendency to purchase either the same flavor or brand repeatedly, but varied in their choice of the other.  For customers who prefer a particular brand, we should target our advertising campaign to suggest other flavors sold by that brand.  Likewise, for customers who prefer a particular flavor, we should target our advertising campaign to suggest other brands with that flavor.  Lastly, some customers had very low frequencies of purchasing neither the same brand nr flavor.  Other factors, such as cost, not represented in this analysis may be driving these customers' purchasing habits and will need further study.
+Analysis of the feature vectors and clusters revealed four predominant purchasing profiles (Figure~\ref{fig:cluster_analysis}).  High frequencies of purchasing the same flavors repeatedly were tightly-correlated with high frequencies of purchasing the same brands -- these customers were likely to be happy with a particular item and kept purchasing the same item repeatedly.  For our advertising campaign, it would be unlikely to get these customers to purchase different items, so we should create incentives to purchase larger quantities, especially when inventory levels are high and needed to be depleted.  Other customers had a tendency to purchase either the same flavor or brand repeatedly, but varied in their choice of the other.  For customers who prefer a particular brand, we should target our advertising campaign to suggest other flavors sold by that brand.  Likewise, for customers who prefer a particular flavor, we should target our advertising campaign to suggest other brands with that flavor.  Lastly, some customers had very low frequencies of purchasing neither the same brand nor flavor.  Other factors, such as cost, not represented in this analysis may be driving these customers' purchasing habits and will need further study.
 
 
 \subsection{Scaling of Data Size and Run Time}
