@@ -638,11 +638,10 @@ The HMM can be extended to consider additional factors such as the amount of mon
 The models and simulations were implemented using Python. The source code is available on GitHub \cite{GitHub} at \url{https://github.com/rnowling/bigpetstore-data-generator} under the Apache 2 license.
 
 \section{Evaluation of the Model}
-
-\textcolor{red}{intro paragraph}
+In accordance with our original design goals, we evaluated the model and implementation in terms of their abilities to generate semantically-interesting data and scale from a single local machine to a cluster.
 
 \subsection{Example Analysis of Generated Data}
-Using data for 10 stores, 10,000 customers, and five years of transactions generated from the model, we performed two example analyses in support of a fictional advertising campaign. The analyses were designed to be realistic and driven by real-world business concerns.  Due to limited advertising budgets, businesses need to decide who to target and what sort of advertisements are likely to be effective for each type of customer.  We analyzed data generated from the model to determine where the advertising campaigns should be targeted geographically and identify customer purchasing profiles.
+To evaluate the semantic content of the generated data, we performed two example analyses in support of a fictional advertising campaign using data for 10 stores, 10,000 customers, and five years of transactions generated from the model. The analyses were designed to be realistic and driven by real-world business concerns.  Due to limited advertising budgets, businesses need to decide who to target and what sort of advertisements are likely to be effective for each type of customer.  We analyzed data generated from the model to determine where the advertising campaigns should be targeted geographically and identify customer purchasing profiles.
 
 First, we wanted to identify how close most customers live to a store since advertising to people who live or work too far away from a store is unlikely to be effective and will increase our costs. We analyzed the distribution of distances between customers' homes and their nearest stores.  We found that most customers tend to live within 15 miles of their closest store, suggesting that we should limit our advertising to a 15-mile radius around each our store.
 
