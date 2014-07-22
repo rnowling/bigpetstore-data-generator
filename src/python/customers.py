@@ -12,6 +12,7 @@ import simulation_parameters as sim_param
 
 class Customer(object):
     def __init__(self):
+        self.id = None
         self.name = None
         self.location = None
         self.average_transaction_trigger_time = None
@@ -22,8 +23,8 @@ class Customer(object):
                     }
 
     def __repr__(self):
-        return "(%s, %s dogs, %s cats, %s)" % \
-            (self.name, self.pets["dog"], 
+        return "(%s, %s, %s dogs, %s cats, %s)" % \
+            (self.id, self.name, self.pets["dog"], 
              self.pets["cat"], self.location)
 
 class LocationSampler(object):
@@ -80,12 +81,15 @@ class CustomerGenerator(object):
         self.location_sampler = LocationSampler(stores=stores,
                                                 zipcode_objs=zipcode_objs,
                                                 avg_distance=sim_param.AVERAGE_CUSTOMER_STORE_DISTANCE)
+        self.current_id = 0
 
 
     def generate(self, n):
         customers = list()
         for i in xrange(n):
             customer = Customer()
+            customer.id = self.current_id
+            self.current_id += 1
             customer.name = "Customer_" + str(i)
             customer.location = self.location_sampler.sample()
             

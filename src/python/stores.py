@@ -48,6 +48,7 @@ class ZipcodeSampler(object):
 
 class Store(object):
     def __init__(self):
+        self.id = None
         self.name = None
         self.zipcode = None
         self.coords = None
@@ -61,11 +62,14 @@ class StoreGenerator(object):
         self.zipcode_objs = zipcode_objs
         self.zipcode_sampler = ZipcodeSampler(zipcode_objs=zipcode_objs,
                                                 income_scaling_factor=income_scaling_factor)
+        self.current_id = 0
         
     def generate(self, n):
         stores = list()
         for i in xrange(n):
             store = Store()
+            store.id = self.current_id
+            self.current_id += 1
             store.name = "Store_" + str(i)
             store.zipcode = self.zipcode_sampler.sample()
             store.coords = self.zipcode_objs[store.zipcode].coords

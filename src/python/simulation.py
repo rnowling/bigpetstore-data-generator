@@ -29,40 +29,13 @@ class Simulator(object):
         for customer in self.customers:
             state = CustomerState(item_categories=self.item_categories,
                     customer=customer)
-            trans_sim = TransactionSimulator(customer_state=state,
+            trans_sim = TransactionSimulator(stores=self.stores,
+                                             customer_state=state,
                                              item_categories=self.item_categories)
             for trans in trans_sim.simulate(end_time):
                 yield trans
 
-
-
-class CustomerWriter(object):
-    def __init__(self, filename=None):
-        self.fl = open(filename, "w")
-
-    def append(self, customer):
-        string = "%s,%s,%s,%s\n" % (customer.name, 
-                                    customer.location,
-                                    customer.pets["dog"],
-                                    customer.pets["cat"])
-        self.fl.write(string)
-
-    def close(self):
-        self.fl.close()
-
-class StoreWriter(object):
-    def __init__(self, filename=None):
-        self.fl = open(filename, "w")
-
-    def append(self, store):
-        string = "%s,%s\n" % (store.name, store.zipcode)
-        self.fl.write(string)
-
-    def close(self):
-        self.fl.close()
-
-
-class TransactionWriter(object):
+class TransactionItemWriter(object):
     def __init__(self, filename=None):
         self.fl = open(filename, "w")
 
@@ -80,13 +53,49 @@ class TransactionWriter(object):
             else:
                 item_str = "%s:%s:%s" % \
                     (item["category"], item["brand"], item["size"])
-            
 
+            self.fl.write("%s,%s\n" % (trans.transaction_id(),
+                                  item_str))
+    def close(self):
+        self.fl.close()
+    
+
+class CustomerWriter(object):
+    def __init__(self, filename=None):
+        self.fl = open(filename, "w")
+
+    def append(self, customer):
+        string = "%s,%s,%s\n" % (customer.id,
+                                 customer.name, 
+                                 customer.location)
+                     
+        self.fl.write(string)
+
+    def close(self):
+        self.fl.close()
+
+class StoreWriter(object):
+    def __init__(self, filename=None):
+        self.fl = open(filename, "w")
+
+    def append(self, store):
+        string = "%s,%s\n" % (store.id, store.zipcode)
+        self.fl.write(string)
+
+    def close(self):
+        self.fl.close()
+
+
+class TransactionWriter(object):
+    def __init__(self, filename=None):
+        self.fl = open(filename, "w")
+
+    def append(self, trans):
             values = [
-                trans.customer.name,
-                trans.customer.location,
+                trans.transaction_id(),
+                trans.store.id,
+                trans.customer.id,
                 trans.trans_time,
-                item_str
                 ]
             string = ",".join(map(str, values)) + "\n"
             self.fl.write(string)
@@ -94,8 +103,9 @@ class TransactionWriter(object):
     def close(self):
         self.fl.close()
 
-if __name__ == "__main__":
+def driver():
     sim = Simulator()
+    item_writer = TransactionItemWriter(filename="transaction_items.txt")
     trans_writer = TransactionWriter(filename="transactions.txt")
     store_writer = StoreWriter(filename="stores.txt")
     customer_writer = CustomerWriter(filename="customers.txt")
@@ -108,17 +118,24 @@ if __name__ == "__main__":
 
     for store in sim.stores:
         store_writer.append(store)
+    store_writer.close()
 
     print "Generating customers..."
     sim.generate_customers(num=100)
 
     for customer in sim.customers:
         customer_writer.append(customer)
+    customer_writer.close()
 
     print "Generating transactions..."
-    for trans in sim.generate_transactions(end_time=365.0*1.0):
+    for trans in sim.generate_transactions(end_time=365.0*5.0):
         trans_writer.append(trans)
+        item_writer.append(trans)
 
     print
 
     trans_writer.close()
+    item_writer.close()
+
+if __name__ == "__main__":
+    driver()

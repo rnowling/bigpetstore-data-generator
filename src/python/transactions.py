@@ -3,6 +3,8 @@ from collections import defaultdict
 import math
 import random
 
+import hashlib
+
 from markovmodel import MarkovModelBuilder
 from samplers import RouletteWheelSampler
 
@@ -62,17 +64,22 @@ class ItemCategoryMarkovModelBuilder(object):
 
 
 class Transaction(object):
-    def __init__(self, customer=None, trans_time=None, purchased_items=None, inventory_before=None, inventory_after=None):
+    def __init__(self, customer=None, trans_time=None, purchased_items=None, store=None,
+                 trans_count=None):
+        self.store = store
         self.customer = customer
         self.trans_time = trans_time
         self.purchased_items = purchased_items
-        self.inventory_before = inventory_before
-        self.inventory_after = inventory_after
+        self.trans_count = trans_count
+
+    def transaction_id(self):
+        return hashlib.md5(repr(self)).hexdigest()
 
     def __repr__(self):
-        return "(%s, Time: %s, Purchased: %s\n\tInventory Before: %s\n\tInventory After: %s)" % (self.customer,
-            self.trans_time, len(self.purchased_items), self.inventory_before,
-                self.inventory_after)
+        return "(%s, %s, %s, %s)" % (self.store.id,
+                                     self.customer.id,
+                                     self.trans_time,
+                                     self.trans_count)
 
 
 class TransactionPurchasesSimulator(object):
@@ -162,10 +169,12 @@ class TransactionTimeSampler(object):
 
 
 class TransactionSimulator(object):
-    def __init__(self, customer_state=None, item_categories=None):
+    def __init__(self, stores=None, customer_state=None, item_categories=None):
+        self.stores = stores
         self.customer_state = customer_state
         self.trans_time_sampler = TransactionTimeSampler(customer_state=customer_state)
         self.purchase_sim = TransactionPurchasesSimulator(customer_state=self.customer_state, item_categories=item_categories) 
+        self.trans_count = 0
     
     def simulate(self, end_time):
         last_trans_time = 0.0
@@ -175,14 +184,13 @@ class TransactionSimulator(object):
             if trans_time > end_time:
                 break
             
-            remaining_before = self.customer_state.get_inventory_amounts(trans_time)
             purchased_items = self.purchase_sim.simulate(trans_time=trans_time)
-            remaining_after = self.customer_state.get_inventory_amounts(trans_time)
             trans = Transaction(customer=self.customer_state.customer,
-                        purchased_items=purchased_items,
-                        trans_time=trans_time,
-                        inventory_before=remaining_before,
-                        inventory_after=remaining_after)
+                                purchased_items=purchased_items,
+                                trans_time=trans_time,
+                                trans_count=self.trans_count,
+                                store=random.choice(self.stores))
+            self.trans_count += 1
             last_trans_time = trans_time
             yield trans
 
