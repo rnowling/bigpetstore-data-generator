@@ -600,18 +600,18 @@ The probability $p(X=i)$ of choosing item category $i$ is given by the normalizi
 
 The item category for the purchase is chosen using a Roulette Wheel sampler.
 
-Markov Models are used to model the customer's purchasing behavior for each item category.  Each state corresponds to an item in that category. The transition probabilities are assigned according to the customer's buying habits.  For example, if a customer tends to buy the same brand of dog food repeatedly, the outgoing edges to all products of the same brand as the product in the current state will be higher than those for other brands' products. If the customer does not care about flavor, the outgoing edges to all products from the current brand will be equal, otherwise the edge weights can be adjusted to prefer a specific combination of brand and flavor.  Likewise, if a customer cares more about flavor or cost, the edge weights will be assigned appropriately.  To simulate an item purchase, the Markov model is transitioned forward by one state.  The current states of the Markov models are kept between purchases.
+Markov Models are used to model the customer's purchasing behavior for each item category.  Each state $X_n$ corresponds to an item in that category. The customer's buying habits are determined by the transition probabilities (Eq.~\ref{eq:transition_probabilities}).  The transition probabilities depend on three types of parameters: loopback weight $w_l$ indicating the probability of purchasing the same item again, weight $w_f$ of a particular field $f$, and the weight $w_{f,s}$ when two items $x$ and $y$ have the same value for the field $f$. 
 
-\textcolor{red}{description. min, max}
-
-\begin{align*}
-Pr(X_{n+1}&=x|X_n=y) = \\
+\begin{align} \label{eq:transition_probabilities}
+Pr(X_{n+1}&=x|X_n) = \nonumber \\
 & \left\{ 
   \begin{array}{l l}
-   (1.0 - w_l) W^{-1} \sum_f w_f w_{f,s}(x, y)  & \quad \text{if $x \neq y$}\\
-   w_l & \quad \text{if $x = y$}
+   (1.0 - w_l) W^{-1} \sum_f w_f w_{f,s}(x, y)  & \quad \text{if $x \neq X_n$}\\
+   w_l & \quad \text{if $x = X_n$}
   \end{array} \right.
-\end{align*}
+\end{align}
+
+\textcolor{red}{todo}
 
 \begin{equation*}
 w_{f,s}(x,y) = \left\{ 
@@ -621,15 +621,29 @@ w_{f,s}(x,y) = \left\{
   \end{array} \right.
 \end{equation*} 
 
-\begin{align*}
-&w_l \sim N(\mu, \sigma^2) \\
-&w_f \sim N(\mu, \sigma^2) \\
-&w_{f, s} \sim N(\mu, \sigma^2)
-\end{align*}
+\textcolor{red}{todo}
 
 \begin{equation*}
 W = \sum_i \sum_{j \neq i} \sum_f w_f w_{f,s}(i, j)
 \end{equation*}
+
+The weights $w_l$, $w_f$, and $w_{f, s}$ are chosen randomly for each customer.  
+
+\textcolor{red}{description. min, max}
+
+\begin{align} \label{eq:item-weights}
+&w_l \sim N(\mu, \sigma^2) \nonumber \\
+&w_f \sim N(\mu, \sigma^2) \nonumber \\
+&w_{f, s} \sim N(\mu, \sigma^2)
+\end{align}
+
+
+\textcolor{red}{reorder so that probilities describe habits}
+
+For example, if a customer tends to buy the same brand of dog food repeatedly, the outgoing edges to all products of the same brand as the product in the current state will be higher than those for other brands' products. If the customer does not care about flavor, the outgoing edges to all products from the current brand will be equal, otherwise the edge weights can be adjusted to prefer a specific combination of brand and flavor.  Likewise, if a customer cares more about flavor or cost, the edge weights will be assigned appropriately.
+
+To simulate an item purchase, the Markov model is transitioned forward by one state.  The current states of the Markov models are kept between purchases.
+
 
 After an item is chosen, the item category's exhaustion time is updated by propagating the item category usage SDE described in Section~\ref{sec:transaction-times}. \textcolor{red}{state transition, stop state}
 
@@ -700,7 +714,7 @@ We have described a domain-driven mathematical model and accompanying simulation
 
 We see many opportunities for building on the work presented.  We intend to expand the model to incorporate additional factors.  Deeper integration of existing fields such as location and purchasing profiles (e.g., to model regional purchasing preferences) will increase the variety of the semantic information encoded in the generated data. The incorporation of weather and climate data can be used to influence when customers shop and the types of products they buy. For example, customers would be less likely to shop during snow storms and more likely to buy winter apparel for their pets. Modeling of time-dependent events such as sales, evolution of customer purchasing profiles over time, and ``life events,'' such as the birth or passing of pets, will enable more interesting time-series analysis of the data.  We would also like to expand the scope of the model to incorporate business processes (such as inventory management, customer complaints, employees, etc.), thus enabling queries about how internal business process affect customer behavior.
 
-The current implementation was prototyped in Python.  We are working to implement the model using in Hadoop and Spark.  We will commit the resulting implementations to the Apache BigTop project to enable ease of access and immediate benefit to current users. 
+The current implementation was prototyped in Python.  We are working to implement the model using Hadoop and Spark.  We will commit the resulting implementations to the Apache BigTop project to enable ease of access and immediate benefit to current users. 
 
 
 % no \IEEEPARstart
