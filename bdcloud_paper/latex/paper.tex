@@ -559,7 +559,7 @@ where $a_i$ is the amount of item category $i$ ``stuff'' remaining at time $t$. 
 
 where $a_{n, i}$ is the amount remaining of item category $i$ at time step $t_n$, $\mu_{i,c}$ is the average amount used per time used, $\sigma^2_{i,c}$ is the variance of the amount used per time used, and $\beta_{i,c}$ is the item category's average amount of time between uses for customer $c$.  The parameters $\mu_{i, c}$, and $\sigma^2_{i,c}$ are computed from a base rate for each item category multiplied by the number of pets of the appropriate species the customer $c$ has.  The exhaustion time $T_{E,i}$ for each item category is found by simulating the usage until $a_{n,i} \leq 0$.
 
-The proposed transaction time is found from the exhaustion times (Eq.~\ref{eq:transaction-times}).  For each item category, the offset time $T_{O, i}$ between when a customer would visit the store and the exhaustion time is sampled from an exponential distribution parameterized separately for each customer $c$. A proposed transaction time $T_{P, i}$ for each item category is found by subtracting the offset time $T_{O, i}$ from the exhaustion time $T_{E, i}$.  The earliest proposed transaction time is taken as the overall proposed transaction time $T_T$. \textcolor{red}{$\beta_c$}
+The proposed transaction time is found from the exhaustion times (Eq.~\ref{eq:transaction-times}).  For each item category, the offset time $T_{O, i}$ between when a customer would visit the store and the exhaustion time is sampled from an exponential distribution. The distribution is parameterized by $\beta_c$, the average number of days before triggering a transaction. The parameter $\beta_c$ is set separately for each customer $c$ by sampling from a uniform distribution. A proposed transaction time $T_{P, i}$ for each item category is found by subtracting the offset time $T_{O, i}$ from the exhaustion time $T_{E, i}$.  The earliest proposed transaction time is taken as the overall proposed transaction time $T_T$.
 
 \begin{align} \label{eq:transaction-times}
 &T_T = \min_i \, \{  T_{P, i}\} \\
@@ -593,11 +593,14 @@ The proposed transaction time is accepted if $p(t_{n+1}=T_T) < r$, where $r \sim
 
 A customer's purchases in each transaction are modeled using a layered Hidden Markov Model (HMM) (Figure~\ref{fig:shopping_cart_sim}).  The HMM has three types of states: the start state, the purchase states, and the stop state. There are an infinite number of purchase states, identified by the exhaustion times of the customer's item categories, the transaction time, and the number of items purchased in the current transaction. The observables of the states correspond to the item categories.  Each item category $i$ is assigned a weight $w_i$ according to the amount of time between the transaction time $T_t$ and $T_{E,i}$ when each item category will be exhausted (based on the usage simulations):
 
-\begin{equation*}
-w_i = - \lambda_i \exp(-\lambda_i (T_{E, i}- T_{T}))
-\end{equation*}
+\begin{align*}
+&w_i = - \beta^{-1}_c \exp(-\beta^{-1}_c (T_{E, i}- T_T)) \\
+&\beta^{-1}_c \sim U(a,b)
+\end{align*}
 
-The item category for each purchase is chosen by sampling from the item categories with the probability of choosing each item category $i$ proportional to its weight $w_i$. \textcolor{red}{$\lambda_i$ - maybe these should be per customer / item category instead of just per item category}
+where $\beta_c$ the average number of days between when a customer purchases an item and the exhaustion time. The value $\beta_c$ is set separately for each customer by sampling from a uniform distribution. The value $w_i$ is used to model the propensity for a customer to purchase an item they will run out at time $T_{E, i}$ in the future when at the store at time $T_T$.
+
+The item category is chosen by sampling from the item categories with the probability of choosing each item category $i$ proportional to its weight $w_i$.
 
 Markov Models are used to model the customer's purchasing behavior for each item category.  Each state $X_n$ corresponds to an item in that category. The customer's buying habits are determined by the transition probabilities:  
 
@@ -634,14 +637,13 @@ The weights $w_l$, $w_f$, and $w_{f, s}$ are chosen randomly for each customer:
 &w_{f, s} \sim N(\mu, \sigma^2)
 \end{align*}
 
-If the weights are greater than 1, they are rounded down to 1.  Likese, if the weights are less than 0, they are rounded up to 0.
+If the weights are greater than 1, they are rounded down to 1.  Likewise, if the weights are less than 0, they are rounded up to 0.
 
 \textcolor{red}{reorder so that probilities describe habits}
 
 For example, if a customer tends to buy the same brand of dog food repeatedly, the outgoing edges to all products of the same brand as the product in the current state will be higher than those for other brands' products. If the customer does not care about flavor, the outgoing edges to all products from the current brand will be equal, otherwise the edge weights can be adjusted to prefer a specific combination of brand and flavor.  Likewise, if a customer cares more about flavor or cost, the edge weights will be assigned appropriately.
 
 To simulate an item purchase, the Markov model is transitioned forward by one state.  The current states of the Markov models are kept between purchases.
-
 
 After an item is chosen, the item category's exhaustion time is updated by propagating the item category usage SDE described in Section~\ref{sec:transaction-times}. \textcolor{red}{state transition, stop state}
 
