@@ -1,4 +1,5 @@
 from customers import CustomerGenerator
+from customers import load_names
 from customer_simulation import CustomerState
 import simulation_parameters as sim_param
 from stores import StoreGenerator
@@ -14,6 +15,7 @@ class Simulator(object):
     def load_data(self):
         self.item_categories = products.load_products_json()
         self.zipcode_objs = load_zipcode_data()
+        self.first_names, self.last_names = load_names()
 
     def generate_stores(self, num=None):
         generator = StoreGenerator(zipcode_objs=self.zipcode_objs,
@@ -22,7 +24,9 @@ class Simulator(object):
 
     def generate_customers(self, num=None):
         generator = CustomerGenerator(zipcode_objs=self.zipcode_objs,
-                                      stores=self.stores)
+                                      stores=self.stores,
+                                      first_names=self.first_names,
+                                      last_names=self.last_names)
         self.customers = generator.generate(num)
 
     def generate_transactions(self, end_time=None):

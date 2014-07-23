@@ -27,6 +27,35 @@ class Customer(object):
             (self.id, self.name, self.pets["dog"], 
              self.pets["cat"], self.location)
 
+class NameSampler(object):
+    def __init__(self, first_names, last_names):
+        normalized_first_names = self.normalize(first_names)
+        normalized_last_names = self.normalize(last_names)
+
+        self.first_name_sampler = RouletteWheelSampler(normalized_first_names)
+        self.last_name_sampler = RouletteWheelSampler(normalized_last_names)
+
+    def normalize(self, names):
+        normalized_names = []
+
+        weight_sum = 0.0
+        for name, weight in names:
+            weight_sum += weight
+
+        for name, weight in names:
+            normalized_names.append((name, weight / weight_sum))
+
+        return normalized_names
+
+    def sample(self):
+        names = []
+        names.append(self.first_name_sampler.sample())
+        names.append(self.last_name_sampler.sample())
+
+        return " ".join(names)
+        
+
+        
 class LocationSampler(object):
     def __init__(self, stores=None, zipcode_objs=None, avg_distance=None):
         lambd = 1.0 / avg_distance
@@ -77,10 +106,12 @@ class LocationSampler(object):
         return self.sampler.sample()
 
 class CustomerGenerator(object):
-    def __init__(self, zipcode_objs=None, stores=None):
+    def __init__(self, zipcode_objs=None, stores=None, first_names=None,
+                 last_names=None):
         self.location_sampler = LocationSampler(stores=stores,
                                                 zipcode_objs=zipcode_objs,
                                                 avg_distance=sim_param.AVERAGE_CUSTOMER_STORE_DISTANCE)
+        self.name_sampler = NameSampler(first_names, last_names)
         self.current_id = 0
 
 
@@ -90,7 +121,7 @@ class CustomerGenerator(object):
             customer = Customer()
             customer.id = self.current_id
             self.current_id += 1
-            customer.name = "Customer_" + str(i)
+            customer.name = self.name_sampler.sample()
             customer.location = self.location_sampler.sample()
             
             num_pets = random.randint(sim_param.MIN_PETS, sim_param.MAX_PETS)
@@ -114,6 +145,21 @@ class CustomerGenerator(object):
             customer.pets["cat"] = num_cats
             customers.append(customer)
         return customers
+
+def load_names():
+    name_fl = open("../../resources/namedb/data/data.dat")
+    first_names = []
+    last_names = []
+    for ln in name_fl:
+        cols = ln.strip().split(",")
+        name = cols[0]
+        weight = float(cols[5])
+        if cols[4] == "1":
+            first_names.append((name, weight))
+        if cols[3] == "1":
+            last_names.append((name, weight))
+    name_fl.close()
+    return first_names, last_names
 
 if __name__ == "__main__":
     from zipcodes import load_zipcode_data
