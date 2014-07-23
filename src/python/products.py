@@ -17,7 +17,7 @@ class ItemCategory(object):
         self.items = items
         self.species = species
         self.trigger_transaction = trigger_transaction
-        self.daily_usage_rate = 1.0 / daily_usage_rate
+        self.daily_usage_rate = daily_usage_rate
         self.base_amount_used_average = base_amount_used_average
         self.base_amount_used_variance = base_amount_used_average
         self.transaction_trigger_rate = transaction_trigger_rate
