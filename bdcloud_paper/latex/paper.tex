@@ -599,18 +599,24 @@ w_i = - \lambda_i \exp(-\lambda_i (T_{E, i}- T_{T}))
 
 The item category for each purchase is chosen by sampling from the item categories with the probability of choosing each item category $i$ proportional to its weight $w_i$. \textcolor{red}{$\lambda_i$ - maybe these should be per customer / item category instead of just per item category}
 
-Markov Models are used to model the customer's purchasing behavior for each item category.  Each state $X_n$ corresponds to an item in that category. The customer's buying habits are determined by the transition probabilities (Eq.~\ref{eq:transition_probabilities}).  The transition probabilities depend on three types of parameters: loopback weight $w_l$ indicating the probability of purchasing the same item again, weight $w_f$ of a particular field $f$, and the weight $w_{f,s}$ when two items $x$ and $y$ have the same value for the field $f$. 
+Markov Models are used to model the customer's purchasing behavior for each item category.  Each state $X_n$ corresponds to an item in that category. The customer's buying habits are determined by the transition probabilities:  
 
-\begin{align} \label{eq:transition_probabilities}
-Pr(X_{n+1}&=x|X_n) = \nonumber \\
+\begin{align}
+Pr(X_{n+1}&=x|X_n=y) = \nonumber \\
 & \left\{ 
   \begin{array}{l l}
-   (1.0 - w_l) W^{-1} \sum_f w_f w_{f,s}(x, y)  & \quad \text{if $x \neq X_n$}\\
-   w_l & \quad \text{if $x = X_n$}
+   (1.0 - p_l) \, Pr(x,y)  & \quad \text{if $x \neq y$}\\
+   p_l & \quad \text{if $x = y$}
   \end{array} \right.
 \end{align}
 
-\textcolor{red}{todo}
+where $w_l$ is the loopback probability, giving the probability of choosing the same item $y$ again. The function $Pr(x,y)$ gives the probability of choosing the item $x$ given that the previous item was $y$:
+
+\begin{equation*}
+Pr(x,y) = \frac{\sum_f w_f w_{f,s}(x, y)}{\sum_{j \neq x} \sum_f w_f w_{f,s}(x, j)}
+\end{equation*}
+
+where $w_f$ is the weight of a particular field $f$.   The pair of items $x$ and $y$ are weighted  according to the equality of the values for each field:
 
 \begin{equation*}
 w_{f,s}(x,y) = \left\{ 
@@ -620,22 +626,15 @@ w_{f,s}(x,y) = \left\{
   \end{array} \right.
 \end{equation*} 
 
-\textcolor{red}{todo}
+The weights $w_l$, $w_f$, and $w_{f, s}$ are chosen randomly for each customer:
 
-\begin{equation*}
-W = \sum_i \sum_{j \neq i} \sum_f w_f w_{f,s}(i, j)
-\end{equation*}
-
-The weights $w_l$, $w_f$, and $w_{f, s}$ are chosen randomly for each customer.  
-
-\textcolor{red}{description. min, max}
-
-\begin{align} \label{eq:item-weights}
-&w_l \sim N(\mu, \sigma^2) \nonumber \\
-&w_f \sim N(\mu, \sigma^2) \nonumber \\
+\begin{align*}
+&w_l \sim N(\mu, \sigma^2) \\
+&w_f \sim N(\mu, \sigma^2) \\
 &w_{f, s} \sim N(\mu, \sigma^2)
-\end{align}
+\end{align*}
 
+If the weights are greater than 1, they are rounded down to 1.  Likese, if the weights are less than 0, they are rounded up to 0.
 
 \textcolor{red}{reorder so that probilities describe habits}
 
