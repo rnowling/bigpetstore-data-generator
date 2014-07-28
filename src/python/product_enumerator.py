@@ -55,38 +55,43 @@ def generate_dog_food(food_fields):
         price = multipliers * additions
 
         # filter out certain combinations
-        if processed_item["_brand"] == "Chef Corgie" and processed_item["_organic"]:
-            continue
+        if processed_item["_brand"] == "Chef Corgie":
+            if processed_item["_organic"]:
+                continue
+            if processed_item["_limited_ingredient"]:
+                continue
+            if processed_item["_meat"] == "Venison":
+                continue
+            if processed_item["_meat"] == "Bison":
+                continue
+            if processed_item["_meat"] == "Rabbit":
+                continue
+            if processed_item["_meat"] == "Salmon":
+                continue
+            if processed_item["_meat"] == "Vegetarian":
+                continue
+            if processed_item["_grain"] == "Soy":
+                continue
+            if processed_item["_grain"] == "Sweet Potato":
+                continue
+            if processed_item["_grain"] == "Brown Rice":
+                continue
 
-        if processed_item["_brand"] == "Chef Corgie" and processed_item["_limited_ingredient"]:
-            continue
-
-        if processed_item["_brand"] == "Chef Corgie" and processed_item["_meat"] == "Venison":
-            continue
-
-        if processed_item["_brand"] == "Chef Corgie" and processed_item["_meat"] == "Bison":
-            continue
-
-        if processed_item["_brand"] == "Chef Corgie" and processed_item["_meat"] == "Rabbit":
-            continue
-
-        if processed_item["_brand"] == "Chef Corgie" and processed_item["_meat"] == "Fish":
-            continue
-
-        if processed_item["_brand"] == "Chef Corgie" and processed_item["_meat"] == "Vegetarian":
-            continue
-
-        if processed_item["_brand"] == "Chef Corgie" and processed_item["_grain"] == "Soy":
-            continue
-
-        if processed_item["_brand"] == "Chef Corgie" and processed_item["_grain"] == "Brown Rice":
-            continue
-
-        if processed_item["_brand"] == "Chef Corgie" and processed_item["_grain"] == "Sweet Potato":
-            continue
-
-        if processed_item["_brand"] == "Nature's Cornucopia" and processed_item["_organic"]:
-            continue
+        if processed_item["_brand"] == "Nature's Cornucopia":
+            if processed_item["_organic"]:
+                continue
+            if processed_item["_limited_ingredient"]:
+                continue
+            if processed_item["_meat"] == "Venison":
+                continue
+            if processed_item["_meat"] == "Bison":
+                continue
+            if processed_item["_meat"] == "Rabbit":
+                continue
+            if processed_item["_grain"] == "Sweet Potato":
+                continue
+            if processed_item["_grain"] == "Brown Rice":
+                continue
 
         processed_item["price"] = round(price,2)
         processed_item["_per_unit_cost"] = price / processed_item["quantity"]
