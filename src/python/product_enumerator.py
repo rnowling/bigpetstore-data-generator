@@ -92,6 +92,8 @@ def generate_dog_food(food_fields):
         if processed_item["limited_ingredient"]:
             desc += " Limited Ingredient"
         desc += " %s & %s" % (processed_item["meat"], processed_item["grain"])
+        if processed_item["weight_loss"]:
+            desc += " Weight Loss Formula"
         if processed_item["age"] == "senior":
             desc += " for Seniors"
         else:
