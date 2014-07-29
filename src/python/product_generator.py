@@ -1,8 +1,3 @@
-import matplotlib
-matplotlib.use("PDF")
-
-from matplotlib import pyplot as plt
-
 from collections import defaultdict
 import json
 
@@ -227,21 +222,26 @@ def generate_poop_bags(fields):
 
         yield processed_item
 
-def main():
+def generate_products():
     products = defaultdict(list)
-    for item in generate_dog_food(DRY_DOG_FOOD_FIELDS):
-        products["dry_dog_food"].append(item)
-    for item in generate_cat_food(DRY_CAT_FOOD_FIELDS):
-        products["dry_cat_food"].append(item)
-    for item in generate_kitty_litter(KITTY_LITTER_FIELDS):
-        products["kitty_litter"].append(item)
-    for item in generate_poop_bags(POOP_BAG_FIELDS):
-        products["poop_bags"].append(item)
 
-    print "dry dog food:", len(products["dry_dog_food"])
-    print "dry cat food:", len(products["dry_cat_food"])
-    print "kitty litter:", len(products["kitty_litter"])
-    print "poop bags:", len(products["poop_bags"])
+    for item in generate_dog_food(DRY_DOG_FOOD_FIELDS):
+        products["dry dog food"].append(item)
+    for item in generate_cat_food(DRY_CAT_FOOD_FIELDS):
+        products["dry cat food"].append(item)
+    for item in generate_kitty_litter(KITTY_LITTER_FIELDS):
+        products["kitty litter"].append(item)
+    for item in generate_poop_bags(POOP_BAG_FIELDS):
+        products["poop bags"].append(item)
+
+    return products
+
+
+def main():
+    print "dry dog food:", len(products["dry dog food"])
+    print "dry cat food:", len(products["dry cat food"])
+    print "kitty litter:", len(products["kitty litter"])
+    print "poop bags:", len(products["poop bags"])
 
     fl = open("products.json", "w")
     json.dump(products, fl)
