@@ -122,7 +122,7 @@ def driver():
     store_writer.close()
 
     print "Generating customers..."
-    sim.generate_customers(num=100)
+    sim.generate_customers(num=10)
 
     for customer in sim.customers:
         customer_writer.append(customer)

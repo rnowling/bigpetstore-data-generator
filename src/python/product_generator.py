@@ -1,6 +1,8 @@
 from collections import defaultdict
 import json
 
+import simulation_parameters
+
 # When generating user output, we'll ignore fields that start with an underscore
 
 class ItemCategory(object):
@@ -255,5 +257,24 @@ def generate_products():
 
     return products
 
-    
-        
+def generate_product_categories():
+    products = generate_products()
+
+    product_categories = simulation_parameters.PRODUCT_CATEGORY_PARAMS
+
+    item_category_objects = dict()
+    for category in product_categories:
+        label = category["category"]
+        category = category.copy()
+        items = []
+        for item in products[label]:
+            item["category"] = label
+            items.append(item)
+        category["items"] = items
+        print label, len(items)
+        item_category_objects[label] = ItemCategory(**category)
+
+    return item_category_objects
+
+
+
