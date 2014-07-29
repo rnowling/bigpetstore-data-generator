@@ -32,6 +32,21 @@ DRY_CAT_FOOD_FIELDS = {
     "_organic" : [(True, 1.0, 2.50), (False, 1.0, 0.0)]
 }
 
+KITTY_LITTER_FIELDS = {
+    "_base_price" : [("base_price", 1.0, 9.99)],
+    "_brand" : [("Pretty Cat", 1.05, 0.0), ("Feisty Feline", 1.1, 0.0), ("Nature's Cornucopia", 0.9, 0.0)],
+    "_scent" : [("Unscented", 1.0, 0.0), ("Meadow Scent", 1.0, 0.0)],
+    "quantity": [(7.0, 1.0, 0.0), (14.0, 2.0, 0.0), (14.0, 3.5, 0.0)],
+    "_odor_control" : [(True, 1.0, 0.0), (False, 1.0, 0.0)]
+}
+
+
+POOP_BAG_FIELDS = {
+    "_base_price" : [("base_price", 1.0, 10.19)],
+    "_brand" : [("Happy Pup", 1.0, 0.0), ("Dog Days", 1.1, 0.0), ("Nature's Cornucopia", 0.9, 0.0)],
+    "_color" : [("Blue", 1.0, 0.0), ("Multicolor", 1.05, 0.0)],
+    "quantity" : [(60, 1.0, 0.0), (120, 2.0, 0.0)]
+}
 
 def generate_combinations(field_name, choices, previous=None):
     if previous == None:
@@ -130,6 +145,7 @@ def generate_dog_food(food_fields):
         if processed_item["_limited_ingredient"]:
             desc += " Limited Ingredient"
         desc += " %s & %s" % (processed_item["_meat"], processed_item["_grain"])
+        desc += " Dog Food"
         if processed_item["_weight_loss"]:
             desc += " Weight Loss Formula"
         if processed_item["_age"] == "Senior":
@@ -179,6 +195,7 @@ def generate_cat_food(food_fields):
         if processed_item["_limited_ingredient"]:
             desc += " Limited Ingredient"
         desc += " %s & %s" % (processed_item["_meat"], processed_item["_grain"])
+        desc += " Cat Food"
         if processed_item["_hairball_management"]:
             desc += " Hairball Management Formula"
         if processed_item["_age"] == "Senior":
@@ -189,6 +206,26 @@ def generate_cat_food(food_fields):
 
         yield processed_item
 
+def generate_kitty_litter(fields):
+    for processed_item in generate_items(fields):
+        desc = processed_item["_brand"]
+        desc += " " + processed_item["_scent"]
+        desc += " Kitty Litter"
+        if processed_item["_odor_control"]:
+            desc += " with Odor Control"
+
+        processed_item["description"] = desc
+
+        yield processed_item
+        
+def generate_poop_bags(fields):
+    for processed_item in generate_items(fields):
+        desc = processed_item["_brand"]
+        desc += " " + processed_item["_color"]
+        desc += " Poop Bags"
+        processed_item["description"] = desc
+
+        yield processed_item
 
 def main():
     products = defaultdict(list)
@@ -196,14 +233,19 @@ def main():
         products["dry_dog_food"].append(item)
     for item in generate_cat_food(DRY_CAT_FOOD_FIELDS):
         products["dry_cat_food"].append(item)
+    for item in generate_kitty_litter(KITTY_LITTER_FIELDS):
+        products["kitty_litter"].append(item)
+    for item in generate_poop_bags(POOP_BAG_FIELDS):
+        products["poop_bags"].append(item)
 
     print "dry dog food:", len(products["dry_dog_food"])
     print "dry cat food:", len(products["dry_cat_food"])
+    print "kitty litter:", len(products["kitty_litter"])
+    print "poop bags:", len(products["poop_bags"])
 
     fl = open("products.json", "w")
     json.dump(products, fl)
     fl.close()
-
 
 if __name__ == "__main__":
     main()
