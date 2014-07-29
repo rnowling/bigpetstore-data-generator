@@ -271,7 +271,6 @@ def generate_product_categories():
             item["category"] = label
             items.append(item)
         category["items"] = items
-        print label, len(items)
         item_category_objects[label] = ItemCategory(**category)
 
     return item_category_objects
