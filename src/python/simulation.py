@@ -3,7 +3,7 @@ from customers import load_names
 from customer_simulation import CustomerState
 import simulation_parameters as sim_param
 from stores import StoreGenerator
-import products
+from product_generator import generate_product_categories
 from transactions import TransactionSimulator
 from zipcodes import load_zipcode_data
 
@@ -13,9 +13,11 @@ class Simulator(object):
         pass
 
     def load_data(self):
-        self.item_categories = products.load_products_json()
         self.zipcode_objs = load_zipcode_data()
         self.first_names, self.last_names = load_names()
+
+    def generate_products(self):
+        self.item_categories = generate_product_categories()
 
     def generate_stores(self, num=None):
         generator = StoreGenerator(zipcode_objs=self.zipcode_objs,
@@ -29,15 +31,14 @@ class Simulator(object):
                                       last_names=self.last_names)
         self.customers = generator.generate(num)
 
-    def generate_transactions(self, end_time=None):
-        for customer in self.customers:
-            state = CustomerState(item_categories=self.item_categories,
-                    customer=customer)
-            trans_sim = TransactionSimulator(stores=self.stores,
-                                             customer_state=state,
-                                             item_categories=self.item_categories)
-            for trans in trans_sim.simulate(end_time):
-                yield trans
+    def generate_transactions(self, customer=None, end_time=None):
+        state = CustomerState(item_categories=self.item_categories,
+                              customer=customer)
+        trans_sim = TransactionSimulator(stores=self.stores,
+                                         customer_state=state,
+                                         item_categories=self.item_categories)
+        for trans in trans_sim.simulate(end_time):
+            yield trans
 
 class TransactionItemWriter(object):
     def __init__(self, filename=None):
@@ -46,17 +47,10 @@ class TransactionItemWriter(object):
     def append(self, trans):
         for item in trans.purchased_items:
             item = dict(item)
-            if "food" in item["category"]:
-                item_str = "%s:%s:%s:%s" % \
-                    (item["category"], item["brand"], item["flavor"], 
-                     item["size"])
-            elif "poop bags" == item["category"]:
-                item_str = "%s:%s:%s:%s" % \
-                    (item["category"], item["brand"], item["color"], 
-                     item["size"])
-            else:
-                item_str = "%s:%s:%s" % \
-                    (item["category"], item["brand"], item["size"])
+            item_str = "%s:%s:%s" % \
+                (item["category"],
+                 item["description"], 
+                 item["quantity"])
 
             self.fl.write("%s,%s\n" % (trans.transaction_id(),
                                   item_str))
@@ -116,6 +110,9 @@ def driver():
 
     print "Loading data..."
     sim.load_data()
+
+    print "Generating products..."
+    sim.generate_products()
     
     print "Generating stores..."
     sim.generate_stores(num=10)
@@ -132,9 +129,11 @@ def driver():
     customer_writer.close()
 
     print "Generating transactions..."
-    for trans in sim.generate_transactions(end_time=365.0*5.0):
-        trans_writer.append(trans)
-        item_writer.append(trans)
+    for i, customer in enumerate(sim.customers):
+        print "Customer", (i+1)
+        for trans in sim.generate_transactions(customer=customer, end_time=365.0*5.0):
+            trans_writer.append(trans)
+            item_writer.append(trans)
 
     print
 

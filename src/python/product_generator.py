@@ -3,6 +3,25 @@ import json
 
 # When generating user output, we'll ignore fields that start with an underscore
 
+class ItemCategory(object):
+    def __init__(self, category=None, fields=None, items=None, \
+            species=None, trigger_transaction=False,
+            daily_usage_rate=None, base_amount_used_average=None,
+            base_amount_used_variance=None,
+            transaction_trigger_rate=None,
+            transaction_purchase_rate=None):
+    
+        self.category_label = category
+        self.fields = fields
+        self.items = items
+        self.species = species
+        self.trigger_transaction = trigger_transaction
+        self.daily_usage_rate = daily_usage_rate
+        self.base_amount_used_average = base_amount_used_average
+        self.base_amount_used_variance = base_amount_used_average
+        self.transaction_trigger_rate = transaction_trigger_rate
+        self.transaction_purchase_rate = transaction_purchase_rate
+
 DRY_DOG_FOOD_FIELDS = {
     "_base_price" : [("base_price", 1.0, 10.79)],
     "_brand" : [("Wellfed", 1.0, 0.0), ("Happy Pup", 1.05, 0.0), ("Dog Days", 1.1, 0.0), ("Chef Corgie", 0.8, 0.0), ("Nature's Cornucopia", 0.9, 0.0)],
@@ -236,19 +255,5 @@ def generate_products():
 
     return products
 
-
-def main():
-    print "dry dog food:", len(products["dry dog food"])
-    print "dry cat food:", len(products["dry cat food"])
-    print "kitty litter:", len(products["kitty litter"])
-    print "poop bags:", len(products["poop bags"])
-
-    fl = open("products.json", "w")
-    json.dump(products, fl)
-    fl.close()
-
-if __name__ == "__main__":
-    main()
-    
     
         
