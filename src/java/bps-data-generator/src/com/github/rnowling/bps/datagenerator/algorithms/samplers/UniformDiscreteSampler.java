@@ -1,9 +1,11 @@
 package com.github.rnowling.bps.datagenerator.algorithms.samplers;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
 import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.google.common.collect.ImmutableList;
 
 
 /**
@@ -19,13 +21,13 @@ public class UniformDiscreteSampler<T> implements Sampler<T>
 	Random rng;
 	List<T> data;
 	
-	public UniformDiscreteSampler(List<T> data, SeedFactory seedFactory)
+	public UniformDiscreteSampler(Collection<T> data, SeedFactory seedFactory)
 	{
 		rng = new Random(seedFactory.getNextSeed());
-		this.data = data;
+		this.data = ImmutableList.copyOf(data);
 	}
 	
-	public T sample() throws Exception
+	public T sample()
 	{
 		int idx = rng.nextInt(data.size());
 		return data.get(idx);

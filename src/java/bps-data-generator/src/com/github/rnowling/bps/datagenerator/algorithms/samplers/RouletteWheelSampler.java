@@ -55,13 +55,13 @@ public class RouletteWheelSampler<T> implements Sampler<T>
 		return domainCumProb;
 	}
 	
-	public T sample() throws Exception
+	public T sample()
 	{
 		double r = rng.nextDouble();
 		for(Pair<T, Double> cumProbPair : domainCumProb)
 			if(r < cumProbPair.getSecond())
 				return cumProbPair.getFirst();
 		
-		throw new Exception("Invalid state -- RouletteWheelSampler should never fail to sample!");
+		throw new IllegalStateException("Invalid state -- RouletteWheelSampler should never fail to sample!");
 	}
 }
