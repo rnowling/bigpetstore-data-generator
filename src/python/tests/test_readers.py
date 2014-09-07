@@ -4,8 +4,8 @@ from collections import Sequence
 
 import simulation_parameters as sim_params
 
-from datamodels.inputs import ProductCategory
-from datamodels.inputs import ZipcodeRecord
+from datamodels.input_models import ProductCategory
+from datamodels.input_models import ZipcodeRecord
 
 from readers import load_names
 from readers import load_products

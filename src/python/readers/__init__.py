@@ -1,6 +1,6 @@
 import json
 
-from datamodels.inputs import ProductCategory
+from datamodels.input_models import ProductCategory
 
 from zipcodes import load_zipcode_data
 

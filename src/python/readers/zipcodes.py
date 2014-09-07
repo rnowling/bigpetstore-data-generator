@@ -1,4 +1,4 @@
-from datamodels.inputs import ZipcodeRecord
+from datamodels.input_models import ZipcodeRecord
 
 def read_income_data(flname):
     fl = open(flname)
