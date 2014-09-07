@@ -6,7 +6,7 @@ import math
 
 import numpy as np
 
-from samplers import RouletteWheelSampler
+from algorithms.samplers import RouletteWheelSampler
 
 import simulation_parameters as sim_param
 

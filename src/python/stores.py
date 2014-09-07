@@ -1,4 +1,4 @@
-from samplers import RouletteWheelSampler
+from algorithms.samplers import RouletteWheelSampler
 
 import numpy as np
 

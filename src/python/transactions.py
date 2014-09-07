@@ -5,8 +5,8 @@ import random
 
 import hashlib
 
-from markovmodel import MarkovModelBuilder
-from samplers import RouletteWheelSampler
+from algorithms.markovmodel import MarkovModelBuilder
+from algorithms.samplers import RouletteWheelSampler
 
 class ItemCategoryMarkovModelBuilder(object):
     def __init__(self, item_category=None, customer=None):

@@ -43,38 +43,3 @@ class MarkovModel(object):
                 self.current_state = candidate_state
                 return candidate_state
         raise Exception, "Could not find next state for Markov Model!"
-
-if __name__ == "__main__":
-    states = range(1, 10)
-
-    builder = MarkovModelBuilder()
-
-    for start in states:
-        builder.add_state(start)
-        weights = dict()
-        weight_sum = 0.0
-        for end in states:
-            if start != end:
-                weights[end] = random.uniform(0.0, 1.0)
-                weight_sum += weights[end]
-        for end in states:
-            if start != end:
-                builder.add_edge_weight(start, end, 0.25 * weights[end] / weight_sum)
-            else:
-                builder.add_edge_weight(start, end, 0.75)
-
-    msm = builder.build_msm()
-
-    state = msm.progress_state()
-    count_same = 0
-    for i in xrange(100):
-        next_state = msm.progress_state()
-        if state == next_state:
-            count_same += 1
-        state = next_state
-
-    print float(count_same) / 100.0
-
-                
-    
-    
