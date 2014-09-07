@@ -7,7 +7,7 @@ from readers import load_zipcode_data
 
 from generators.store_generator import StoreGenerator
 from generators.customer_generator import CustomerGenerator
-from generators.transaction_generator import TransactionSimulator
+from generators.transaction_generator import TransactionGenerator
 
 from writers import CustomerWriter
 from writers import StoreWriter
@@ -45,7 +45,7 @@ class Simulator(object):
         for customer in self.customers:
             state = CustomerState(item_categories=self.item_categories,
                     customer=customer)
-            trans_sim = TransactionSimulator(stores=self.stores,
+            trans_sim = TransactionGenerator(stores=self.stores,
                                              customer_state=state,
                                              item_categories=self.item_categories)
             for trans in trans_sim.simulate(end_time):

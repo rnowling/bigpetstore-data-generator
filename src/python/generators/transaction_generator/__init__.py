@@ -62,7 +62,7 @@ class ItemCategoryMarkovModelBuilder(object):
 
         return builder.build_msm()
 
-class TransactionPurchasesSimulator(object):
+class TransactionPurchasesGenerator(object):
     def __init__(self, customer_state=None, item_categories=None):
         self.customer_state = customer_state
 
@@ -148,12 +148,12 @@ class TransactionTimeSampler(object):
                 return proposed_time
 
 
-class TransactionSimulator(object):
+class TransactionGenerator(object):
     def __init__(self, stores=None, customer_state=None, item_categories=None):
         self.stores = stores
         self.customer_state = customer_state
         self.trans_time_sampler = TransactionTimeSampler(customer_state=customer_state)
-        self.purchase_sim = TransactionPurchasesSimulator(customer_state=self.customer_state, item_categories=item_categories) 
+        self.purchase_sim = TransactionPurchasesGenerator(customer_state=self.customer_state, item_categories=item_categories) 
         self.trans_count = 0
     
     def simulate(self, end_time):
