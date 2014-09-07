@@ -4,6 +4,7 @@ import math
 import random
 
 from algorithms.markovmodel import MarkovModelBuilder
+from algorithms.samplers import BoundedMultiModalGaussianSampler
 from algorithms.samplers import RouletteWheelSampler
 
 from datamodels.output_models import Transaction
@@ -12,6 +13,13 @@ class ItemCategoryMarkovModelBuilder(object):
     def __init__(self, item_category=None, customer=None):
         self.item_category = item_category
         self.customer = customer
+
+        field_distr = [(0.15, 0.1), (0.85, 0.1)]
+        bounds = (0.05, 0.95)
+        self.field_sampler = BoundedMultiModalGaussianSampler(field_distr, bounds=bounds)
+        loopback_distr = [(0.25, 0.1), (0.75, 0.1)]
+        self.loopback_sampler = BoundedMultiModalGaussianSampler(loopback_distr, bounds=bounds)
+
 
     def _normalize_field_weights(self):
         weight_sum = sum(self.field_weights.itervalues())
@@ -23,12 +31,9 @@ class ItemCategoryMarkovModelBuilder(object):
         self.field_weights = dict()
         self.field_similarity_weights = dict()
         for field in self.item_category.fields:
-            avg = random.choice([0.15, 0.85])
-            self.field_weights[field] = min(0.95, max(0.05, random.normalvariate(avg, 0.1)))
-            avg = random.choice([0.15, 0.85])
-            self.field_similarity_weights[field] = min(0.95, max(0.05, random.normalvariate(avg, 0.1)))
-        avg = random.choice([0.25, 0.75])
-        self.loopback_weight = min(0.95, max(0.05, random.normalvariate(avg, 0.1)))
+            self.field_weights[field] = self.field_sampler.sample()
+            self.field_similarity_weights[field] = self.field_sampler.sample()
+        self.loopback_weight = self.loopback_sampler.sample()
 
     def similarity_weight(self, rec1, rec2):
         weight = 0.0
