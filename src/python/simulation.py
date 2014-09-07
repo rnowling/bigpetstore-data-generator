@@ -8,6 +8,7 @@ from readers import load_products
 from readers import load_zipcode_data
 
 from generators.store_generator import StoreGenerator
+from generators.customer_generator import CustomerGenerator
 
 class Simulator(object):
     def __init__(self):
@@ -31,7 +32,10 @@ class Simulator(object):
                                       stores=self.stores,
                                       first_names=self.first_names,
                                       last_names=self.last_names)
-        self.customers = generator.generate(num)
+        self.customers = []
+        for i in xrange(num):
+            customer = generator.generate()
+            self.customers.append(customer)
 
     def generate_transactions(self, end_time=None):
         for customer in self.customers:
