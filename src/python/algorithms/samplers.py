@@ -1,3 +1,4 @@
+import math
 import random
 
 class RouletteWheelSampler(object):
@@ -16,3 +17,15 @@ class RouletteWheelSampler(object):
         # we should never get here since probabilities
         # should sum to 1
         raise Exception, "Could not pick a value!"
+
+class BoundedMultiModalGaussianSampler(object):
+    def __init__(self, distributions, bounds=None):
+        self.distributions = distributions
+        self.bounds = bounds
+
+    def sample(self):
+        mean, var = random.choice(self.distributions)
+        sample = random.normalvariate(mean, math.sqrt(var))
+        if self.bounds is not None:
+            sample = max(self.bounds[0], min(self.bounds[1], sample))
+        return sample
