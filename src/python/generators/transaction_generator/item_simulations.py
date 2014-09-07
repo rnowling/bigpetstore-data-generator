@@ -148,22 +148,3 @@ class ItemCategorySimulation(object):
         return self.purchase_model.progress_state()
 
 
-if __name__ == "__main__":
-    sim = ItemCategoryUsageSimulation(initial_amount=30.0, initial_time=0.0, daily_usage_rate=1.0,
-        amount_used_average=0.5, amount_used_variance=0.2)
-    sim.simulate()
-
-    for time, amount in sim.trajectory:
-        print time, amount
-
-    from products import load_products_json
-    from customers import CustomerGenerator
-
-    item_categories = load_products_json()
-
-    customer = CustomerGenerator().generate(1)[0]
-    print 
-    for item_category in item_categories.itervalues():
-        sim = ExhaustibleItemCategorySimulation(item_category=item_category, customer=customer)
-        for i in xrange(10):
-            print sim.choose_item_for_purchase()
