@@ -146,20 +146,6 @@ class CustomerGenerator(object):
             customers.append(customer)
         return customers
 
-def load_names():
-    name_fl = open("../../resources/namedb/data/data.dat")
-    first_names = []
-    last_names = []
-    for ln in name_fl:
-        cols = ln.strip().split(",")
-        name = cols[0]
-        weight = float(cols[5])
-        if cols[4] == "1":
-            first_names.append((name, weight))
-        if cols[3] == "1":
-            last_names.append((name, weight))
-    name_fl.close()
-    return first_names, last_names
 
 if __name__ == "__main__":
     from zipcodes import load_zipcode_data

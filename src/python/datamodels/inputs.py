@@ -1,10 +1,12 @@
-from collections import defaultdict
+class ZipcodeRecord(object):
+    def __init__(self, zipcode=None, median_household_income=None,
+                 population=None, coords=None):
+        self.zipcode = zipcode
+        self.median_household_income = median_household_income
+        self.population = population
+        self.coords = coords
 
-import random
-
-import json
-
-class ItemCategory(object):
+class ProductCategory(object):
     def __init__(self, category=None, fields=None, items=None, \
             species=None, trigger_transaction=False,
             daily_usage_rate=None, base_amount_used_average=None,
@@ -22,20 +24,3 @@ class ItemCategory(object):
         self.base_amount_used_variance = base_amount_used_average
         self.transaction_trigger_rate = transaction_trigger_rate
         self.transaction_purchase_rate = transaction_purchase_rate
-
-
-
-def load_products_json():
-    category_fl = open("product_categories.json")
-    product_categories = json.load(category_fl)
-    category_fl.close()
-
-    item_category_objects = dict()
-    for category in product_categories:
-        item_category_objects[category["category"]] = ItemCategory(**category)
-
-    return item_category_objects
-
-if __name__ == "__main__":
-    product_cateogry_objects = load_products_json()
-

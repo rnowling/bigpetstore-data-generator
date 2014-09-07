@@ -17,3 +17,12 @@ MIN_PETS = 1
 
 STORE_INCOME_SCALING_FACTOR = 100.0
 
+ZIPCODE_DATA_FILES = {
+    "income_fl" : "../../resources/ACS_12_5YR_S1903/ACS_12_5YR_S1903_with_ann.csv",
+    "population_fl" : "../../resources/population_data.csv",
+    "coordinate_fl" : "../../resources/zips.csv"
+    }
+
+NAMEDB_FILE = "../../resources/namedb/data/data.dat"
+
+PRODUCTS_FILE = "product_categories.json"

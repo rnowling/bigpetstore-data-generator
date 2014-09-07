@@ -1,11 +1,12 @@
 from customers import CustomerGenerator
-from customers import load_names
 from customer_simulation import CustomerState
 import simulation_parameters as sim_param
 from stores import StoreGenerator
-import products
 from transactions import TransactionSimulator
-from zipcodes import load_zipcode_data
+
+from readers import load_names
+from readers import load_products
+from readers import load_zipcode_data
 
 
 class Simulator(object):
@@ -13,9 +14,9 @@ class Simulator(object):
         pass
 
     def load_data(self):
-        self.item_categories = products.load_products_json()
-        self.zipcode_objs = load_zipcode_data()
-        self.first_names, self.last_names = load_names()
+        self.item_categories = load_products(sim_param.PRODUCTS_FILE)
+        self.zipcode_objs = load_zipcode_data(**sim_param.ZIPCODE_DATA_FILES)
+        self.first_names, self.last_names = load_names(sim_param.NAMEDB_FILE)
 
     def generate_stores(self, num=None):
         generator = StoreGenerator(zipcode_objs=self.zipcode_objs,
