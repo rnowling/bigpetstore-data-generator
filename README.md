@@ -5,10 +5,10 @@ Playground for generating BPS data.
 
 To run:
 
-   $ cd src/python
-   $ python simulation.py 
+    $ cd src/python
+    $ python simulation.py 
 
 To run unit tests, you need to install the nose package for Python. You can then run:
 
-   $ cd src/python
-   $ nosetests
+    $ cd src/python
+    $ nosetests
