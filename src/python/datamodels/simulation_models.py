@@ -44,14 +44,3 @@ class CustomerState(object):
     def __repr__(self):
         return "(%s, %s dogs, %s cats)" % (self.customer.name, self.customer.pets["dog"], self.customer.pets["cat"])
 
-if __name__ == "__main__":
-    from products import load_products_json
-    from customers import CustomerGenerator
-
-    item_categories = load_products_json()
-
-    customer = CustomerGenerator().generate(1)[0]
-
-    customer_sim = CustomerState(item_categories=item_categories,
-        customer=customer)
-

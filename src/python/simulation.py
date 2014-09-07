@@ -1,5 +1,4 @@
-from customers import CustomerGenerator
-from customer_simulation import CustomerState
+from datamodels.simulation_models import CustomerState
 import simulation_parameters as sim_param
 from transactions import TransactionSimulator
 
