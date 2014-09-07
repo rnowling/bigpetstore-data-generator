@@ -1,4 +1,4 @@
-from item_simulations import ItemCategorySimulation
+from generators.transaction_generator.item_simulations import ItemCategorySimulation
 
 class CustomerState(object):
     def __init__(self, item_categories=None, customer=None):

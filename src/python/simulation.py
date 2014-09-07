@@ -1,6 +1,5 @@
 from datamodels.simulation_models import CustomerState
 import simulation_parameters as sim_param
-from transactions import TransactionSimulator
 
 from readers import load_names
 from readers import load_products
@@ -8,6 +7,7 @@ from readers import load_zipcode_data
 
 from generators.store_generator import StoreGenerator
 from generators.customer_generator import CustomerGenerator
+from generators.transaction_generator import TransactionSimulator
 
 class Simulator(object):
     def __init__(self):
