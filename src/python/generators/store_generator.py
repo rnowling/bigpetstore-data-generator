@@ -2,6 +2,8 @@ from algorithms.samplers import RouletteWheelSampler
 
 import numpy as np
 
+from datamodels.output_models import Store
+
 class ZipcodeSampler(object):
     def __init__(self, zipcode_objs, income_scaling_factor=None):
 
@@ -46,17 +48,6 @@ class ZipcodeSampler(object):
     def sample(self):
         return self.sampler.sample()
 
-class Store(object):
-    def __init__(self):
-        self.id = None
-        self.name = None
-        self.zipcode = None
-        self.coords = None
-
-    def __repr__(self):
-        return "%s,%s,%s" % (self.name, self.zipcode, self.coords)
-
-
 class StoreGenerator(object):
     def __init__(self, zipcode_objs=None, income_scaling_factor=None):
         self.zipcode_objs = zipcode_objs
@@ -64,28 +55,11 @@ class StoreGenerator(object):
                                                 income_scaling_factor=income_scaling_factor)
         self.current_id = 0
         
-    def generate(self, n):
-        stores = list()
-        for i in xrange(n):
-            store = Store()
-            store.id = self.current_id
-            self.current_id += 1
-            store.name = "Store_" + str(i)
-            store.zipcode = self.zipcode_sampler.sample()
-            store.coords = self.zipcode_objs[store.zipcode].coords
-            stores.append(store)
-        return stores
-
-if __name__ == "__main__":
-    from zipcodes import load_zipcode_data
-
-    zipcode_objs = load_zipcode_data()
-
-    generator = StoreGenerator(zipcode_objs=zipcode_objs,
-                               income_scaling_factor=100.0)
-
-    stores = generator.generate(100)
-
-    for s in stores:
-        print s
-        
+    def generate(self):
+        store = Store()
+        store.id = self.current_id
+        self.current_id += 1
+        store.name = "Store_" + str(self.current_id)
+        store.zipcode = self.zipcode_sampler.sample()
+        store.coords = self.zipcode_objs[store.zipcode].coords
+        return store
