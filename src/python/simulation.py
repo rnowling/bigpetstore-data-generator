@@ -1,4 +1,3 @@
-from datamodels.simulation_models import CustomerState
 import simulation_parameters as sim_param
 
 from readers import load_names
@@ -47,10 +46,9 @@ class Simulator(object):
 
         for customer in self.customers:
             profile = profile_generator.generate()
-            state = CustomerState(item_categories=self.item_categories,
-                    customer=customer)
             trans_sim = TransactionGenerator(stores=self.stores,
-                                             customer_state=state,
+                                             customer=customer,
+                                             product_categories=self.item_categories,
                                              purchasing_profile=profile)
             for trans in trans_sim.simulate(end_time):
                 yield trans

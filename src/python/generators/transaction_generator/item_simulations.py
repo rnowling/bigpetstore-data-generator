@@ -2,6 +2,8 @@ import random
 
 import numpy as np
 
+
+
 class ItemCategoryUsageSimulation(object):
     def __init__(self, initial_amount=None, initial_time=None, daily_usage_rate=None, amount_used_average=None, amount_used_variance=None):
         """
@@ -80,7 +82,7 @@ class ItemCategoryUsageSimulation(object):
 
 
 class ItemCategorySimulation(object):
-    def __init__(self, item_category=None, customer=None):
+    def __init__(self, item_category=None, customer_trans_params=None):
         """
         daily_usage_rate is given in times/day -- used to determine when an item is used
         
@@ -88,16 +90,14 @@ class ItemCategorySimulation(object):
         much is used per usage.
         """
         
-        num_pets = 0.0
-        for species in item_category.species:
-            num_pets += float(customer.pets[species])
+        num_pets = sum(customer_trans_params.pet_counts.values())
 
         self.daily_usage_rate = item_category.daily_usage_rate
         self.amount_used_average = item_category.base_amount_used_average * num_pets
         self.amount_used_variance = item_category.base_amount_used_variance * num_pets
 
-        self.average_transaction_trigger_time = customer.average_transaction_trigger_time
-        self.average_purchase_trigger_time = customer.average_purchase_trigger_time
+        self.average_transaction_trigger_time = customer_trans_params.average_transaction_trigger_time
+        self.average_purchase_trigger_time = customer_trans_params.average_purchase_trigger_time
         
         self.sim = None
                         

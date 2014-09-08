@@ -105,26 +105,6 @@ class CustomerGenerator(object):
         self.current_id += 1
         customer.name = self.name_sampler.sample()
         customer.location = self.location_sampler.sample()
-        
-        num_pets = random.randint(sim_param.MIN_PETS, sim_param.MAX_PETS)
-        num_dogs = random.randint(0, num_pets)
-        num_cats = num_pets - num_dogs
-            
-        # days
-        r = random.normalvariate(sim_param.TRANSACTION_TRIGGER_TIME_AVERAGE,
-                                 sim_param.TRANSACTION_TRIGGER_TIME_VARIANCE)
-        r = max(r, sim_param.TRANSACTION_TRIGGER_TIME_MIN)
-        r = min(r, sim_param.TRANSACTION_TRIGGER_TIME_MAX)
-        customer.average_transaction_trigger_time = r
-        
-        r = random.normalvariate(sim_param.PURCHASE_TRIGGER_TIME_AVERAGE,
-                                 sim_param.PURCHASE_TRIGGER_TIME_VARIANCE)
-        r = max(r, sim_param.PURCHASE_TRIGGER_TIME_MIN)
-        r = min(r, sim_param.PURCHASE_TRIGGER_TIME_MAX)        
-        customer.average_purchase_trigger_time = r
-            
-        customer.pets["dog"] = num_dogs
-        customer.pets["cat"] = num_cats
 
         return customer
 

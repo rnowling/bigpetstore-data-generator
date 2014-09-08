@@ -6,6 +6,55 @@ import random
 from algorithms.samplers import RouletteWheelSampler
 
 from datamodels.output_models import Transaction
+from generators.transaction_generator.customer_state import CustomerState
+
+import simulation_parameters as sim_param
+
+class CustomerTransactionParameters(object):
+    def __init__(self, pet_counts=None,
+                 avg_trans_trigger_time=None,
+                 avg_purch_trigger_time=None):
+        self.pet_counts = pet_counts
+        self.average_transaction_trigger_time=avg_trans_trigger_time
+        self.average_purchase_trigger_time=avg_trans_trigger_time
+
+class CustomerTransactionParametersGenerator(object):
+    def _generate_pets(self):
+        num_pets = random.randint(sim_param.MIN_PETS, sim_param.MAX_PETS)
+        num_dogs = random.randint(0, num_pets)
+        num_cats = num_pets - num_dogs
+
+        pets = dict()
+        pets["dog"] = num_dogs
+        pets["cat"] = num_cats
+
+        return pets
+
+    def _generate_trigger_times(self):
+        # days
+        r = random.normalvariate(sim_param.TRANSACTION_TRIGGER_TIME_AVERAGE,
+                                 sim_param.TRANSACTION_TRIGGER_TIME_VARIANCE)
+        r = max(r, sim_param.TRANSACTION_TRIGGER_TIME_MIN)
+        r = min(r, sim_param.TRANSACTION_TRIGGER_TIME_MAX)
+        average_transaction_trigger_time = r
+        
+        r = random.normalvariate(sim_param.PURCHASE_TRIGGER_TIME_AVERAGE,
+                                 sim_param.PURCHASE_TRIGGER_TIME_VARIANCE)
+        r = max(r, sim_param.PURCHASE_TRIGGER_TIME_MIN)
+        r = min(r, sim_param.PURCHASE_TRIGGER_TIME_MAX)        
+        average_purchase_trigger_time = r
+
+        return average_transaction_trigger_time, \
+            average_purchase_trigger_time
+
+    def generate(self):
+        pet_counts = self._generate_pets()
+        trans_trigger_time, purch_trigger_time = self._generate_trigger_times()
+
+        return CustomerTransactionParameters(pet_counts=pet_counts,
+                                             avg_trans_trigger_time=trans_trigger_time,
+                                             avg_purch_trigger_time=purch_trigger_time)
+
 
 class TransactionPurchasesGenerator(object):
     def __init__(self, customer_state=None, purchasing_profile=None):
@@ -84,15 +133,28 @@ class TransactionTimeSampler(object):
 
 class TransactionGenerator(object):
     def __init__(self, stores=None,
-                 customer_state=None,
+                 customer=None,
+                 product_categories=None,
                  purchasing_profile=None):
         self.stores = stores
-        self.customer_state = customer_state
-        self.trans_time_sampler = TransactionTimeSampler(customer_state=customer_state)
-        self.purchase_sim = TransactionPurchasesGenerator(customer_state=self.customer_state, purchasing_profile=purchasing_profile) 
+        self.customer = customer
+
+        self.params_generator = CustomerTransactionParametersGenerator()
+
+        customer_trans_params = self.params_generator.generate()
+
+        self.customer_state = \
+            CustomerState(item_categories=product_categories,
+                          customer_trans_params=customer_trans_params)
+
+        self.trans_time_sampler = TransactionTimeSampler(customer_state=self.customer_state)
+        self.purchase_sim = TransactionPurchasesGenerator(customer_state=self.customer_state, purchasing_profile=purchasing_profile)
+
         self.trans_count = 0
     
     def simulate(self, end_time):
+        customer_trans_params = self.params_generator.generate()
+
         last_trans_time = 0.0
         while True:
             trans_time = self.trans_time_sampler.sample(last_trans_time)
@@ -101,7 +163,7 @@ class TransactionGenerator(object):
                 break
             
             purchased_items = self.purchase_sim.simulate(trans_time=trans_time)
-            trans = Transaction(customer=self.customer_state.customer,
+            trans = Transaction(customer=self.customer,
                                 purchased_items=purchased_items,
                                 trans_time=trans_time,
                                 trans_count=self.trans_count,
