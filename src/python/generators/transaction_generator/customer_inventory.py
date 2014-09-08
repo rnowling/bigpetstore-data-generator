@@ -2,8 +2,6 @@ import random
 
 import numpy as np
 
-
-
 class ItemCategoryUsageSimulation(object):
     def __init__(self, initial_amount=None, initial_time=None, daily_usage_rate=None, amount_used_average=None, amount_used_variance=None):
         """
@@ -16,8 +14,7 @@ class ItemCategoryUsageSimulation(object):
         self.daily_usage_rate = daily_usage_rate
         self.amount_used_average = amount_used_average
         self.amount_used_variance = amount_used_variance
-        
-        
+                
         self.trajectory = [(initial_time, initial_amount)]
         
         self.time = initial_time
@@ -82,22 +79,16 @@ class ItemCategoryUsageSimulation(object):
 
 
 class ItemCategorySimulation(object):
-    def __init__(self, item_category=None, customer_trans_params=None):
+    def __init__(self, item_category, num_pets):
         """
         daily_usage_rate is given in times/day -- used to determine when an item is used
         
         amount_used_average and amount_used_variance are given in units/day -- used to determine how
         much is used per usage.
-        """
-        
-        num_pets = sum(customer_trans_params.pet_counts.values())
-
+        """        
         self.daily_usage_rate = item_category.daily_usage_rate
         self.amount_used_average = item_category.base_amount_used_average * num_pets
         self.amount_used_variance = item_category.base_amount_used_variance * num_pets
-
-        self.average_transaction_trigger_time = customer_trans_params.average_transaction_trigger_time
-        self.average_purchase_trigger_time = customer_trans_params.average_purchase_trigger_time
         
         self.sim = None
                         
@@ -133,15 +124,45 @@ class ItemCategorySimulation(object):
             return 0.0
         return self.sim.amount_at_time(time)
 
-    def purchase_weight(self, time):
-        remaining_time = max(self.exhaustion_time() - time, 0.0)
-        lambd = 1.0 / self.average_purchase_trigger_time
-        return lambd * np.exp(-lambd * remaining_time)
+
+class CustomerInventory(object):
+    def __init__(self, product_sims):
+        self.product_sims = product_sims
         
-    def propose_transaction_time(self):
-        lambd = 1.0 / self.average_transaction_trigger_time
-        time_until_transaction = random.expovariate(lambd)
-        transaction_time = max(self.exhaustion_time() - time_until_transaction, 0.0)
-        return transaction_time
+    def record_purchase(self, time, item):
+        item = dict(item)
+        category = item["category"]
+        amount = item["size"]
+        sim = self.product_sims[category]
+        sim.record_purchase(time, amount)
 
+    def get_inventory_amounts(self, time):
+        amounts = {}
+        for category, sim in self.product_sims.iteritems():
+            remaining_amount = sim.get_remaining_amount(time)
+            amounts[category] = remaining_amount
+        return amounts
 
+    def get_exhaustion_times(self):
+        times = {}
+        for category, sim in self.product_sims.iteritems():
+            exhaustion_time = sim.exhaustion_time()
+            times[category] = exhaustion_time
+        return times
+
+class CustomerInventoryBuilder(object):
+    def __init__(self, product_categories):
+        self.product_categories = product_categories
+
+    def build(self, customer_trans_params):
+        product_sims = dict()
+
+        for category, model in self.product_categories.iteritems():
+            num_pets = 0
+            for species in model.species:
+                num_pets += customer_trans_params.pet_counts[species]
+            if num_pets > 0:
+                product_sims[category] = \
+                    ItemCategorySimulation(model, num_pets)
+
+        return CustomerInventory(product_sims)

@@ -4,10 +4,24 @@ import random
 class RouletteWheelSampler(object):
     def __init__(self, values):
         self._wheel = []
+        
+        values = self._normalize(values)
+
         end = 0.0
         for x, w in values:
             end += w
             self._wheel.append((end, x))
+
+    def _normalize(self, values):
+        weight_sum = 0.0
+        for x, w in values:
+            weight_sum += w
+
+        normalized = []
+        for x, w in values:
+            normalized.append((x, w / weight_sum))
+
+        return normalized
 
     def sample(self):
         r = random.random()

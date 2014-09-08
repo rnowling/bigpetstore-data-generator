@@ -6,7 +6,7 @@ import random
 from algorithms.samplers import RouletteWheelSampler
 
 from datamodels.output_models import Transaction
-from generators.transaction_generator.customer_state import CustomerState
+from generators.transaction_generator.customer_inventory import CustomerInventoryBuilder
 
 import simulation_parameters as sim_param
 
@@ -57,21 +57,18 @@ class CustomerTransactionParametersGenerator(object):
 
 
 class TransactionPurchasesGenerator(object):
-    def _choose_category(self, customer_state, trans_time=None, num_purchases=None):
-        category_weights = customer_state.item_category_weights(trans_time)
+    def _choose_category(self, customer_inventory, trigger_time, trans_time=None, num_purchases=None):
+        category_weights = []
+        for category, exhaustion_time in customer_inventory.get_exhaustion_times().iteritems():
+            remaining_time = max(exhaustion_time - trans_time, 0.0)
+            lambd = 1.0 / trigger_time
+            weight = lambd * math.exp(-lambd * remaining_time)
+            category_weights.append((category, weight))
 
         if num_purchases != 0:
             category_weights.append(("stop", 0.1))
 
-        weight_sum = 0.0
-        for category, weight in category_weights:
-            weight_sum += weight
-
-        category_probabilities = []
-        for category, weight in category_weights:
-            category_probabilities.append((category, weight / weight_sum))
-
-        sampler = RouletteWheelSampler(category_probabilities)
+        sampler = RouletteWheelSampler(category_weights)
         
         return sampler.sample()
 
@@ -80,15 +77,13 @@ class TransactionPurchasesGenerator(object):
         product = msm.progress_state()
         return product
 
-    def _update_usage_simulations(self, customer_state, trans_time=None, product=None):
-        customer_state.update_inventory(trans_time, product)
-
-    def simulate(self, customer_state, purchasing_profile, trans_time=None):
+    def simulate(self, customer_inventory, trans_params, purchasing_profile, trans_time=None):
         trans_products = []
         purchases = 0
 
         while True:
-            category = self._choose_category(customer_state,
+            category = self._choose_category(customer_inventory,
+                                             trans_params.average_purchase_trigger_time,
                                             trans_time=trans_time,
                                             num_purchases=purchases)
             
@@ -97,9 +92,7 @@ class TransactionPurchasesGenerator(object):
             
             product = self._choose_product(purchasing_profile, category)
             
-            self._update_usage_simulations(customer_state,
-                                          trans_time=trans_time,
-                                          product=product)
+            customer_inventory.record_purchase(trans_time, product)
             
             purchases += 1
 
@@ -108,8 +101,15 @@ class TransactionPurchasesGenerator(object):
         return trans_products
 
 class TransactionTimeSampler(object):
-    def _propose_transaction_time(self, customer_state):
-        return customer_state.propose_transaction_time()
+    def _propose_transaction_time(self, customer_inventory, trigger_time):
+        proposed_transaction_times = []
+        for category, exhaustion_time in customer_inventory.get_exhaustion_times().iteritems():
+            lambd = 1.0 / trigger_time
+            time_until_transaction = random.expovariate(lambd)
+            transaction_time = max(exhaustion_time - time_until_transaction, 0.0)
+            proposed_transaction_times.append(transaction_time)
+        
+        return min(proposed_transaction_times)
 
     def _transaction_time_probability(self, proposed_trans_time, \
                                       last_trans_time):
@@ -118,9 +118,10 @@ class TransactionTimeSampler(object):
         else:
             return 0.0
 
-    def sample(self, customer_state, last_trans_time):
+    def sample(self, customer_inventory, trans_params, last_trans_time):
         while True:
-            proposed_time = self._propose_transaction_time(customer_state)
+            proposed_time = self._propose_transaction_time(customer_inventory,
+                                                           trans_params.average_transaction_trigger_time)
             prob = self._transaction_time_probability(proposed_time, \
                                                       last_trans_time)
             r = random.random()
@@ -137,6 +138,7 @@ class TransactionGenerator(object):
 
         self.trans_count = 0
 
+        self.inventory_builder = CustomerInventoryBuilder(product_categories=self.product_categories)
         self.trans_time_sampler = TransactionTimeSampler()
         self.purchase_sim = TransactionPurchasesGenerator()
 
@@ -145,19 +147,19 @@ class TransactionGenerator(object):
 
         customer_trans_params = params_generator.generate()
 
-        customer_state = \
-            CustomerState(item_categories=self.product_categories,
-                          customer_trans_params=customer_trans_params)
+        customer_inventory = self.inventory_builder.build(customer_trans_params)
 
         last_trans_time = 0.0
         while True:
-            trans_time = self.trans_time_sampler.sample(customer_state, \
+            trans_time = self.trans_time_sampler.sample(customer_inventory, \
+                                                        customer_trans_params, \
                                                         last_trans_time)
 
             if trans_time > end_time:
                 break
             
-            purchased_items = self.purchase_sim.simulate(customer_state,
+            purchased_items = self.purchase_sim.simulate(customer_inventory,
+                                                         customer_trans_params,
                                                          purchasing_profile,
                                                          trans_time=trans_time)
 
