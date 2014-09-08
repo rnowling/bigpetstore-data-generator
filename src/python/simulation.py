@@ -44,13 +44,12 @@ class Simulator(object):
     def generate_transactions(self, end_time=None):
         profile_generator = PurchasingProfileGenerator(self.item_categories)
 
+        trans_sim = TransactionGenerator(stores=self.stores,
+                                         product_categories=self.item_categories)
+
         for customer in self.customers:
             profile = profile_generator.generate()
-            trans_sim = TransactionGenerator(stores=self.stores,
-                                             customer=customer,
-                                             product_categories=self.item_categories,
-                                             purchasing_profile=profile)
-            for trans in trans_sim.simulate(end_time):
+            for trans in trans_sim.simulate(customer, profile, end_time):
                 yield trans
 
 

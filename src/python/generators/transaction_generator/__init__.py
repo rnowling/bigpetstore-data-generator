@@ -133,41 +133,43 @@ class TransactionTimeSampler(object):
 
 class TransactionGenerator(object):
     def __init__(self, stores=None,
-                 customer=None,
-                 product_categories=None,
-                 purchasing_profile=None):
+                 product_categories=None):
+
+        self.product_categories = product_categories
         self.stores = stores
-        self.customer = customer
-
-        self.params_generator = CustomerTransactionParametersGenerator()
-
-        customer_trans_params = self.params_generator.generate()
-
-        self.customer_state = \
-            CustomerState(item_categories=product_categories,
-                          customer_trans_params=customer_trans_params)
-
-        self.trans_time_sampler = TransactionTimeSampler(customer_state=self.customer_state)
-        self.purchase_sim = TransactionPurchasesGenerator(customer_state=self.customer_state, purchasing_profile=purchasing_profile)
 
         self.trans_count = 0
     
-    def simulate(self, end_time):
+    def simulate(self, customer, purchasing_profile, end_time):
+        params_generator = CustomerTransactionParametersGenerator()
+
+        customer_trans_params = params_generator.generate()
+
+        customer_state = \
+            CustomerState(item_categories=self.product_categories,
+                          customer_trans_params=customer_trans_params)
+
+        trans_time_sampler = TransactionTimeSampler(customer_state=customer_state)
+        purchase_sim = TransactionPurchasesGenerator(customer_state=customer_state, purchasing_profile=purchasing_profile)
+
         last_trans_time = 0.0
         while True:
-            trans_time = self.trans_time_sampler.sample(last_trans_time)
+            trans_time = trans_time_sampler.sample(last_trans_time)
 
             if trans_time > end_time:
                 break
             
-            purchased_items = self.purchase_sim.simulate(trans_time=trans_time)
-            trans = Transaction(customer=self.customer,
+            purchased_items = purchase_sim.simulate(trans_time=trans_time)
+
+            trans = Transaction(customer=customer,
                                 purchased_items=purchased_items,
                                 trans_time=trans_time,
                                 trans_count=self.trans_count,
                                 store=random.choice(self.stores))
+
             self.trans_count += 1
             last_trans_time = trans_time
+
             yield trans
 
     
