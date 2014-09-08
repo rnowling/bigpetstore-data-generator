@@ -57,7 +57,7 @@ class CustomerTransactionParametersGenerator(object):
 
 
 class TransactionPurchasesGenerator(object):
-    def choose_category(self, customer_state, trans_time=None, num_purchases=None):
+    def _choose_category(self, customer_state, trans_time=None, num_purchases=None):
         category_weights = customer_state.item_category_weights(trans_time)
 
         if num_purchases != 0:
@@ -75,12 +75,12 @@ class TransactionPurchasesGenerator(object):
         
         return sampler.sample()
 
-    def choose_product(self, purchasing_profile, category):
+    def _choose_product(self, purchasing_profile, category):
         msm = purchasing_profile.get_profile(category)
         product = msm.progress_state()
         return product
 
-    def update_usage_simulations(self, customer_state, trans_time=None, product=None):
+    def _update_usage_simulations(self, customer_state, trans_time=None, product=None):
         customer_state.update_inventory(trans_time, product)
 
     def simulate(self, customer_state, purchasing_profile, trans_time=None):
@@ -88,16 +88,16 @@ class TransactionPurchasesGenerator(object):
         purchases = 0
 
         while True:
-            category = self.choose_category(customer_state,
+            category = self._choose_category(customer_state,
                                             trans_time=trans_time,
                                             num_purchases=purchases)
             
             if category == "stop":
                 break
             
-            product = self.choose_product(purchasing_profile, category)
+            product = self._choose_product(purchasing_profile, category)
             
-            self.update_usage_simulations(customer_state,
+            self._update_usage_simulations(customer_state,
                                           trans_time=trans_time,
                                           product=product)
             
@@ -140,7 +140,6 @@ class TransactionGenerator(object):
         self.trans_time_sampler = TransactionTimeSampler()
         self.purchase_sim = TransactionPurchasesGenerator()
 
-    
     def simulate(self, customer, purchasing_profile, end_time):
         params_generator = CustomerTransactionParametersGenerator()
 
@@ -162,11 +161,13 @@ class TransactionGenerator(object):
                                                          purchasing_profile,
                                                          trans_time=trans_time)
 
+            store = random.choice(self.stores)
+
             trans = Transaction(customer=customer,
                                 purchased_items=purchased_items,
                                 trans_time=trans_time,
                                 trans_count=self.trans_count,
-                                store=random.choice(self.stores))
+                                store=store)
 
             self.trans_count += 1
             last_trans_time = trans_time

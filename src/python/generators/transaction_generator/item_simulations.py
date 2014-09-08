@@ -144,7 +144,4 @@ class ItemCategorySimulation(object):
         transaction_time = max(self.exhaustion_time() - time_until_transaction, 0.0)
         return transaction_time
 
-    def choose_item_for_purchase(self):
-        return self.purchase_model.progress_state()
-
 
