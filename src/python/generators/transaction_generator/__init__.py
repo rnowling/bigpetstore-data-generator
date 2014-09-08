@@ -153,8 +153,6 @@ class TransactionGenerator(object):
         self.trans_count = 0
     
     def simulate(self, end_time):
-        customer_trans_params = self.params_generator.generate()
-
         last_trans_time = 0.0
         while True:
             trans_time = self.trans_time_sampler.sample(last_trans_time)
