@@ -2,6 +2,7 @@ import random
 import unittest
 
 from algorithms.markovmodel import MarkovModel
+from algorithms.markovmodel import MarkovProcess
 from algorithms.markovmodel import MarkovModelBuilder
 
 
@@ -61,27 +62,30 @@ class MarkovModelBuilderTests(unittest.TestCase):
         self.assertTrue(abs(0.5 - edge_prob["a"]["b"]) < 0.0001)
         self.assertTrue(abs(0.5 - edge_prob["a"]["c"]) < 0.0001)
 
-class TestMarkovModel(unittest.TestCase):
+class TestMarkovProcess(unittest.TestCase):
     def test_init(self):
         states = ["a"]
         edge_prob = {"a" : {"b" : 0.5, "c" : 0.5}}
 
         msm = MarkovModel(states, edge_prob)
+        process = MarkovProcess(msm)
         
         self.assertIsInstance(msm.states, list)
         self.assertIn("a", msm.states)
-        self.assertEqual(msm.current_state, "a")
+        self.assertEqual(process.current_state, "a")
 
     def test_progress_state(self):
         states = ["a"]
         edge_prob = {"a" : {"b" : 0.5, "c" : 0.5}}
 
-        msm = MarkovModel(states, edge_prob)
+        model = MarkovModel(states, edge_prob)
+
+        process = MarkovProcess(model)
         
-        new_state = msm.progress_state()
+        new_state = process.progress_state()
 
         self.assertIn(new_state, ["b", "c"])
 
-        self.assertRaises(Exception, msm.progress_state)
+        self.assertRaises(Exception, process.progress_state)
         
 

@@ -107,10 +107,14 @@ class TransactionPurchasesGenerator(object):
    """
 
     def __init__(self, purchasing_profile, trans_params):
-        self.purchasing_profile = purchasing_profile
+        self.purchasing_processes = purchasing_profile.build_processes()
+
         self.trans_params = trans_params
 
     def _category_weight(self, exhaustion_time, trans_time):
+        """
+        TODO: Discussion of Poisson process
+        """
         trigger_time = self.trans_params.average_purchase_trigger_time
         remaining_time = max(exhaustion_time - trans_time, 0.0)
         lambd = 1.0 / trigger_time
@@ -132,9 +136,7 @@ class TransactionPurchasesGenerator(object):
         return sampler.sample()
 
     def _choose_product(self, category):
-        msm = self.purchasing_profile.get_profile(category)
-        product = msm.progress_state()
-        return product
+        return self.purchasing_processes.simulate_purchase(category)
 
     def simulate(self, customer_inventory, trans_time):
         trans_products = []

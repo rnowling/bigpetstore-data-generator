@@ -11,6 +11,8 @@ class MarkovModelBuilder(object):
         self.states.add(state_label)
 
     def add_edge_weight(self, start_state, end_state, weight):
+        self.states.add(start_state)
+        self.states.add(end_state)
         self.edge_weights[start_state][end_state] = weight
 
     def compute_transition_probabilities(self):
@@ -27,17 +29,20 @@ class MarkovModelBuilder(object):
         edge_probabilities = self.compute_transition_probabilities()
         return MarkovModel(states=self.states, edge_probabilities=edge_probabilities)
 
-
 class MarkovModel(object):
-    def __init__(self, states=None, edge_probabilities=None):
+    def __init__(self, states, edge_probabilities):
         self.states = list(states)
         self.edge_probabilities = edge_probabilities
-        self.current_state = random.choice(self.states)
+
+class MarkovProcess(object):
+    def __init__(self, markov_model):
+        self.markov_model = markov_model
+        self.current_state = random.choice(markov_model.states)
 
     def progress_state(self):
         r = random.random()
         cum_sum = 0.0
-        for candidate_state, prob in self.edge_probabilities[self.current_state].iteritems():
+        for candidate_state, prob in self.markov_model.edge_probabilities[self.current_state].iteritems():
             cum_sum += prob
             if r <= cum_sum:
                 self.current_state = candidate_state
