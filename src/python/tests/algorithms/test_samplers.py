@@ -14,18 +14,6 @@ class RouletteWheelSamplerTests(unittest.TestCase):
 
         self.assertIn(result1, ["a", "b", "c", "d"])
 
-    def test_non_normalized(self):
-        data_points = [("a", 0.001), ("b", 0.001)]
-
-        random_state = random.getstate()
-        random.seed(456)
-
-        sampler = RouletteWheelSampler(data_points)
-
-        self.assertRaises(Exception, sampler.sample)
-
-        random.setstate(random_state)
-
 class BoundedMultiModalGaussianSamplerTests(unittest.TestCase):
     def test_sample(self):
         distr = [(0.25, 0.1), (0.75, 0.1)]
