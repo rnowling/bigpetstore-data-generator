@@ -55,8 +55,7 @@ class CustomerTransactionParametersGenerator(object):
                                              avg_trans_trigger_time=trans_trigger_time,
                                              avg_purch_trigger_time=purch_trigger_time)
 
-
-class TransactionPurchasesGenerator(object):
+class TransactionPurchasesHiddenMarkovModel(object):
     """
     The purchases are simulated using a Hidden Markov Model.
 
@@ -105,30 +104,32 @@ class TransactionPurchasesGenerator(object):
 
    This saves us from having to enumerate all possible next states
    """
-
-    def __init__(self, purchasing_profile, trans_params):
-        self.purchasing_processes = purchasing_profile.build_processes()
-
+    def __init__(self, purchasing_processes, trans_params, customer_inventory, trans_time):
+        self.purchasing_processes = purchasing_processes
         self.trans_params = trans_params
+        self.num_purchases = 0
+        self.trans_time = trans_time
+        self.customer_inventory = customer_inventory
 
-    def _category_weight(self, exhaustion_time, trans_time):
+    def _category_weight(self, exhaustion_time):
         """
         TODO: Discussion of Poisson process
         """
         trigger_time = self.trans_params.average_purchase_trigger_time
-        remaining_time = max(exhaustion_time - trans_time, 0.0)
+        remaining_time = max(exhaustion_time - self.trans_time, 0.0)
         lambd = 1.0 / trigger_time
         weight = lambd * math.exp(-lambd * remaining_time)
         return weight
 
-    def _choose_category(self, customer_inventory, trans_time, num_purchases):
+    def _choose_category(self):
         category_weights = []
 
-        for category, exhaustion_time in customer_inventory.get_exhaustion_times().iteritems():
-            weight = self._category_weight(exhaustion_time, trans_time)
+        exhaustion_times = self.customer_inventory.get_exhaustion_times()
+        for category, exhaustion_time in exhaustion_times.iteritems():
+            weight = self._category_weight(exhaustion_time)
             category_weights.append((category, weight))
 
-        if num_purchases != 0:
+        if self.num_purchases != 0:
             category_weights.append(("stop", 0.1))
 
         sampler = RouletteWheelSampler(category_weights)
@@ -138,27 +139,36 @@ class TransactionPurchasesGenerator(object):
     def _choose_product(self, category):
         return self.purchasing_processes.simulate_purchase(category)
 
+    def progress_state(self):
+        category = self._choose_category()
+
+        if category == "stop":
+            return None
+            
+        product = self._choose_product(category)
+        self.customer_inventory.record_purchase(self.trans_time, product)
+        self.num_purchases += 1
+
+        return product
+
+class TransactionPurchasesGenerator(object):
+    def __init__(self, purchasing_profile, trans_params):
+        self.purchasing_processes = purchasing_profile.build_processes()
+        self.trans_params = trans_params
+        
     def simulate(self, customer_inventory, trans_time):
+        hmm = TransactionPurchasesHiddenMarkovModel(self.purchasing_processes,
+                                                    self.trans_params,
+                                                    customer_inventory,
+                                                    trans_time)
+        
         trans_products = []
-        purchases = 0
 
         while True:
-            category = self._choose_category(customer_inventory,
-                                            trans_time,
-                                            purchases)
-            
-            if category == "stop":
-                break
-            
-            product = self._choose_product(category)
-            
-            customer_inventory.record_purchase(trans_time, product)
-            
-            purchases += 1
-
+            product = hmm.progress_state()
+            if product is None:
+                return trans_products
             trans_products.append(product)
-        
-        return trans_products
 
 class TransactionTimeSampler(object):
     def __init__(self, customer_trans_params):
