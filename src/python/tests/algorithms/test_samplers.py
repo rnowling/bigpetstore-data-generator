@@ -4,7 +4,7 @@ import unittest
 from algorithms.samplers import BoundedMultiModalGaussianSampler
 from algorithms.samplers import RouletteWheelSampler
 
-class RouletteWheelSamplerTests(unittest.TestCase):
+class TestRouletteWheelSampler(unittest.TestCase):
     def test_sample(self):
         data_points = [("a", 0.25), ("b", 0.25), ("c", 0.25), ("d", 0.25)]
 
@@ -14,7 +14,7 @@ class RouletteWheelSamplerTests(unittest.TestCase):
 
         self.assertIn(result1, ["a", "b", "c", "d"])
 
-class BoundedMultiModalGaussianSamplerTests(unittest.TestCase):
+class TestBoundedMultiModalGaussianSampler(unittest.TestCase):
     def test_sample(self):
         distr = [(0.25, 0.1), (0.75, 0.1)]
         

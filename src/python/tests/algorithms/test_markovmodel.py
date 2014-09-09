@@ -6,7 +6,7 @@ from algorithms.markovmodel import MarkovProcess
 from algorithms.markovmodel import MarkovModelBuilder
 
 
-class MarkovModelBuilderTests(unittest.TestCase):
+class TestMarkovModelBuilder(unittest.TestCase):
     def test_add_state(self):
         builder = MarkovModelBuilder()
 
