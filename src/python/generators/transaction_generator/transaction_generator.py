@@ -18,7 +18,8 @@ class TransactionTimeSampler(object):
         
     def _propose_transaction_time(self, customer_inventory):
         proposed_transaction_times = []
-        for exhaustion_time in customer_inventory.get_exhaustion_times().values():
+        exhaustion_times = customer_inventory.get_exhaustion_times()
+        for exhaustion_time in exhaustion_times.values():
             transaction_time = self._category_proposed_time(exhaustion_time)
             proposed_transaction_times.append(transaction_time)
         
@@ -34,7 +35,6 @@ class TransactionTimeSampler(object):
     def sample(self, customer_inventory, last_trans_time):
         while True:
             proposed_time = self._propose_transaction_time(customer_inventory)
-
             prob = self._transaction_time_probability(proposed_time, \
                                                       last_trans_time)
             r = random.random()
@@ -45,23 +45,17 @@ class TransactionTimeSampler(object):
 class TransactionGenerator(object):
     def __init__(self, stores=None,
                  product_categories=None):
-
-        self.product_categories = product_categories
         self.stores = stores
-
         self.trans_count = 0
         
         self.params_generator = CustomerTransactionParametersGenerator()
-        self.inventory_builder = CustomerInventoryBuilder(product_categories=self.product_categories)
+        self.inventory_builder = CustomerInventoryBuilder(product_categories=product_categories)
 
     def simulate(self, customer, purchasing_profile, end_time):
         customer_trans_params = self.params_generator.generate()
-
         trans_time_sampler = TransactionTimeSampler(customer_trans_params)
-        
         purchase_sim = TransactionPurchasesGenerator(purchasing_profile,
                                                      customer_trans_params)
-
         customer_inventory = self.inventory_builder.build(customer_trans_params)
 
         last_trans_time = 0.0
