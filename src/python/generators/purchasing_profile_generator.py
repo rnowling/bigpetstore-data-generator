@@ -5,7 +5,17 @@ from datamodels.simulation_models import PurchasingProfile
 
 import simulation_parameters as sim_params
 
-class ProductCategoryMarkovModelBuilder(object):
+class PurchasingProfileBuilder(object):
+    def __init__(self):
+        self.profiles = dict()
+
+    def add_profile(self, product_category, markov_model):
+        self.profiles[product_category] = markov_model
+    
+    def build(self):
+        return PurchasingProfile(self.profiles.copy())
+
+class ProductCategoryMarkovModelGenerator(object):
     def __init__(self, product_category):
         self.product_category = product_category
 
@@ -35,7 +45,7 @@ class ProductCategoryMarkovModelBuilder(object):
             self.field_similarity_weights[field] = self.field_sim_weight_sampler.sample()
         self.loopback_weight = self.loopback_weight_sampler.sample()
 
-    def similarity_weight(self, rec1, rec2):
+    def _similarity_weight(self, rec1, rec2):
         weight = 0.0
         for field in self.product_category.fields:
             if rec1[field] == rec2[field]:
@@ -44,7 +54,7 @@ class ProductCategoryMarkovModelBuilder(object):
                 weight += self.field_weights[field] * (1.0 - self.field_similarity_weights[field])
         return weight
 
-    def create_markov_model(self):
+    def generate(self):
         self._generate_transition_parameters()
         self._normalize_field_weights()
 
@@ -55,12 +65,12 @@ class ProductCategoryMarkovModelBuilder(object):
             weight_sum = 0.0
             for other_rec in self.product_category.items:
                 if rec != other_rec:
-                    weight_sum += self.similarity_weight(rec, other_rec)
+                    weight_sum += self._similarity_weight(rec, other_rec)
 
             for other_rec in self.product_category.items:
                 weight = 0.0
                 if rec != other_rec:
-                    weight = (1.0 - self.loopback_weight) * self.similarity_weight(rec, other_rec) / weight_sum
+                    weight = (1.0 - self.loopback_weight) * self._similarity_weight(rec, other_rec) / weight_sum
                 else:
                     weight = self.loopback_weight
                 builder.add_edge_weight(tuple(rec.items()), tuple(other_rec.items()), weight)
@@ -72,9 +82,9 @@ class PurchasingProfileGenerator(object):
         self.product_categories = product_categories
 
     def generate(self):
-        profile = PurchasingProfile()
+        profile_builder = PurchasingProfileBuilder()
         for label, record in self.product_categories.iteritems():
-            builder = ProductCategoryMarkovModelBuilder(record)
-            msm = builder.create_markov_model()
-            profile.add_profile(label, msm)
-        return profile
+            msm_generator = ProductCategoryMarkovModelGenerator(record)
+            msm = msm_generator.generate()
+            profile_builder.add_profile(label, msm)
+        return profile_builder.build()

@@ -1,6 +1,24 @@
+from algorithms.markovmodel import MarkovProcess
 from algorithms.samplers import RouletteWheelSampler
 
 import math
+
+class PurchasingProcessesBuilder(object):
+    def build(self, purchasing_profile):
+        processes = dict()
+        for category in purchasing_profile.get_product_categories():
+            model = purchasing_profile.get_profile(category)
+            process = MarkovProcess(model)
+            processes[category] = process
+
+        return PurchasingProcesses(processes)
+
+class PurchasingProcesses(object):
+    def __init__(self, purchasing_processes):
+        self.purchasing_processes = purchasing_processes
+
+    def simulate_purchase(self, product_category):
+        return self.purchasing_processes[product_category].progress_state()
 
 class TransactionPurchasesHiddenMarkovModel(object):
     """
@@ -100,15 +118,16 @@ class TransactionPurchasesHiddenMarkovModel(object):
 
 class TransactionPurchasesGenerator(object):
     def __init__(self, purchasing_profile, trans_params):
-        self.purchasing_processes = purchasing_profile.build_processes()
+        builder = PurchasingProcessesBuilder()
+        self.purchasing_processes = builder.build(purchasing_profile)
         self.trans_params = trans_params
-        
+
     def simulate(self, customer_inventory, trans_time):
         hmm = TransactionPurchasesHiddenMarkovModel(self.purchasing_processes,
                                                     self.trans_params,
                                                     customer_inventory,
                                                     trans_time)
-        
+
         trans_products = []
 
         while True:
