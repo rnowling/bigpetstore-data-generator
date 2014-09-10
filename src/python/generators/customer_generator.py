@@ -2,8 +2,6 @@ from collections import defaultdict
 
 import random
 
-import math
-
 import numpy as np
 
 from algorithms.samplers import RouletteWheelSampler
@@ -60,28 +58,13 @@ class LocationSampler(object):
 
         self.sampler = RouletteWheelSampler(zipcode_probs)
 
-    def _dist(self, lat_A, long_A, lat_B, long_B):
-        """
-        Computes distance between latitude-longitude
-        pairs in miles.
-        """
-        dist = (math.sin(math.radians(lat_A)) *
-                math.sin(math.radians(lat_B)) +
-                math.cos(math.radians(lat_A)) *
-                math.cos(math.radians(lat_B)) *
-                math.cos(math.radians(long_A - long_B)))
-        dist = (math.degrees(math.acos(dist))) * 69.09
-        return dist
         
     def _closest_store(self, zipcode):
         distances = []
         for store in self.stores:
-            if store.zipcode == zipcode:
-                dist = 0.0
-            else:
-                latA, longA = self.zipcode_objs[store.zipcode].coords
-                latB, longB = self.zipcode_objs[zipcode].coords
-                dist = self._dist(latA, longA, latB, longB) 
+            record1 = self.zipcode_objs[store.zipcode]
+            record2 = self.zipcode_objs[zipcode]
+            dist = record1.distance(record2)
             distances.append((dist, store))
             
         return min(distances)
