@@ -41,7 +41,7 @@ class ZipcodeSampler(object):
         
         zipcode_probs = []
         for z in income_probs.iterkeys():
-            zipcode_probs.append((z,income_probs[z] * pop_probs[z] / normalization_factor))
+            zipcode_probs.append((zipcode_objs[z], income_probs[z] * pop_probs[z] / normalization_factor))
 
         self.sampler = RouletteWheelSampler(zipcode_probs)
 
@@ -60,6 +60,5 @@ class StoreGenerator(object):
         store.id = self.current_id
         self.current_id += 1
         store.name = "Store_" + str(self.current_id)
-        store.zipcode = self.zipcode_sampler.sample()
-        store.coords = self.zipcode_objs[store.zipcode].coords
+        store.location = self.zipcode_sampler.sample()
         return store

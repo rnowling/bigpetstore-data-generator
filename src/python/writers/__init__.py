@@ -42,7 +42,7 @@ class StoreWriter(object):
         self.fl = open(filename, "w")
 
     def append(self, store):
-        string = "%s,%s\n" % (store.id, store.zipcode)
+        string = "%s,%s\n" % (store.id, store.location.zipcode)
         self.fl.write(string)
 
     def close(self):

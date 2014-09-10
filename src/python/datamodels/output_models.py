@@ -4,11 +4,10 @@ class Store(object):
     def __init__(self):
         self.id = None
         self.name = None
-        self.zipcode = None
-        self.coords = None
+        self.location = None
 
     def __repr__(self):
-        return "%s,%s,%s" % (self.name, self.zipcode, self.coords)
+        return "%s,%s,%s" % (self.name, self.location.zipcode, self.location.coords)
 
 class Customer(object):
     def __init__(self):

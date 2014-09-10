@@ -62,7 +62,7 @@ class LocationSampler(object):
     def _closest_store(self, zipcode):
         distances = []
         for store in self.stores:
-            record1 = self.zipcode_objs[store.zipcode]
+            record1 = store.location
             record2 = self.zipcode_objs[zipcode]
             dist = record1.distance(record2)
             distances.append((dist, store))

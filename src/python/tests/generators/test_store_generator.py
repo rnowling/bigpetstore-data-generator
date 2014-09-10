@@ -2,7 +2,9 @@ import unittest
 
 from generators.store_generator import ZipcodeSampler
 from generators.store_generator import StoreGenerator
+
 from datamodels.output_models import Store
+from datamodels.input_models import ZipcodeRecord
 
 from readers import load_zipcode_data
 
@@ -21,7 +23,7 @@ class TestZipcodeSampler(unittest.TestCase):
         
         record = sampler.sample()
 
-        self.assertIsInstance(record, str)
+        self.assertIsInstance(record, ZipcodeRecord)
 
 class TestStoreGenerator(unittest.TestCase):
     def test_store_generator(self):
@@ -39,8 +41,7 @@ class TestStoreGenerator(unittest.TestCase):
         self.assertIsInstance(store1, Store)
         self.assertIsInstance(store1.id, int)
         self.assertIsInstance(store1.name, str)
-        self.assertIsInstance(store1.zipcode, str)
-        self.assertIsInstance(store1.coords, tuple)
+        self.assertIsInstance(store1.location, ZipcodeRecord)
 
         store2 = sampler.generate()
         self.assertTrue(store2.id != store1.id)
