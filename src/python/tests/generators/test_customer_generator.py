@@ -3,12 +3,15 @@ import unittest
 import simulation_parameters as sim_params
 
 from datamodels.output_models import Customer
+from datamodels.output_models import Store
+from datamodels.input_models import ZipcodeRecord
 
 from generators.customer_generator import CustomerGenerator
 from generators.customer_generator import LocationSampler
 from generators.customer_generator import NameSampler
 
 from readers import load_names
+from readers import load_zipcode_data
 
 class TestNameSampler(unittest.TestCase):
     def test_sample(self):
@@ -26,7 +29,36 @@ class TestNameSampler(unittest.TestCase):
         self.assertTrue(len(names) == 2)
 
 class TestLocationSampler(unittest.TestCase):
-    pass
+    def test_location_sampler(self):
+        zipcodes = load_zipcode_data(**sim_params.ZIPCODE_DATA_FILES)
+
+        stores = []
+        for i, zipcode in enumerate(zipcodes.values()[:10]):
+            store = Store()
+            store.id = i
+            store.name = "Store_%s" % i
+            store.location = zipcode
+            stores.append(store)
+            
+        sampler = LocationSampler(stores, zipcodes, avg_distance=5.0)
+        
+        location = sampler.sample()
+        self.assertIsInstance(location, ZipcodeRecord)
+        self.assertIn(location.zipcode, zipcodes)
+
+    def test_distance_parameter(self):
+        zipcodes = load_zipcode_data(**sim_params.ZIPCODE_DATA_FILES)
+
+        stores = []
+        for i, zipcode in enumerate(zipcodes.values()[:10]):
+            store = Store()
+            store.id = i
+            store.name = "Store_%s" % i
+            store.location = zipcode
+            stores.append(store)
+            
+        sampler5 = LocationSampler(stores, zipcodes, avg_distance=5.0)
+        sampler20 = LocationSampler(stores, zipcodes, avg_distance=20.0)
 
 class TestCustomerGenerator(unittest.TestCase):
     pass

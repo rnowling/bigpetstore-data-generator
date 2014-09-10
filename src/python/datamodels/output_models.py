@@ -17,7 +17,7 @@ class Customer(object):
 
     def __repr__(self):
         return "(%s, %s, %s)" % \
-            (self.id, self.name, self.location)
+            (self.id, self.name, self.location.zipcode)
 
 class Transaction(object):
     def __init__(self, customer=None, trans_time=None, purchased_items=None, store=None,

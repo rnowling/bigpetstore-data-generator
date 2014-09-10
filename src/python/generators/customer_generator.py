@@ -46,15 +46,15 @@ class LocationSampler(object):
 
         zipcode_weights = dict()
         weight_sum = 0.0
-        for zipcode in zipcode_objs.iterkeys():
+        for zipcode in zipcode_objs.itervalues():
             dist, nearest_store = self._closest_store(zipcode)
             weight = lambd * np.exp(-lambd * dist)
             weight_sum += weight
-            zipcode_weights[zipcode] = weight
+            zipcode_weights[zipcode.zipcode] = weight
 
         zipcode_probs = []
         for zipcode in zipcode_objs.iterkeys():
-            zipcode_probs.append((zipcode, zipcode_weights[zipcode] / weight_sum))
+            zipcode_probs.append((self.zipcode_objs[zipcode], zipcode_weights[zipcode] / weight_sum))
 
         self.sampler = RouletteWheelSampler(zipcode_probs)
 
@@ -62,9 +62,7 @@ class LocationSampler(object):
     def _closest_store(self, zipcode):
         distances = []
         for store in self.stores:
-            record1 = store.location
-            record2 = self.zipcode_objs[zipcode]
-            dist = record1.distance(record2)
+            dist = zipcode.distance(store.location)
             distances.append((dist, store))
             
         return min(distances)
