@@ -16,9 +16,9 @@ from readers import load_zipcode_data
 class TestNameSampler(unittest.TestCase):
     def test_sample(self):
         namedb_fl = sim_params.NAMEDB_FILE
-        first_names, last_names = load_names(namedb_fl)
+        names = load_names(namedb_fl)
 
-        sampler = NameSampler(first_names, last_names)
+        sampler = NameSampler(names)
 
         name = sampler.sample()
 
@@ -59,9 +59,9 @@ class TestCustomerGenerator(unittest.TestCase):
             stores.append(store)
 
         namedb_fl = sim_params.NAMEDB_FILE
-        first_names, last_names = load_names(namedb_fl)
+        names = load_names(namedb_fl)
         
-        generator = CustomerGenerator(zipcodes, stores, first_names, last_names)
+        generator = CustomerGenerator(zipcodes, stores, names)
 
         customer = generator.generate()
 

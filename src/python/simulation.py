@@ -15,13 +15,10 @@ from writers import TransactionItemWriter
 from writers import TransactionWriter
 
 class Simulator(object):
-    def __init__(self):
-        pass
-
     def load_data(self):
         self.item_categories = load_products(sim_param.PRODUCTS_FILE)
         self.zipcode_objs = load_zipcode_data(**sim_param.ZIPCODE_DATA_FILES)
-        self.first_names, self.last_names = load_names(sim_param.NAMEDB_FILE)
+        self.names = load_names(sim_param.NAMEDB_FILE)
 
     def generate_stores(self, num=None):
         self.stores = []
@@ -34,8 +31,7 @@ class Simulator(object):
     def generate_customers(self, num=None):
         generator = CustomerGenerator(zipcode_objs=self.zipcode_objs,
                                       stores=self.stores,
-                                      first_names=self.first_names,
-                                      last_names=self.last_names)
+                                      names=self.names)
         self.customers = []
         for i in xrange(num):
             customer = generator.generate()

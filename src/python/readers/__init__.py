@@ -1,6 +1,7 @@
 import json
 
 from datamodels.input_models import ProductCategory
+from datamodels.input_models import Names
 
 from zipcodes import load_zipcode_data
 
@@ -17,7 +18,7 @@ def load_names(namedb_fl):
         if cols[3] == "1":
             last_names.append((name, weight))
     name_fl.close()
-    return first_names, last_names
+    return Names(tuple(first_names), tuple(last_names))
 
 def load_products(products_fl):
     category_fl = open(products_fl)

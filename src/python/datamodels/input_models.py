@@ -1,5 +1,10 @@
 import math
 
+class Names(object):
+    def __init__(self, first_names, last_names):
+        self.first_names = first_names
+        self.last_names = last_names
+
 class ZipcodeRecord(object):
     def __init__(self, zipcode=None, median_household_income=None,
                  population=None, coords=None):

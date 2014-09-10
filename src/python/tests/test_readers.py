@@ -5,6 +5,7 @@ from collections import Sequence
 import simulation_parameters as sim_params
 
 from datamodels.input_models import ProductCategory
+from datamodels.input_models import Names
 from datamodels.input_models import ZipcodeRecord
 
 from readers import load_names
@@ -37,19 +38,23 @@ class ReaderTests(unittest.TestCase):
 
     def test_load_names(self):
         namedb_fl = sim_params.NAMEDB_FILE
-        first_names, last_names = load_names(namedb_fl)
+        names = load_names(namedb_fl)
 
-        self.assertTrue(len(first_names) > 0)
-        self.assertIsInstance(first_names[0], tuple)
-        self.assertTrue(len(first_names[0]) == 2)
-        self.assertIsInstance(first_names[0][0], str)
-        self.assertIsInstance(first_names[0][1], float)
+        self.assertIsInstance(names, Names)
 
-        self.assertTrue(len(last_names) > 0)
-        self.assertIsInstance(last_names[0], tuple)
-        self.assertTrue(len(last_names[0]) == 2)
-        self.assertIsInstance(last_names[0][0], str)
-        self.assertIsInstance(last_names[0][1], float)
+        self.assertIsInstance(names.first_names, tuple)
+        self.assertTrue(len(names.first_names) > 0)
+        self.assertIsInstance(names.first_names[0], tuple)
+        self.assertTrue(len(names.first_names[0]) == 2)
+        self.assertIsInstance(names.first_names[0][0], str)
+        self.assertIsInstance(names.first_names[0][1], float)
+
+        self.assertIsInstance(names.last_names, tuple)
+        self.assertTrue(len(names.last_names) > 0)
+        self.assertIsInstance(names.last_names[0], tuple)
+        self.assertTrue(len(names.last_names[0]) == 2)
+        self.assertIsInstance(names.last_names[0][0], str)
+        self.assertIsInstance(names.last_names[0][1], float)
 
     def test_load_products(self):
         products_fl = sim_params.PRODUCTS_FILE

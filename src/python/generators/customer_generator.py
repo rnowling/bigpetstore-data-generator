@@ -11,9 +11,9 @@ import simulation_parameters as sim_param
 from datamodels.output_models import Customer
 
 class NameSampler(object):
-    def __init__(self, first_names, last_names):
-        normalized_first_names = self.normalize(first_names)
-        normalized_last_names = self.normalize(last_names)
+    def __init__(self, names):
+        normalized_first_names = self.normalize(names.first_names)
+        normalized_last_names = self.normalize(names.last_names)
 
         self.first_name_sampler = RouletteWheelSampler(normalized_first_names)
         self.last_name_sampler = RouletteWheelSampler(normalized_last_names)
@@ -71,12 +71,11 @@ class LocationSampler(object):
         return self.sampler.sample()
 
 class CustomerGenerator(object):
-    def __init__(self, zipcode_objs=None, stores=None, first_names=None,
-                 last_names=None):
+    def __init__(self, zipcode_objs=None, stores=None, names=None):
         self.location_sampler = LocationSampler(stores=stores,
                                                 zipcode_objs=zipcode_objs,
                                                 avg_distance=sim_param.AVERAGE_CUSTOMER_STORE_DISTANCE)
-        self.name_sampler = NameSampler(first_names, last_names)
+        self.name_sampler = NameSampler(names)
         self.current_id = 0
 
 
