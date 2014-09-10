@@ -7,12 +7,13 @@ from algorithms.markovmodel import MarkovModelBuilder
 
 
 class TestMarkovModelBuilder(unittest.TestCase):
-    def test_add_state(self):
+    def test_add_start_state(self):
         builder = MarkovModelBuilder()
 
-        builder.add_state("a")
+        builder.add_start_state("a", 1.0)
 
-        self.assertIn("a", builder.states)
+        self.assertIn("a", builder.start_states)
+        self.assertEqual(builder.start_states["a"], 1.0)
 
     def test_add_edge_weight(self):
         builder = MarkovModelBuilder()
@@ -26,7 +27,7 @@ class TestMarkovModelBuilder(unittest.TestCase):
     def test_compute_transition_probabilities(self):
         builder = MarkovModelBuilder()
 
-        builder.add_state("a")
+        builder.add_start_state("a", 1.0)
         builder.add_edge_weight("a", "b", 1)
         builder.add_edge_weight("a", "c", 1)
         
@@ -43,7 +44,7 @@ class TestMarkovModelBuilder(unittest.TestCase):
     def test_build_msm(self):
         builder = MarkovModelBuilder()
 
-        builder.add_state("a")
+        builder.add_start_state("a", 1.0)
         builder.add_edge_weight("a", "b", 1)
         builder.add_edge_weight("a", "c", 1)
 
@@ -51,7 +52,7 @@ class TestMarkovModelBuilder(unittest.TestCase):
         
         self.assertIsInstance(msm, MarkovModel)
 
-        self.assertIn("a", msm.states)
+        self.assertIn("a", msm.start_states)
 
         edge_prob = msm.edge_probabilities
 
@@ -64,21 +65,21 @@ class TestMarkovModelBuilder(unittest.TestCase):
 
 class TestMarkovProcess(unittest.TestCase):
     def test_init(self):
-        states = ["a"]
+        start_states = {"a" : 1.0}
         edge_prob = {"a" : {"b" : 0.5, "c" : 0.5}}
 
-        msm = MarkovModel(states, edge_prob)
+        msm = MarkovModel(start_states, edge_prob)
         process = MarkovProcess(msm)
         
-        self.assertIsInstance(msm.states, list)
-        self.assertIn("a", msm.states)
+        self.assertIsInstance(msm.start_states, dict)
+        self.assertIn("a", msm.start_states)
         self.assertEqual(process.current_state, "a")
 
     def test_progress_state(self):
-        states = ["a"]
+        start_states = {"a" : 1.0}
         edge_prob = {"a" : {"b" : 0.5, "c" : 0.5}}
 
-        model = MarkovModel(states, edge_prob)
+        model = MarkovModel(start_states, edge_prob)
 
         process = MarkovProcess(model)
         

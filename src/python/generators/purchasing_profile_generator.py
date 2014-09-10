@@ -61,7 +61,7 @@ class ProductCategoryMarkovModelGenerator(object):
         builder = MarkovModelBuilder()
 
         for rec in self.product_category.items:
-            builder.add_state(tuple(rec.items()))
+            builder.add_start_state(tuple(rec.items()), 1.0)
             weight_sum = 0.0
             for other_rec in self.product_category.items:
                 if rec != other_rec:
