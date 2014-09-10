@@ -46,7 +46,8 @@ class TestLocationSampler(unittest.TestCase):
         self.assertIsInstance(location, ZipcodeRecord)
         self.assertIn(location.zipcode, zipcodes)
 
-    def test_distance_parameter(self):
+class TestCustomerGenerator(unittest.TestCase):
+    def test_customer_generator(self):
         zipcodes = load_zipcode_data(**sim_params.ZIPCODE_DATA_FILES)
 
         stores = []
@@ -56,10 +57,16 @@ class TestLocationSampler(unittest.TestCase):
             store.name = "Store_%s" % i
             store.location = zipcode
             stores.append(store)
-            
-        sampler5 = LocationSampler(stores, zipcodes, avg_distance=5.0)
-        sampler20 = LocationSampler(stores, zipcodes, avg_distance=20.0)
 
-class TestCustomerGenerator(unittest.TestCase):
-    pass
+        namedb_fl = sim_params.NAMEDB_FILE
+        first_names, last_names = load_names(namedb_fl)
+        
+        generator = CustomerGenerator(zipcodes, stores, first_names, last_names)
+
+        customer = generator.generate()
+
+        self.assertIsInstance(customer, Customer)
+        self.assertIsInstance(customer.id, int)
+        self.assertIsInstance(customer.name, str)
+        self.assertIsInstance(customer.location, ZipcodeRecord)
         
