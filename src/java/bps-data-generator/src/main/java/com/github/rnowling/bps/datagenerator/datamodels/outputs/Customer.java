@@ -1,5 +1,6 @@
-package com.github.rnowling.bps.datagenerator.datamodels;
+package com.github.rnowling.bps.datagenerator.datamodels.outputs;
 
+import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 
 public class Customer

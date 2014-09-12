@@ -5,11 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
-import com.github.rnowling.bps.datagenerator.datamodels.Customer;
-import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
+import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
+import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
 import com.github.rnowling.bps.datagenerator.generators.customer.CustomerGenerator;

@@ -7,8 +7,8 @@ import com.github.rnowling.bps.datagenerator.SeedFactory;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
-import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
+import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.generators.Generator;
 import com.google.common.collect.Maps;
 

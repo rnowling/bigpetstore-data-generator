@@ -8,8 +8,8 @@ import com.github.rnowling.bps.datagenerator.algorithms.pdfs.JointPDF;
 import com.github.rnowling.bps.datagenerator.algorithms.pdfs.ProbabilityDensityFunction;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
-import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
+import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.generators.Generator;
 
 public class StoreGenerator implements Generator<Store>
