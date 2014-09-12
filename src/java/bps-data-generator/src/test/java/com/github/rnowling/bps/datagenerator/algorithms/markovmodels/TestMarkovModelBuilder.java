@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.algorithms.samplers;
+package com.github.rnowling.bps.datagenerator.algorithms.markovmodels;
 
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
