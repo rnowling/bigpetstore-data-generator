@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 from algorithms.samplers import RouletteWheelSampler
 
 import random
@@ -20,7 +18,7 @@ class MarkovModelBuilder(object):
     """
     def __init__(self):
         self.start_states = dict()
-        self.edge_weights = defaultdict(lambda: defaultdict(lambda: 0))
+        self.edge_weights = dict()
 
     def add_start_state(self, state_label, weight):
         """
@@ -43,11 +41,16 @@ class MarkovModelBuilder(object):
 
         The weights are normalized when the model is created.
         """
+        if start_state not in self.edge_weights:
+            self.edge_weights[start_state] = dict()
+        if end_state not in self.edge_weights[start_state]:
+            self.edge_weights[start_state][end_state] = dict()
         self.edge_weights[start_state][end_state] = weight
 
     def compute_transition_probabilities(self):
-        edge_probabilities = defaultdict(lambda: defaultdict(lambda: 0))
+        edge_probabilities = dict()
         for start_state in self.edge_weights.iterkeys():
+            edge_probabilities[start_state] = dict()
             weight_sum = 0.0
             for end_state, weight in self.edge_weights[start_state].iteritems():
                 weight_sum += weight
