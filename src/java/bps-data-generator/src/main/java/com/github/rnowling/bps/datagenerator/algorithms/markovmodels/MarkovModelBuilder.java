@@ -39,7 +39,7 @@ public class MarkovModelBuilder<S>
 		for(Map.Entry<S, Map<S, Double>> row : transitionWeights.rowMap().entrySet())
 		{
 			// RouletteWheelSampler normalizes for us
-			Sampler<S> rowSampler = new RouletteWheelSampler<S>(Pair.create(row.getValue()), seedFactory);
+			Sampler<S> rowSampler = RouletteWheelSampler.create(row.getValue(), seedFactory);
 			transitionSamplerBuilder.put(row.getKey(), rowSampler);
 		}
 		Sampler<S> startSampler = new UniformDiscreteSampler<S>(states, seedFactory);

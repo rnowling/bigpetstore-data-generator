@@ -1,28 +1,27 @@
 package com.github.rnowling.bps.datagenerator.datamodels.inputs;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Map;
 
-import com.github.rnowling.bps.datagenerator.datamodels.Pair;
+import com.google.common.collect.ImmutableMap;
 
 public class Names
 {
-	List<Pair<String, Double>> firstNames;
-	List<Pair<String, Double>> lastNames;
+	final ImmutableMap<String, Double> firstNames;
+	final ImmutableMap<String, Double> lastNames;
 	
-	public Names(List<Pair<String, Double>> firstNames,
-			List<Pair<String, Double>> lastNames)
+	public Names(Map<String, Double> firstNames,
+			Map<String, Double> lastNames)
 	{
-		this.firstNames = Collections.unmodifiableList(firstNames);
-		this.lastNames = Collections.unmodifiableList(lastNames);
+		this.firstNames = ImmutableMap.copyOf(firstNames);
+		this.lastNames = ImmutableMap.copyOf(lastNames);
 	}
 
-	public List<Pair<String, Double>> getFirstNames()
+	public ImmutableMap<String, Double> getFirstNames()
 	{
 		return firstNames;
 	}
 
-	public List<Pair<String, Double>> getLastNames()
+	public ImmutableMap<String, Double> getLastNames()
 	{
 		return lastNames;
 	}
