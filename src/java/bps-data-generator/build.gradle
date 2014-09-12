@@ -7,6 +7,7 @@ version = '0.2'
 jar {
 	manifest {
 		attributes 'Title': 'BigPetStore Data Generator', 'Version': version
+		attributes 'Main-Class': 'com.github.rnowling.bps.datagenerator.Driver'
 	}
 }
 
