@@ -25,7 +25,7 @@ ZIPCODE_DATA_FILES = {
 
 NAMEDB_FILE = "../../resources/namedb/data/data.dat"
 
-PRODUCTS_FILE = "product_categories.json"
+PRODUCTS_FILE = "../../resources/product_categories.json"
 
 PRODUCT_MSM_FIELD_WEIGHT_GAUSSIANS = [(0.15, 0.1), (0.85, 0.1)]
 PRODUCT_MSM_FIELD_WEIGHT_BOUNDS = (0.05, 0.95)
