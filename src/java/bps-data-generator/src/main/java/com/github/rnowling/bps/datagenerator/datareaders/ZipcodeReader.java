@@ -2,8 +2,6 @@ package com.github.rnowling.bps.datagenerator.datareaders;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +11,9 @@ import java.util.Vector;
 
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 public class ZipcodeReader
 {
@@ -35,7 +36,7 @@ public class ZipcodeReader
 		this.zipcodeCoordinatesFile = new File(path);
 	}
 	
-	private Map<String, Double> readIncomeData(File path) throws FileNotFoundException
+	private ImmutableMap<String, Double> readIncomeData(File path) throws FileNotFoundException
 	{
 		Scanner scanner = new Scanner(path);
 		
@@ -43,7 +44,7 @@ public class ZipcodeReader
 		scanner.nextLine();
 		scanner.nextLine();
 		
-		Map<String, Double> entries = new HashMap<String, Double>();
+		Map<String, Double> entries = Maps.newHashMap();
 		while(scanner.hasNextLine())
 		{
 			String line = scanner.nextLine().trim();
@@ -63,17 +64,17 @@ public class ZipcodeReader
 		
 		scanner.close();
 		
-		return entries;
+		return ImmutableMap.copyOf(entries);
 	}
 	
-	private Map<String, Long> readPopulationData(File path) throws FileNotFoundException
+	private ImmutableMap<String, Long> readPopulationData(File path) throws FileNotFoundException
 	{
 		Scanner scanner = new Scanner(path);
 		
 		// skip header
 		scanner.nextLine();
 		
-		Map<String, Long> entries = new HashMap<String, Long>();
+		Map<String, Long> entries = Maps.newHashMap();
 		while(scanner.hasNextLine())
 		{
 			String line = scanner.nextLine().trim();
@@ -98,17 +99,17 @@ public class ZipcodeReader
 		
 		scanner.close();
 		
-		return entries;
+		return ImmutableMap.copyOf(entries);
 	}
 	
-	private Map<String, Pair<Double, Double>> readCoordinates(File path) throws FileNotFoundException
+	private ImmutableMap<String, Pair<Double, Double>> readCoordinates(File path) throws FileNotFoundException
 	{
 		Scanner scanner = new Scanner(path);
 		
 		// skip header
 		scanner.nextLine();
 		
-		Map<String, Pair<Double, Double>> entries = new HashMap<String, Pair<Double, Double>>();
+		Map<String, Pair<Double, Double>> entries = Maps.newHashMap();
 		while(scanner.hasNextLine())
 		{
 			String line = scanner.nextLine().trim();
@@ -127,14 +128,14 @@ public class ZipcodeReader
 		
 		scanner.close();
 		
-		return entries;
+		return ImmutableMap.copyOf(entries);
 	}
 	
-	public List<ZipcodeRecord> readData() throws FileNotFoundException
+	public ImmutableList<ZipcodeRecord> readData() throws FileNotFoundException
 	{
-		Map<String, Double> incomes = readIncomeData(this.zipcodeIncomesFile);
-		Map<String, Long> populations = readPopulationData(this.zipcodePopulationFile);
-		Map<String, Pair<Double, Double>> coordinates = readCoordinates(this.zipcodeCoordinatesFile);
+		ImmutableMap<String, Double> incomes = readIncomeData(this.zipcodeIncomesFile);
+		ImmutableMap<String, Long> populations = readPopulationData(this.zipcodePopulationFile);
+		ImmutableMap<String, Pair<Double, Double>> coordinates = readCoordinates(this.zipcodeCoordinatesFile);
 		
 		Set<String> zipcodeSubset = new HashSet<String>(incomes.keySet());
 		zipcodeSubset.retainAll(populations.keySet());
@@ -149,7 +150,7 @@ public class ZipcodeReader
 			table.add(record);
 		}
 		
-		return Collections.unmodifiableList(table);
+		return ImmutableList.copyOf(table);
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException

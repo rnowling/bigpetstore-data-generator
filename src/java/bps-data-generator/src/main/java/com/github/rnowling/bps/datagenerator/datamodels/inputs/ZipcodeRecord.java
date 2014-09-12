@@ -4,10 +4,10 @@ import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 
 public class ZipcodeRecord
 {
-	String zipcode;
-	Pair<Double, Double> coordinates;
-	double medianHouseholdIncome;
-	long population;
+	final String zipcode;
+	final Pair<Double, Double> coordinates;
+	final double medianHouseholdIncome;
+	final long population;
 	
 	public ZipcodeRecord(String zipcode, Pair<Double, Double> coordinates,
 			double medianHouseholdIncome, long population)
