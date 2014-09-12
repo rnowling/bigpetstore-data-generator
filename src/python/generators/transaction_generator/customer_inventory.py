@@ -1,6 +1,5 @@
+import math
 import random
-
-import numpy as np
 
 class ItemCategoryUsageSimulation(object):
     def __init__(self, initial_amount=None, initial_time=None, daily_usage_rate=None, amount_used_average=None, amount_used_variance=None):
@@ -43,7 +42,7 @@ class ItemCategoryUsageSimulation(object):
         
         # given in units/day
         usage_amount = self.amount_used_average * timestep \
-            + np.sqrt(self.amount_used_variance * timestep) * r
+            + math.sqrt(self.amount_used_variance * timestep) * r
         
         # can't use a negative amount :)
         if usage_amount < 0.0:

@@ -1,8 +1,5 @@
-from collections import defaultdict
-
+import math
 import random
-
-import numpy as np
 
 from algorithms.samplers import RouletteWheelSampler
 
@@ -48,7 +45,7 @@ class LocationSampler(object):
         weight_sum = 0.0
         for zipcode in zipcode_objs.itervalues():
             dist, nearest_store = self._closest_store(zipcode)
-            weight = lambd * np.exp(-lambd * dist)
+            weight = lambd * math.exp(-lambd * dist)
             weight_sum += weight
             zipcode_weights[zipcode.zipcode] = weight
 

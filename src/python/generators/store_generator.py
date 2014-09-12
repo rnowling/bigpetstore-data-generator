@@ -1,6 +1,6 @@
-from algorithms.samplers import RouletteWheelSampler
+import math
 
-import numpy as np
+from algorithms.samplers import RouletteWheelSampler
 
 from datamodels.output_models import Store
 
@@ -18,12 +18,12 @@ class ZipcodeSampler(object):
             max_income = max(max_income, obj.median_household_income)
             min_income = min(min_income, obj.median_household_income)
         
-        income_k = np.log(income_scaling_factor) / (max_income - min_income)
+        income_k = math.log(income_scaling_factor) / (max_income - min_income)
     
         income_normalization_factor = 0.0
         income_weights = dict()
         for obj in zipcode_objs.itervalues():
-            w = np.exp(income_k * (obj.median_household_income - min_income))
+            w = math.exp(income_k * (obj.median_household_income - min_income))
             income_normalization_factor += w
             income_weights[obj.zipcode] = w
 
