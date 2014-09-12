@@ -1,0 +1,27 @@
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+apply plugin: 'java' 
+
+version = '0.2'
+
+jar {
+	manifest {
+		attributes 'Title': 'BigPetStore Data Generator', 'Version': version
+	}
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+
+
+dependencies {
+
+    compile 'org.codehaus.groovy:groovy-all:2.1.6'
+    compile 'com.google.guava:guava:18.0'
+
+    testCompile 'junit:junit:4.+'
+    
+}
