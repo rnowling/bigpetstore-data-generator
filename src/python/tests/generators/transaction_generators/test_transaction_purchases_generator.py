@@ -46,13 +46,23 @@ class TestPurchasingProcesses(unittest.TestCase):
         processes = PurchasingProcesses(processes)
 
         result = processes.simulate_purchase("alpha")
+        self.assertEquals(result, "a")
+
+        result = processes.simulate_purchase("alpha")
         self.assertIn(result, ["b", "c"])
 
         result = processes.simulate_purchase("beta")
+        self.assertEquals(result, "a")
+
+        result = processes.simulate_purchase("beta")
         self.assertIn(result, ["b", "c"])
-        
+
+        result = processes.simulate_purchase("gamma")
+        self.assertEquals(result, "a")
+
         result = processes.simulate_purchase("gamma")
         self.assertIn(result, ["b", "c"])
+
         
 
         self.assertRaises(KeyError, processes.simulate_purchase, "delta")

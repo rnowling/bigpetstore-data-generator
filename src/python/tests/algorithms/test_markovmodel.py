@@ -73,7 +73,7 @@ class TestMarkovProcess(unittest.TestCase):
         
         self.assertIsInstance(msm.start_states, dict)
         self.assertIn("a", msm.start_states)
-        self.assertEqual(process.current_state, "a")
+        self.assertEqual(process.current_state, None)
 
     def test_progress_state(self):
         start_states = {"a" : 1.0}
@@ -83,8 +83,10 @@ class TestMarkovProcess(unittest.TestCase):
 
         process = MarkovProcess(model)
         
-        new_state = process.progress_state()
+        first_state = process.progress_state()
+        self.assertEquals(first_state, "a")
 
+        new_state = process.progress_state()
         self.assertIn(new_state, ["b", "c"])
 
         self.assertRaises(Exception, process.progress_state)

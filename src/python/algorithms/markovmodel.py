@@ -98,13 +98,18 @@ class MarkovProcess(object):
         """
         self.markov_model = markov_model
         start_states = list(markov_model.start_states.items())
-        self.current_state = RouletteWheelSampler(start_states).sample()
+        self.start_state_sampler = RouletteWheelSampler(start_states)
+        self.current_state = None
 
     def progress_state(self):
         """
         Choose the next state in the Markov process according to
         the transition matrix.  Return the previous state.
         """
+        if self.current_state == None:
+            self.current_state = self.start_state_sampler.sample()
+            return self.current_state
+
         r = random.random()
         cum_sum = 0.0
         for candidate_state, prob in self.markov_model.edge_probabilities[self.current_state].iteritems():
