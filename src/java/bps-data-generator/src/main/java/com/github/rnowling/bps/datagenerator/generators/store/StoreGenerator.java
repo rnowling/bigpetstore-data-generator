@@ -25,7 +25,7 @@ public class StoreGenerator implements Generator<Store>
 		
 		ProbabilityDensityFunction<ZipcodeRecord> locationJointPDF = 
 				new JointPDF<ZipcodeRecord>(zipcodeTable, locationPopulationPDF, locationIncomePDF);
-		locationSampler = new RouletteWheelSampler<ZipcodeRecord>(zipcodeTable, locationJointPDF, factory);
+		locationSampler = RouletteWheelSampler.create(zipcodeTable, locationJointPDF, factory);
 		
 		currentId = 0;
 	}
