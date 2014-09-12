@@ -1,60 +1,29 @@
 package com.github.rnowling.bps.datagenerator.algorithms.markovmodels;
 
-import com.github.rnowling.bps.datagenerator.SeedFactory;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
-import com.google.common.collect.ImmutableMap;
+import java.util.Map;
 
-public class MarkovModel<T> implements Sampler<T>
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableTable;
+import com.google.common.collect.Table;
+
+public class MarkovModel<T>
 {
-	ImmutableMap<T, Sampler<T>> transitionSamplers;
-	T currentState;
-	Sampler<T> startStateSampler;
+	final ImmutableTable<T, T, Double> transitionWeights;
+	final ImmutableMap<T, Double> startWeights;
 	
-	
-	public MarkovModel(ImmutableMap<T, Sampler<T>> transitionSamplers, Sampler<T> startStateSampler)
+	public MarkovModel(Table<T, T, Double> transitionWeights, Map<T, Double> startWeights)
 	{
-		this.transitionSamplers = transitionSamplers;
-		this.startStateSampler = startStateSampler;
-		
-		initialize();
+		this.transitionWeights = ImmutableTable.copyOf(transitionWeights);
+		this.startWeights = ImmutableMap.copyOf(startWeights);
 	}
-	
-	public T sample()
+
+	public ImmutableTable<T, T, Double> getTransitionWeights()
 	{
-		T previousState = currentState;
-		currentState = transitionSamplers.get(currentState).sample();
-		return previousState;
+		return transitionWeights;
 	}
-	
-	public void initialize()
+
+	public ImmutableMap<T, Double> getStartWeights()
 	{
-		currentState = startStateSampler.sample();
-	}
-	
-	public static void main(String[] args)
-	{
-		SeedFactory seedFactory = new SeedFactory(12345);
-		MarkovModelBuilder<Integer> builder = new MarkovModelBuilder<Integer>(seedFactory);
-		
-		System.out.println("Adding transitions");
-		for(int i = 0; i < 6; i++)
-			for(int j = 0; j < 6; j++)
-				builder.addTransition(i, j, 0.01);
-		
-		builder.addTransition(0, 1, 1.0);
-		builder.addTransition(1, 2, 1.0);
-		builder.addTransition(2, 3, 1.0);
-		builder.addTransition(3, 4, 1.0);
-		builder.addTransition(4, 5, 1.0);
-		builder.addTransition(5, 0, 1.0);
-		
-		System.out.println("Added transitions");
-		
-		System.out.println("Building");
-		MarkovModel<Integer> msm = builder.build();
-		System.out.println("Built");
-		
-		for(int i = 0; i < 100; i++)
-			System.out.println(msm.sample());
+		return startWeights;
 	}
 }
