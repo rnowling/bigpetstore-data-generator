@@ -1,8 +1,5 @@
 package com.github.rnowling.bps.datagenerator.datamodels;
 
-import java.util.Collections;
-import java.util.Map;
-
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 
 public class Customer
