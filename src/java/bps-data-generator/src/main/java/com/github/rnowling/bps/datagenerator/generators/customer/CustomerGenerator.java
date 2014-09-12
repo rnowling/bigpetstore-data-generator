@@ -27,11 +27,7 @@ public class CustomerGenerator implements Generator<Customer>
 	
 	int currentId = 0;
 	NameGenerator nameGenerator;
-	Sampler<Integer> petNumberSampler;
-	BoundedGaussianSampler transactionTriggerTimeSampler;
-	BoundedGaussianSampler purchaseTriggerTimeSampler;
 	CustomerLocationGenerator locationGenerator;
-	Random rng;
 	
 	public CustomerGenerator(List<Store> stores, InputData inputData, SeedFactory seedFactory)
 	{
@@ -40,16 +36,6 @@ public class CustomerGenerator implements Generator<Customer>
 		this.nameGenerator = new NameGenerator(inputData.getNames(), seedFactory);
 		this.locationGenerator = new CustomerLocationGenerator(inputData.getZipcodeTable(), stores,
 				Constants.AVERAGE_CUSTOMER_STORE_DISTANCE, seedFactory);
-		this.petNumberSampler = new UniformIntSampler(Constants.MIN_PETS, Constants.MAX_PETS, seedFactory);
-		this.transactionTriggerTimeSampler = new BoundedGaussianSampler(Constants.TRANSACTION_TRIGGER_TIME_AVERAGE,
-				Constants.TRANSACTION_TRIGGER_TIME_VARIANCE, Constants.TRANSACTION_TRIGGER_TIME_MIN,
-				Constants.TRANSACTION_TRIGGER_TIME_MAX, seedFactory);
-		this.purchaseTriggerTimeSampler = new BoundedGaussianSampler(Constants.PURCHASE_TRIGGER_TIME_AVERAGE,
-				Constants.PURCHASE_TRIGGER_TIME_VARIANCE, Constants.PURCHASE_TRIGGER_TIME_MIN,
-				Constants.PURCHASE_TRIGGER_TIME_MAX, seedFactory);
-		
-		
-		rng = new Random(seedFactory.getNextSeed());
 	}
 	
 	private int generateId()
@@ -70,47 +56,14 @@ public class CustomerGenerator implements Generator<Customer>
 		return locationGenerator.generate();
 	}
 	
-	private Map<PetSpecies, Integer> generatePets() throws Exception
-	{
-		int numberPets = petNumberSampler.sample();
-		int remaining = numberPets;
-		Map<PetSpecies, Integer> speciesCounts = new HashMap<PetSpecies, Integer>();
-		
-		PetSpecies[] allPetSpecies = PetSpecies.values();
-		for(int i = 0; i < allPetSpecies.length - 1; i++)
-		{
-			PetSpecies species = allPetSpecies[i];
-			int count = rng.nextInt(remaining + 1);
-			remaining -= count;
-			speciesCounts.put(species, count);
-		}
-		speciesCounts.put(allPetSpecies[allPetSpecies.length - 1], remaining);
-		
-		return Collections.unmodifiableMap(speciesCounts);
-	}
-	
-	private double generateAverageTransactionTriggerTime()
-	{
-		return this.transactionTriggerTimeSampler.sample();
-	}
-	
-	private double generateAveragePurchaseTriggerTime()
-	{
-		return this.purchaseTriggerTimeSampler.sample();
-	}
-	
 	@Override
 	public Customer generate() throws Exception
 	{
 		int id = generateId();
 		Pair<String, String> name = generateName();
 		ZipcodeRecord location = generateLocation();
-		Map<PetSpecies, Integer> speciesCounts = generatePets();
-		double averageTransactionTriggerTime = generateAverageTransactionTriggerTime();
-		double averagePurchaseTriggerTime = generateAveragePurchaseTriggerTime();
 		
-		return new Customer(id, name, location, speciesCounts, averageTransactionTriggerTime,
-				averagePurchaseTriggerTime);
+		return new Customer(id, name, location);
 	}
 
 }
