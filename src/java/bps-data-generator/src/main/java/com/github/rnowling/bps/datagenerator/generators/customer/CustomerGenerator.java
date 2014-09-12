@@ -1,19 +1,11 @@
 package com.github.rnowling.bps.datagenerator.generators.customer;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.SeedFactory;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.BoundedGaussianSampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.UniformIntSampler;
 import com.github.rnowling.bps.datagenerator.datamodels.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
-import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
 import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;

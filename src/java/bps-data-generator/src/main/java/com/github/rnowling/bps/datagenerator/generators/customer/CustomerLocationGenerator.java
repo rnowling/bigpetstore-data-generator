@@ -2,7 +2,6 @@ package com.github.rnowling.bps.datagenerator.generators.customer;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import com.github.rnowling.bps.datagenerator.SeedFactory;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSampler;
