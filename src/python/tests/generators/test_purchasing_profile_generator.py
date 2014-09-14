@@ -1,11 +1,17 @@
 import unittest
 
+import simulation_parameters as sim_params
+
 from algorithms.markovmodel import MarkovModel
 from algorithms.markovmodel import MarkovModelBuilder
 
 from generators.purchasing_profile_generator import PurchasingProfileBuilder
+from generators.purchasing_profile_generator import PurchasingProfileGenerator
+from generators.purchasing_profile_generator import ProductCategoryMarkovModelGenerator
 
 from datamodels.simulation_models import PurchasingProfile
+
+from readers import load_products
 
 class TestPurchasingProfileBuilder(unittest.TestCase):
     def test_add_profile(self):
@@ -53,7 +59,43 @@ class TestPurchasingProfileBuilder(unittest.TestCase):
 
 
 class TestProductCategoryMarkovModelGenerator(unittest.TestCase):
-    pass
+    def test_init(self):
+        products_fl = sim_params.PRODUCTS_FILE
+        product_categories = load_products(products_fl)
+
+        category = product_categories.values()[0]
+
+        generator = ProductCategoryMarkovModelGenerator(category)
+
+    def test_generate(self):
+        products_fl = sim_params.PRODUCTS_FILE
+        product_categories = load_products(products_fl)
+
+        category = product_categories.values()[0]
+
+        generator = ProductCategoryMarkovModelGenerator(category)
+
+        msm = generator.generate()
+
+        self.assertIsInstance(msm, MarkovModel)
+        
 
 class TestPurchasingProfileGenerator(unittest.TestCase):
-    pass
+    def test_init(self):
+        products_fl = sim_params.PRODUCTS_FILE
+        product_categories = load_products(products_fl)
+        
+        generator = PurchasingProfileGenerator(product_categories)
+
+        self.assertEqual(generator.product_categories, product_categories)
+
+    def test_generate(self):
+        products_fl = sim_params.PRODUCTS_FILE
+        product_categories = load_products(products_fl)
+        
+        generator = PurchasingProfileGenerator(product_categories)
+
+        profile = generator.generate()
+
+        self.assertIsInstance(profile, PurchasingProfile)
+        
