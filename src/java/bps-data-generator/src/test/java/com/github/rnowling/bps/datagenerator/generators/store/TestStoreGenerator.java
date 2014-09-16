@@ -1,0 +1,43 @@
+package com.github.rnowling.bps.datagenerator.generators.store;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import org.junit.Test;
+
+import com.github.rnowling.bps.datagenerator.Constants;
+import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
+import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
+import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
+
+public class TestStoreGenerator
+{
+
+	@Test
+	public void testGenerate() throws Exception
+	{
+		ZipcodeReader reader = new ZipcodeReader();
+		reader.setCoordinatesFile(Constants.COORDINATES_FILE);
+		reader.setIncomesFile(Constants.INCOMES_FILE);
+		reader.setPopulationFile(Constants.POPULATION_FILE);
+		
+		List<ZipcodeRecord> zipcodes = reader.readData();
+		
+		assertTrue(zipcodes.size() > 0);
+		
+		SeedFactory factory = new SeedFactory(1234);
+		
+		StoreGenerator generator = new StoreGenerator(zipcodes, factory);
+		
+		Store store = generator.generate();
+		assertNotNull(store);
+		assertTrue(store.getId() >= 0);
+		assertNotNull(store.getName());
+		assertNotNull(store.getLocation());
+		
+	}
+
+}
