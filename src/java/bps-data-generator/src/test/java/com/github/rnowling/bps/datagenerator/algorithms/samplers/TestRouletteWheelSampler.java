@@ -1,7 +1,7 @@
 package com.github.rnowling.bps.datagenerator.algorithms.samplers;
 
 import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.*;
+import static org.junit.matchers.JUnitMatchers.hasItem;
 
 import java.util.Map;
 
