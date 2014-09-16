@@ -1,8 +1,10 @@
-package com.github.rnowling.bps.datagenerator.datamodels;
+package com.github.rnowling.bps.datagenerator.datamodels.inputs;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
 
 public class ProductCategory
 {

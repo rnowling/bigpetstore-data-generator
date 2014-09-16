@@ -8,7 +8,7 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import com.github.rnowling.bps.datagenerator.datamodels.ProductCategory;
+import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

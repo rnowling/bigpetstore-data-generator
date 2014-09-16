@@ -9,7 +9,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.datamodels.ProductCategory;
+import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 
 public class TestProductsReader
 {
