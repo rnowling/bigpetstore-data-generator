@@ -24,5 +24,10 @@ public class Customer
 	public Pair<String, String> getName()
 	{
 		return name;
-	}	
+	}
+	
+	public ZipcodeRecord getLocation()
+	{
+		return location;
+	}
 }
