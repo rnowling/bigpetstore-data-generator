@@ -22,6 +22,7 @@ dependencies {
 
     compile 'org.codehaus.groovy:groovy-all:2.1.6'
     compile 'com.google.guava:guava:18.0'
+    compile 'com.google.code.gson:gson:2.3'
 
     testCompile 'junit:junit:4.+'
     

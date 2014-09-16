@@ -8,6 +8,8 @@ public class Constants
 	
 	public static final String NAMEDB_FILE = "resources/namedb/data/data.dat";
 	
+	public static final String PRODUCTS_FILE = "resources/product_categories.json";
+	
 	public static final double INCOME_SCALING_FACTOR = 100.0d;
 	
 	public static final int MIN_PETS = 1;
