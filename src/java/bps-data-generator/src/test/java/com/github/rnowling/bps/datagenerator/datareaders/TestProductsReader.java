@@ -4,12 +4,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 
 public class TestProductsReader
 {
@@ -25,11 +25,11 @@ public class TestProductsReader
 		
 		ProductCategory category = productCategories.get(0);
 		
-		assertNotNull(category.getCategory());
-		assertNotNull(category.getSpecies());
-		assertTrue(category.getSpecies().size() > 0);
-		assertNotNull(category.getFields());
-		assertTrue(category.getFields().size() > 0);
+		assertNotNull(category.getCategoryLabel());
+		assertNotNull(category.getApplicableSpecies());
+		assertTrue(category.getApplicableSpecies().size() > 0);
+		assertNotNull(category.getFieldNames());
+		assertTrue(category.getFieldNames().size() > 0);
 		assertNotNull(category.getTriggerTransaction());
 		assertTrue(category.getTriggerTransaction());
 		assertNotNull(category.getDailyUsageRate());
@@ -42,13 +42,13 @@ public class TestProductsReader
 		assertTrue(category.getPurchaseTriggerRate() > 0);
 		assertNotNull(category.getTransactionTriggerRate());
 		assertTrue(category.getTransactionTriggerRate() > 0);
-		assertNotNull(category.getItems());
-		assertTrue(category.getItems().size() > 0);
+		assertNotNull(category.getProducts());
+		assertTrue(category.getProducts().size() > 0);
 		
-		Map<String, Object> product = category.getItems().get(0);
+		Product product = category.getProducts().get(0);
 		
-		assertTrue(product.containsKey("category"));
-		assertNotNull(product.get("category"));
+		assertTrue(product.getFieldNames().size() > 0);
+		assertNotNull(product.getFieldValue("category"));
 		
 	}
 

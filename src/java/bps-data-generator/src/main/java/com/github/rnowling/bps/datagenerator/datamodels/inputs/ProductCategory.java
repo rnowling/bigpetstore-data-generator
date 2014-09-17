@@ -1,53 +1,90 @@
 package com.github.rnowling.bps.datagenerator.datamodels.inputs;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 public class ProductCategory
 {
-	String category;
-	Set<PetSpecies> species;
-	Set<String> fields;
-	Boolean trigger_transaction;
-	Double daily_usage_rate;
-	Double base_amount_used_average;
-	Double base_amount_used_variance;
-	Double transaction_trigger_rate;
-	Double transaction_purchase_rate;
-	List<Map<String, Object>> items;
+	String categoryLabel;
+	ImmutableSet<PetSpecies> applicableSpecies;
+	ImmutableSet<String> fieldNames;
+	boolean triggerTransaction;
+	double dailyUsageRate;
+	double amountUsedPerPetAverage;
+	double amountUsedPerPetVariance;
+	double triggerTransactionRate;
+	double triggerPurchaseRate;
+	ImmutableList<Product> products;
 	
-	public String getCategory() {
-		return category;
+	public ProductCategory(String categoryLabel, Set<PetSpecies> species, Set<String> fieldNames,
+			boolean triggerTransaction, double dailyUsageRate, double amountUsedPerPetAverage,
+				double amountUsedPerPetVariance, double triggerTransactionRate,
+				double triggerPurchaseRate, List<Product> products)
+	{
+		this.categoryLabel = categoryLabel;
+		this.applicableSpecies = ImmutableSet.copyOf(species);
+		this.fieldNames = ImmutableSet.copyOf(fieldNames);
+		this.triggerTransaction = triggerTransaction;
+		this.dailyUsageRate = dailyUsageRate;
+		this.amountUsedPerPetAverage = amountUsedPerPetAverage;
+		this.amountUsedPerPetVariance = amountUsedPerPetVariance;
+		this.triggerTransactionRate = triggerTransactionRate;
+		this.triggerPurchaseRate = triggerPurchaseRate;
+		this.products = ImmutableList.copyOf(products);
 	}
-	public Set<PetSpecies> getSpecies() {
-		return species;
+	
+	public String getCategoryLabel()
+	{
+		return categoryLabel;
 	}
-	public Set<String> getFields() {
-		return fields;
+	
+	public ImmutableSet<PetSpecies> getApplicableSpecies()
+	{
+		return applicableSpecies;
 	}
-	public Boolean getTriggerTransaction() {
-		return trigger_transaction;
+	
+	public ImmutableSet<String> getFieldNames()
+	{
+		return fieldNames;
 	}
-	public Double getDailyUsageRate() {
-		return daily_usage_rate;
+	public Boolean getTriggerTransaction()
+	{
+		return triggerTransaction;
 	}
-	public Double getBaseAmountUsedAverage() {
-		return base_amount_used_average;
+	
+	public Double getDailyUsageRate()
+	{
+		return dailyUsageRate;
 	}
-	public Double getBaseAmountUsedVariance() {
-		return base_amount_used_variance;
+	
+	public Double getBaseAmountUsedAverage()
+	{
+		return amountUsedPerPetAverage;
 	}
-	public Double getTransactionTriggerRate() {
-		return transaction_trigger_rate;
+	
+	public Double getBaseAmountUsedVariance()
+	{
+		return amountUsedPerPetVariance;
 	}
-	public Double getPurchaseTriggerRate() {
-		return transaction_purchase_rate;
+	
+	public Double getTransactionTriggerRate()
+	{
+		return triggerTransactionRate;
 	}
-	public List<Map<String, Object>> getItems() {
-		return items;
+	
+	public Double getPurchaseTriggerRate()
+	{
+		return triggerPurchaseRate;
+	}
+	
+	public ImmutableList<Product> getProducts()
+	{
+		return products;
 	}
 	
 	
