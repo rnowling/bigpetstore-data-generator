@@ -1,5 +1,10 @@
 package com.github.rnowling.bps.datagenerator;
 
+import java.util.List;
+
+import com.github.rnowling.bps.datagenerator.datamodels.Pair;
+import com.google.common.collect.ImmutableList;
+
 public class Constants
 {
 	public static final String COORDINATES_FILE = "resources/zips.csv";
@@ -10,7 +15,7 @@ public class Constants
 	
 	public static final String PRODUCTS_FILE = "resources/product_categories.json";
 	
-	public static final double INCOME_SCALING_FACTOR = 100.0d;
+	public static final double INCOME_SCALING_FACTOR = 100.0;
 	
 	public static final int MIN_PETS = 1;
 	public static final int MAX_PETS = 10;
@@ -27,4 +32,16 @@ public class Constants
 	
 	public static final double AVERAGE_CUSTOMER_STORE_DISTANCE = 5.0; // miles
 	
+	public static final List<Pair<Double, Double>> PRODUCT_MSM_FIELD_WEIGHT_GAUSSIANS = ImmutableList.of(Pair.create(0.15, 0.1), Pair.create(0.85, 0.1));
+	public static final double PRODUCT_MSM_FIELD_WEIGHT_LOWERBOUND = 0.05;
+	public static final double PRODUCT_MSM_FIELD_WEIGHT_UPPERBOUND = 0.95;
+	
+	
+	public static final List<Pair<Double, Double>> PRODUCT_MSM_FIELD_SIMILARITY_WEIGHT_GAUSSIANS = ImmutableList.of(Pair.create(0.15, 0.1), Pair.create(0.85, 0.1));
+	public static final double PRODUCT_MSM_FIELD_SIMILARITY_WEIGHT_LOWERBOUND = 0.05;
+	public static final double PRODUCT_MSM_FIELD_SIMILARITY_WEIGHT_UPPERBOUND = 0.95;
+	
+	public static final List<Pair<Double, Double>> PRODUCT_MSM_LOOPBACK_WEIGHT_GAUSSIANS = ImmutableList.of(Pair.create(0.25, 0.1), Pair.create(0.75, 0.1));
+	public static final double PRODUCT_MSM_LOOPBACK_WEIGHT_LOWERBOUND = 0.05;
+	public static final double PRODUCT_MSM_LOOPBACK_WEIGHT_UPPERBOUND = 0.95;
 }
