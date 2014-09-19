@@ -20,13 +20,12 @@ public class Constants
 	public static final int MIN_PETS = 1;
 	public static final int MAX_PETS = 10;
 	
-	public static final double TRANSACTION_TRIGGER_TIME_AVERAGE = 5.0; // days
-	public static final double TRANSACTION_TRIGGER_TIME_VARIANCE = 2.0;
+	public static final List<Pair<Double, Double>> TRANSACTION_TRIGGER_TIME_GAUSSIANS = ImmutableList.of(Pair.create(5.0, 2.0));
+	public static final List<Pair<Double, Double>> PURCHASE_TRIGGER_TIME_GAUSSIANS = ImmutableList.of(Pair.create(10.0, 4.0));
+	
 	public static final double TRANSACTION_TRIGGER_TIME_MAX = 10.0;
 	public static final double TRANSACTION_TRIGGER_TIME_MIN = 1.0;
 	
-	public static final double PURCHASE_TRIGGER_TIME_AVERAGE = 10.0; // days
-	public static final double PURCHASE_TRIGGER_TIME_VARIANCE = 4.0;
 	public static final double PURCHASE_TRIGGER_TIME_MAX = 20.0;
 	public static final double PURCHASE_TRIGGER_TIME_MIN = 1.0;
 	
