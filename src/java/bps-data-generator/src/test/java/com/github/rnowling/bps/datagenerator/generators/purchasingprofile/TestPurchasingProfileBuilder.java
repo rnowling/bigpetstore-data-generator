@@ -20,7 +20,7 @@ public class TestPurchasingProfileBuilder
 {
 
 	@Test
-	public void testGenerate() throws Exception
+	public void testBuild() throws Exception
 	{
 		MarkovModelBuilder<Product> builder = MarkovModelBuilder.create();
 		
