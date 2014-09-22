@@ -24,6 +24,47 @@ public class Product
 		return fields.get(fieldName);
 	}
 	
+	public String getFieldValueAsString(String fieldName)
+	{
+		return fields.get(fieldName).toString();
+	}
+	
+	public Double getFieldValueAsDouble(String fieldName)
+	{
+		Object value = getFieldValue(fieldName);
+		try
+		{
+			Double doubleValue = (Double) value;
+			return doubleValue;
+		}
+		catch(ClassCastException e)
+		{
+			return null;
+		}
+	}
+	
+	public Long getFieldValueAsLong(String fieldName)
+	{
+		Object value = getFieldValue(fieldName);
+		try
+		{
+			Long longValue = (Long) value;
+			return longValue;
+		}
+		catch(ClassCastException e)
+		{
+			try
+			{
+				Integer intValue = (Integer) value;
+				return new Long(intValue);
+			}
+			catch(ClassCastException f)
+			{
+				return null;
+			}
+		}
+	}
+	
 	public String toString()
 	{
 		String str = "";
