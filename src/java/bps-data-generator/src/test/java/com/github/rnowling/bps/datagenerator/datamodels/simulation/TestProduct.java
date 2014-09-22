@@ -1,8 +1,7 @@
 package com.github.rnowling.bps.datagenerator.datamodels.simulation;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Map;
 
