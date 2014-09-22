@@ -1,6 +1,9 @@
 package com.github.rnowling.bps.datagenerator.generators.transaction;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -12,7 +15,7 @@ public class TestCustomerTransactionParameters
 {
 
 	@Test
-	public void testCount() throws Exception
+	public void testCountPetsBySpecies() throws Exception
 	{
 		Multiset<PetSpecies> petCounts = HashMultiset.create();
 		
@@ -25,9 +28,27 @@ public class TestCustomerTransactionParameters
 				petCounts, 0.0, 0.0);
 		
 		
-		assertTrue(transParams.countPetsBySpecies(PetSpecies.CAT) == 3);
-		assertTrue(transParams.countPetsBySpecies(PetSpecies.DOG) == 0);
-		assertTrue(transParams.countPets() == 3);
+		assertEquals(transParams.countPetsBySpecies(PetSpecies.CAT), 3);
+		assertEquals(transParams.countPetsBySpecies(PetSpecies.DOG), 0);
+		assertEquals(transParams.countPets(), 3);
+	}
+	
+	@Test
+	public void testCountPetsByMultipleSpecies() throws Exception
+	{
+		Multiset<PetSpecies> petCounts = HashMultiset.create();
+		
+		petCounts.add(PetSpecies.CAT);
+		petCounts.add(PetSpecies.CAT);
+		petCounts.add(PetSpecies.DOG);
+		
+		
+		CustomerTransactionParameters transParams = new CustomerTransactionParameters(
+				petCounts, 0.0, 0.0);
+		
+		
+		assertEquals(transParams.countPetsBySpecies(Arrays.asList(PetSpecies.values())), 3);
+		assertEquals(transParams.countPets(), 3);
 	}
 
 }
