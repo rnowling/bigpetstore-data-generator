@@ -27,6 +27,14 @@ public class ProductCategoryBuilder
 		applicableSpecies = Sets.newHashSet();
 		fieldNames = Sets.newHashSet();
 		products = Lists.newArrayList();
+		
+		dailyUsageRate = 0.0;
+		amountUsedPerPetAverage = 0.0;
+		amountUsedPerPetVariance = 0.0;
+		triggerTransactionRate = 0.0;
+		triggerPurchaseRate = 0.0;
+		triggerTransaction = false;
+		categoryLabel = null;
 	}
 	
 	public void setCategory(String category)
