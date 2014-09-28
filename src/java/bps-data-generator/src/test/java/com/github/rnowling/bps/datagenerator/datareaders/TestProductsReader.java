@@ -48,7 +48,8 @@ public class TestProductsReader
 		Product product = category.getProducts().get(0);
 		
 		assertTrue(product.getFieldNames().size() > 0);
-		assertNotNull(product.getFieldValue("category"));
+		assertNotNull(product.getFieldValue(Constants.PRODUCT_CATEGORY));
+		assertNotNull(product.getFieldValue(Constants.PRODUCT_QUANTITY));
 		
 	}
 
