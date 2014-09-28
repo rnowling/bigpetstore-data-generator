@@ -12,7 +12,7 @@ public class TestProductCategoryUsageSimulator
 {
 	
 	@Test
-	public void testTrajectory()
+	public void testSimulate()
 	{
 		SeedFactory seedFactory = new SeedFactory(1234);
 		
