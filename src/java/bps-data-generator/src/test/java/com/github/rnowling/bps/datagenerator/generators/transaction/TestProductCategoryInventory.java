@@ -19,7 +19,7 @@ public class TestProductCategoryInventory
 {
 	
 	@Test
-	public void testTrajectory()
+	public void testPurchase()
 	{
 		SeedFactory seedFactory = new SeedFactory(1234);
 		
