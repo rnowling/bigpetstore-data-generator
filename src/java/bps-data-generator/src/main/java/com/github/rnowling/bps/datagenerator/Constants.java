@@ -43,4 +43,7 @@ public class Constants
 	public static final List<Pair<Double, Double>> PRODUCT_MSM_LOOPBACK_WEIGHT_GAUSSIANS = ImmutableList.of(Pair.create(0.25, 0.1), Pair.create(0.75, 0.1));
 	public static final double PRODUCT_MSM_LOOPBACK_WEIGHT_LOWERBOUND = 0.05;
 	public static final double PRODUCT_MSM_LOOPBACK_WEIGHT_UPPERBOUND = 0.95;
+	
+	public static final String PRODUCT_QUANTITY = "size";
+	public static final String PRODUCT_CATEGORY = "category";
 }
