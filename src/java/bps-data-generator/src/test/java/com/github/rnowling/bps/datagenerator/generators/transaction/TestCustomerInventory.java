@@ -15,7 +15,7 @@ import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.datareaders.ProductCategoryBuilder;
 import com.google.common.collect.Maps;
 
-public class TestCategoryInventory
+public class TestCustomerInventory
 {
 	
 	@Test
