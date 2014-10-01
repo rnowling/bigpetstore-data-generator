@@ -2,17 +2,18 @@ package com.github.rnowling.bps.datagenerator.datamodels.outputs;
 
 import java.util.List;
 
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.google.common.collect.ImmutableList;
 
 public class Transaction
 {
-	final Long id;
+	final int id;
 	final Customer customer;
 	final Store store;
 	final Double dateTime;
-	final ImmutableList<String> products;
+	final ImmutableList<Product> products;
 	
-	public Transaction(Long id, Customer customer, Store store, Double dateTime, List<String> products)
+	public Transaction(int id, Customer customer, Store store, Double dateTime, List<Product> products)
 	{
 		this.id = id;
 		this.customer = customer;
@@ -21,7 +22,7 @@ public class Transaction
 		this.products = ImmutableList.copyOf(products);
 	}
 
-	public Long getId()
+	public int getId()
 	{
 		return id;
 	}
@@ -41,7 +42,7 @@ public class Transaction
 		return dateTime;
 	}
 
-	public ImmutableList<String> getProducts()
+	public ImmutableList<Product> getProducts()
 	{
 		return products;
 	}
