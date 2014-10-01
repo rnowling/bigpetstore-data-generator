@@ -119,9 +119,9 @@ public class TestTransactionPurchasesGenerator
 		CustomerInventory inventory = inventoryBuilder.build();
 		
 		TransactionPurchasesGenerator tranGen = new TransactionPurchasesGenerator(profile,
-				parameters, seedFactory);
+				parameters, inventory, 0.0, seedFactory);
 		
-		List<Product> products = tranGen.simulate(inventory, 0.0);
+		List<Product> products = tranGen.generate();
 		
 		assertTrue(products.size() > 0);
 	}

@@ -6,18 +6,22 @@ import com.github.rnowling.bps.datagenerator.SeedFactory;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProfile;
+import com.github.rnowling.bps.datagenerator.generators.Generator;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
-public class TransactionPurchasesGenerator
+public class TransactionPurchasesGenerator implements Generator<ImmutableList<Product>>
 {
 	final PurchasingProcesses purchasingProcesses;
 	final CustomerTransactionParameters transactionParameters;
 	final SeedFactory seedFactory;
+	final CustomerInventory inventory;
+	final double transactionTime;
 	
 	
 	public TransactionPurchasesGenerator(PurchasingProfile purchasingProfile, 
-			CustomerTransactionParameters transactionParameters, SeedFactory seedFactory)
+			CustomerTransactionParameters transactionParameters, 
+			CustomerInventory inventory, double transactionTime, SeedFactory seedFactory)
 	{
 		PurchasingProcessesBuilder builder = new PurchasingProcessesBuilder(seedFactory);
 		builder.setPurchasingProfile(purchasingProfile);
@@ -25,9 +29,12 @@ public class TransactionPurchasesGenerator
 		
 		this.transactionParameters = transactionParameters;
 		this.seedFactory = seedFactory;
+		
+		this.inventory = inventory;
+		this.transactionTime = transactionTime;
 	}
 	
-	public ImmutableList<Product> simulate(CustomerInventory inventory, double transactionTime)
+	public ImmutableList<Product> generate()
 	{
 		Sampler<Product> productSampler = new TransactionPurchasesHiddenMarkovModel(purchasingProcesses,
 				transactionParameters, inventory, transactionTime, seedFactory);
