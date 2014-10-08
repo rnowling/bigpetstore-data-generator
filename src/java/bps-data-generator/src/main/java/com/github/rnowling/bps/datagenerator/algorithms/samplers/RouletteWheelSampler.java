@@ -1,5 +1,6 @@
 package com.github.rnowling.bps.datagenerator.algorithms.samplers;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -20,12 +21,12 @@ public class RouletteWheelSampler<T> implements Sampler<T>
 		return new RouletteWheelSampler<T>(domainWeights, factory);
 	}
 	
-	public static <T> RouletteWheelSampler<T> create(List<T> data, ProbabilityDensityFunction<T> pdf, SeedFactory factory)
+	public static <T> RouletteWheelSampler<T> create(Collection<T> data, ProbabilityDensityFunction<T> pdf, SeedFactory factory)
 	{
 		return new RouletteWheelSampler<T>(data, pdf, factory);
 	}
 	
-	public static <T> RouletteWheelSampler<T> createUniform(List<T> data, SeedFactory factory)
+	public static <T> RouletteWheelSampler<T> createUniform(Collection<T> data, SeedFactory factory)
 	{
 		Map<T, Double> pdf = Maps.newHashMap();
 		for(T datum : data)
@@ -42,7 +43,7 @@ public class RouletteWheelSampler<T> implements Sampler<T>
 		this.wheel = this.normalize(domainWeights);
 	}
 	
-	public RouletteWheelSampler(List<T> data, ProbabilityDensityFunction<T> pdf, SeedFactory factory)
+	public RouletteWheelSampler(Collection<T> data, ProbabilityDensityFunction<T> pdf, SeedFactory factory)
 	{
 		this.rng = new Random(factory.getNextSeed());
 		
