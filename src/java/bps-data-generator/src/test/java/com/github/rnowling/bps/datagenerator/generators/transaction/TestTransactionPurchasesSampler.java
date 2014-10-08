@@ -21,7 +21,7 @@ import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.Purcha
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-public class TestTransactionPurchasesGenerator
+public class TestTransactionPurchasesSampler
 {
 	
 	private List<Product> createProducts(String category)
@@ -102,7 +102,7 @@ public class TestTransactionPurchasesGenerator
 	}
 
 	@Test
-	public void testGenerator() throws Exception
+	public void testSampler() throws Exception
 	{
 		SeedFactory seedFactory = new SeedFactory(1234);
 		
@@ -121,10 +121,10 @@ public class TestTransactionPurchasesGenerator
 		inventoryBuilder.addProductCategory(catFoodCategory);
 		CustomerInventory inventory = inventoryBuilder.build();
 		
-		TransactionPurchasesGenerator tranGen = new TransactionPurchasesGenerator(profile,
+		TransactionPurchasesSampler tranGen = new TransactionPurchasesSampler(profile,
 				parameters, inventory, 0.0, seedFactory);
 		
-		List<Product> products = tranGen.generate();
+		List<Product> products = tranGen.sample();
 		
 		assertTrue(products.size() > 0);
 	}
