@@ -1,6 +1,6 @@
 package com.github.rnowling.bps.datagenerator.generators.customer;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +15,11 @@ import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
 import com.github.rnowling.bps.datagenerator.generators.store.StoreSamplerBuilder;
 
-public class TestCustomerLocationGenerator
+public class TestCustomerLocationPDF
 {
 
 	@Test
-	public void testGenerate() throws Exception
+	public void testProbability() throws Exception
 	{
 		ZipcodeReader zipcodeReader = new ZipcodeReader();
 		zipcodeReader.setCoordinatesFile(Constants.COORDINATES_FILE);
@@ -39,12 +39,12 @@ public class TestCustomerLocationGenerator
 			stores.add(store);
 		}
 		
-		CustomerLocationGenerator customerLocationGenerator = new CustomerLocationGenerator(zipcodes, stores, 
-					Constants.AVERAGE_CUSTOMER_STORE_DISTANCE, factory);
+		CustomerLocationPDF customerLocationPDF = new CustomerLocationPDF(zipcodes, stores, 
+					Constants.AVERAGE_CUSTOMER_STORE_DISTANCE);
 		
-		ZipcodeRecord location = customerLocationGenerator.generate();
+		double prob = customerLocationPDF.probability(zipcodes.get(0));
 		
-		assertNotNull(location);
+		assertTrue(prob > 0.0);
 	}
 
 }

@@ -3,38 +3,46 @@ package com.github.rnowling.bps.datagenerator.generators.customer;
 import java.util.List;
 import java.util.Map;
 
-import com.github.rnowling.bps.datagenerator.SeedFactory;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
+import com.github.rnowling.bps.datagenerator.algorithms.pdfs.ProbabilityDensityFunction;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
-import com.github.rnowling.bps.datagenerator.generators.Generator;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
-public class CustomerLocationGenerator implements Generator<ZipcodeRecord>
+public class CustomerLocationPDF implements ProbabilityDensityFunction<ZipcodeRecord>
 {
-	List<Store> stores;
-	List<ZipcodeRecord> records;
-	Sampler<ZipcodeRecord> sampler;
+	private final Map<ZipcodeRecord, Double> pdf;
 	
-	public CustomerLocationGenerator(List<ZipcodeRecord> zipcodes, List<Store> stores, double averageDistance,
-			SeedFactory seedFactory)
+	public CustomerLocationPDF(List<ZipcodeRecord> zipcodes, List<Store> stores, double averageDistance)
+	{
+		this.pdf = build(zipcodes, stores, averageDistance);
+	}
+	
+	protected ImmutableMap<ZipcodeRecord, Double> build(List<ZipcodeRecord> zipcodeTable,
+			List<Store> stores, double averageDistance)
 	{
 		double lambda = 1.0 / averageDistance;
 		
 		Map<ZipcodeRecord, Double> zipcodeWeights = Maps.newHashMap();
-		for(ZipcodeRecord record : zipcodes)
+		double totalWeight = 0.0;
+		for(ZipcodeRecord record : zipcodeTable)
 		{
 			Pair<Store, Double> closestStore = findClosestStore(stores, record);
 			double dist = closestStore.getSecond();
 			
 			double weight = lambda * Math.exp(-1.0 * lambda * dist);
+			totalWeight += weight;
 			zipcodeWeights.put(record, weight);
 		}
 		
+		Map<ZipcodeRecord, Double> pdf = Maps.newHashMap();
+		for(ZipcodeRecord record : zipcodeTable)
+		{
+			pdf.put(record, zipcodeWeights.get(record) / totalWeight);
+		}
 		
-		this.sampler = RouletteWheelSampler.create(zipcodeWeights, seedFactory);
+		return ImmutableMap.copyOf(pdf);
 	}
 
 	private Pair<Store, Double> findClosestStore(List<Store> stores, ZipcodeRecord record)
@@ -53,8 +61,11 @@ public class CustomerLocationGenerator implements Generator<ZipcodeRecord>
 		return closestStore;
 	}
 	
-	public ZipcodeRecord generate() throws Exception
+	public double probability(ZipcodeRecord record)
 	{
-		return sampler.sample();
+		if(!this.pdf.containsKey(record))
+			return 0.0;
+		
+		return this.pdf.get(record);
 	}
 }
