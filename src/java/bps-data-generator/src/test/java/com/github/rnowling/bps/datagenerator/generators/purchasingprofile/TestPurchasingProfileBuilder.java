@@ -2,7 +2,7 @@ package com.github.rnowling.bps.datagenerator.generators.purchasingprofile;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.*;
+import static org.junit.matchers.JUnitMatchers.hasItem;
 
 import java.util.List;
 import java.util.Map;

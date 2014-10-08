@@ -10,7 +10,6 @@ import com.github.rnowling.bps.datagenerator.algorithms.samplers.BoundedMultiMod
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
-import com.github.rnowling.bps.datagenerator.generators.Generator;
 import com.google.common.collect.Maps;
 
 public class ProductCategoryMarkovModelSampler implements Sampler<MarkovModel<Product>>
