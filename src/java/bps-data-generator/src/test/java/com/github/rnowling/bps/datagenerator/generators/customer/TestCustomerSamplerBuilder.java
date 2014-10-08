@@ -12,7 +12,6 @@ import com.github.rnowling.bps.datagenerator.SeedFactory;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.SequenceSampler;
-import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
@@ -34,12 +33,11 @@ public class TestCustomerSamplerBuilder
 		NameReader nameReader = new NameReader(Constants.NAMEDB_FILE);
 		Names names = nameReader.readData();
 		
-		InputData inputData = new InputData(zipcodes, names);
-		
 		SeedFactory factory = new SeedFactory(1234);
 		
 		Sampler<Customer> sampler = new CustomerSampler(new SequenceSampler(),
-				new NameSampler(inputData.getNames(), factory), 
+				RouletteWheelSampler.createUniform(names.getFirstNames().keySet(), factory), 
+				RouletteWheelSampler.createUniform(names.getLastNames().keySet(), factory), 
 				RouletteWheelSampler.createUniform(zipcodes, factory));
 		
 		Customer customer = sampler.sample();
