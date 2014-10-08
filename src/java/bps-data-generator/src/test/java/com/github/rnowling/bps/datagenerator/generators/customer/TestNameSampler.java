@@ -10,20 +10,20 @@ import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
 import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
 
-public class TestNameGenerator
+public class TestNameSampler
 {
 
 	@Test
-	public void testGenerate() throws Exception
+	public void testSample() throws Exception
 	{
 		NameReader nameReader = new NameReader(Constants.NAMEDB_FILE);
 		Names names = nameReader.readData();
 	
 		SeedFactory factory = new SeedFactory(1234);
 		
-		NameGenerator generator = new NameGenerator(names, factory);
+		NameSampler generator = new NameSampler(names, factory);
 		
-		Pair<String, String> name = generator.generate();
+		Pair<String, String> name = generator.sample();
 		
 		assertNotNull(name);
 		assertNotNull(name.getFirst());

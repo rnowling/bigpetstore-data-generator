@@ -5,20 +5,19 @@ import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSa
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
-import com.github.rnowling.bps.datagenerator.generators.Generator;
 
-public class NameGenerator implements Generator<Pair<String, String>>
+public class NameSampler implements Sampler<Pair<String, String>>
 {
 	Sampler<String> firstNameSampler;
 	Sampler<String> lastNameSampler;
 	
-	public NameGenerator(Names names, SeedFactory seedFactory)
+	public NameSampler(Names names, SeedFactory seedFactory)
 	{
 		firstNameSampler = RouletteWheelSampler.create(names.getFirstNames(), seedFactory);
 		lastNameSampler = RouletteWheelSampler.create(names.getLastNames(), seedFactory);
 	}
 	
-	public Pair<String, String> generate() throws Exception
+	public Pair<String, String> sample() throws Exception
 	{
 		String firstName = firstNameSampler.sample();
 		String lastName = lastNameSampler.sample();

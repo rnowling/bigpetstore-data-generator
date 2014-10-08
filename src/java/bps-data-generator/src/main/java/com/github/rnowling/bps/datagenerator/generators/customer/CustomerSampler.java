@@ -18,14 +18,14 @@ public class CustomerSampler implements Sampler<Customer>
 	List<Store> stores;
 	
 	int currentId = 0;
-	NameGenerator nameGenerator;
+	NameSampler nameGenerator;
 	CustomerLocationGenerator locationGenerator;
 	
 	public CustomerSampler(List<Store> stores, InputData inputData, SeedFactory seedFactory)
 	{
 		this.stores = stores;
 		this.seedFactory = seedFactory;
-		this.nameGenerator = new NameGenerator(inputData.getNames(), seedFactory);
+		this.nameGenerator = new NameSampler(inputData.getNames(), seedFactory);
 		this.locationGenerator = new CustomerLocationGenerator(inputData.getZipcodeTable(), stores,
 				Constants.AVERAGE_CUSTOMER_STORE_DISTANCE, seedFactory);
 	}
@@ -40,7 +40,7 @@ public class CustomerSampler implements Sampler<Customer>
 	
 	private Pair<String, String> generateName() throws Exception
 	{
-		return this.nameGenerator.generate();
+		return this.nameGenerator.sample();
 	}
 	
 	private ZipcodeRecord generateLocation() throws Exception
