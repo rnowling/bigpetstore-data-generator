@@ -9,10 +9,11 @@ import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
-import com.github.rnowling.bps.datagenerator.generators.store.StoreSampler;
+import com.github.rnowling.bps.datagenerator.generators.store.StoreSamplerBuilder;
 
 public class TestCustomerLocationGenerator
 {
@@ -28,12 +29,13 @@ public class TestCustomerLocationGenerator
 		
 		SeedFactory factory = new SeedFactory(1234);
 		
-		StoreSampler storeGenerator = new StoreSampler(zipcodes, factory);
+		StoreSamplerBuilder storeSamplerBuilder = new StoreSamplerBuilder(zipcodes, factory);
+		Sampler<Store> storeSampler = storeSamplerBuilder.build();
 		
 		List<Store> stores = new ArrayList<Store>();
 		for(int i = 0; i < 10; i++)
 		{
-			Store store = storeGenerator.sample();
+			Store store = storeSampler.sample();
 			stores.add(store);
 		}
 		

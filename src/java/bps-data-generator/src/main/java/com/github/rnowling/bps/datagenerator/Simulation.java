@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
+import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
@@ -13,7 +14,7 @@ import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
 import com.github.rnowling.bps.datagenerator.generators.customer.CustomerGenerator;
-import com.github.rnowling.bps.datagenerator.generators.store.StoreSampler;
+import com.github.rnowling.bps.datagenerator.generators.store.StoreSamplerBuilder;
 
 public class Simulation
 {
@@ -53,12 +54,13 @@ public class Simulation
 	private void generateStores(int nStores) throws Exception
 	{
 		System.out.println("Generating stores");
-		StoreSampler generator = new StoreSampler(inputData.getZipcodeTable(), this.seedFactory);
+		StoreSamplerBuilder builder = new StoreSamplerBuilder(inputData.getZipcodeTable(), this.seedFactory);
+		Sampler<Store> storeSampler = builder.build();
 		
 		stores = new Vector<Store>();
 		for(int i = 0; i < nStores; i++)
 		{
-			Store store = generator.sample();
+			Store store = storeSampler.sample();
 			stores.add(store);
 		}
 		
