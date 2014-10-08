@@ -13,7 +13,7 @@ import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.generators.Generator;
 import com.google.common.collect.Maps;
 
-public class ProductCategoryMarkovModelGenerator implements Generator<MarkovModel<Product>>
+public class ProductCategoryMarkovModelSampler implements Sampler<MarkovModel<Product>>
 {
 	ProductCategory productCategory;
 	Sampler<Double> fieldWeightSampler;
@@ -24,7 +24,7 @@ public class ProductCategoryMarkovModelGenerator implements Generator<MarkovMode
 	Map<String, Double> fieldSimilarityWeights;
 	double loopbackWeight;
 	
-	public ProductCategoryMarkovModelGenerator(ProductCategory productCategory, SeedFactory seedFactory)
+	public ProductCategoryMarkovModelSampler(ProductCategory productCategory, SeedFactory seedFactory)
 	{
 		this.productCategory = productCategory;
 		
@@ -97,7 +97,7 @@ public class ProductCategoryMarkovModelGenerator implements Generator<MarkovMode
 		return weightSum;
 	}
 	
-	public MarkovModel<Product> generate() throws Exception
+	public MarkovModel<Product> sample() throws Exception
 	{
 		generateWeights();
 		fieldWeights = normalize(fieldWeights);

@@ -26,8 +26,8 @@ public class PurchasingProfileSampler implements Sampler<PurchasingProfile>
 		PurchasingProfileBuilder builder = new PurchasingProfileBuilder();
 		for(ProductCategory productCategory : productCategories)
 		{
-			ProductCategoryMarkovModelGenerator generator = new ProductCategoryMarkovModelGenerator(productCategory, seedFactory);
-			MarkovModel<Product> markovModel = generator.generate();
+			ProductCategoryMarkovModelSampler generator = new ProductCategoryMarkovModelSampler(productCategory, seedFactory);
+			MarkovModel<Product> markovModel = generator.sample();
 			builder.addProfile(productCategory.getCategoryLabel(), markovModel);
 		}
 		

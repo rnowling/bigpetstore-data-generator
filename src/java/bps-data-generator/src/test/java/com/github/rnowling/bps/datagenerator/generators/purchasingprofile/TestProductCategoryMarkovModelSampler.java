@@ -14,11 +14,11 @@ import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.datareaders.ProductsReader;
 
-public class TestProductCategoryMarkovModelGenerator
+public class TestProductCategoryMarkovModelSampler
 {
 
 	@Test
-	public void testGenerate() throws Exception
+	public void testSample() throws Exception
 	{
 		SeedFactory seedFactory = new SeedFactory(1245);
 		
@@ -28,9 +28,9 @@ public class TestProductCategoryMarkovModelGenerator
 		
 		ProductCategory productCategory = productCategories.get(0);
 		
-		ProductCategoryMarkovModelGenerator generator = new ProductCategoryMarkovModelGenerator(productCategory, seedFactory);
+		ProductCategoryMarkovModelSampler generator = new ProductCategoryMarkovModelSampler(productCategory, seedFactory);
 		
-		MarkovModel<Product> model = generator.generate();
+		MarkovModel<Product> model = generator.sample();
 		
 		assertNotNull(model);
 		assertNotNull(model.getStartWeights());
