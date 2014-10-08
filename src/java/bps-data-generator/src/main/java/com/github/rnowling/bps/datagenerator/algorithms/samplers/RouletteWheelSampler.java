@@ -25,6 +25,17 @@ public class RouletteWheelSampler<T> implements Sampler<T>
 		return new RouletteWheelSampler<T>(data, pdf, factory);
 	}
 	
+	public static <T> RouletteWheelSampler<T> createUniform(List<T> data, SeedFactory factory)
+	{
+		Map<T, Double> pdf = Maps.newHashMap();
+		for(T datum : data)
+		{
+			pdf.put(datum, 1.0);
+		}
+		
+		return create(pdf, factory);
+	}
+	
 	public RouletteWheelSampler(Map<T, Double> domainWeights, SeedFactory factory)
 	{
 		this.rng = new Random(factory.getNextSeed());

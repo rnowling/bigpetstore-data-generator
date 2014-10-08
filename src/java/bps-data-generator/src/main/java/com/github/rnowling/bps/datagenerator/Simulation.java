@@ -13,7 +13,7 @@ import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
-import com.github.rnowling.bps.datagenerator.generators.customer.CustomerSampler;
+import com.github.rnowling.bps.datagenerator.generators.customer.CustomerSamplerBuilder;
 import com.github.rnowling.bps.datagenerator.generators.store.StoreSamplerBuilder;
 
 public class Simulation
@@ -72,12 +72,13 @@ public class Simulation
 	private void generateCustomers(int nCustomers) throws Exception
 	{
 		System.out.println("Generating customers");
-		CustomerSampler generator = new CustomerSampler(stores, inputData, this.seedFactory);
+		CustomerSamplerBuilder builder = new CustomerSamplerBuilder(stores, inputData, this.seedFactory);
+		Sampler<Customer> sampler = builder.build();
 		
 		customers = new Vector<Customer>();
 		for(int i = 0; i < nCustomers; i++)
 		{
-			Customer customer = generator.sample();
+			Customer customer = sampler.sample();
 			customers.add(customer);
 		}
 		
