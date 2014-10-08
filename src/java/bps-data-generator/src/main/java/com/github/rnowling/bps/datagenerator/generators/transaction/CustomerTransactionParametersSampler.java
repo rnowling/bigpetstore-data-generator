@@ -1,15 +1,7 @@
 package com.github.rnowling.bps.datagenerator.generators.transaction;
 
-import java.util.Map;
-
-import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.SeedFactory;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.BoundedMultiModalGaussianSampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.UniformIntSampler;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
-import com.google.common.collect.Maps;
 
 public class CustomerTransactionParametersSampler implements Sampler<CustomerTransactionParameters>
 {
@@ -18,25 +10,16 @@ public class CustomerTransactionParametersSampler implements Sampler<CustomerTra
 	final private Sampler<Double> purchaseTriggerTimeSampler;
 	final private Sampler<Double> transactionTriggerTimeSampler;
 
-	public CustomerTransactionParametersSampler(SeedFactory seedFactory)
+	public CustomerTransactionParametersSampler(Sampler<Integer> nPetsSampler,
+			Sampler<PetSpecies> petSpeciesSampler, 
+			Sampler<Double> purchaseTriggerTimeSampler,
+			Sampler<Double> transactionTriggerTimeSampler)
 	{
 
-		this.nPetsSampler = new UniformIntSampler(Constants.MIN_PETS, Constants.MAX_PETS, seedFactory);
-		
-		Map<PetSpecies, Double> speciesWeights = Maps.newHashMap();
-		for(PetSpecies species : PetSpecies.values())
-		{
-			speciesWeights.put(species, 1.0);
-		}
-		this.petSpeciesSampler = RouletteWheelSampler.create(speciesWeights, seedFactory);
-		
-		this.transactionTriggerTimeSampler = new BoundedMultiModalGaussianSampler(Constants.TRANSACTION_TRIGGER_TIME_GAUSSIANS,
-					Constants.TRANSACTION_TRIGGER_TIME_MIN, Constants.TRANSACTION_TRIGGER_TIME_MAX,
-					seedFactory);
-		
-		this.purchaseTriggerTimeSampler = new BoundedMultiModalGaussianSampler(Constants.PURCHASE_TRIGGER_TIME_GAUSSIANS,
-				Constants.PURCHASE_TRIGGER_TIME_MIN, Constants.PURCHASE_TRIGGER_TIME_MAX,
-				seedFactory);
+		this.nPetsSampler = nPetsSampler;
+		this.petSpeciesSampler = petSpeciesSampler;
+		this.purchaseTriggerTimeSampler = purchaseTriggerTimeSampler;
+		this.transactionTriggerTimeSampler = transactionTriggerTimeSampler;
 	}
 	
 	protected void generatePets(CustomerTransactionParametersBuilder builder) throws Exception

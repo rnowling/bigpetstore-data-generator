@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
@@ -23,9 +24,10 @@ public class TestProductCategoryInventory
 	{
 		SeedFactory seedFactory = new SeedFactory(1234);
 		
-		CustomerTransactionParametersSampler generator = new CustomerTransactionParametersSampler(seedFactory);
+		CustomerTransactionParametersSamplerBuilder transParamsBuilder = new CustomerTransactionParametersSamplerBuilder(seedFactory);
+		Sampler<CustomerTransactionParameters> sampler = transParamsBuilder.build();
 		
-		CustomerTransactionParameters parameters = generator.sample();
+		CustomerTransactionParameters parameters = sampler.sample();
 		
 		ProductCategoryBuilder builder = new ProductCategoryBuilder();
 		builder.addApplicableSpecies(PetSpecies.DOG);

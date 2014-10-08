@@ -8,11 +8,11 @@ import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.SeedFactory;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 
-public class TestCustomerTransactionParametersSampler
+public class TestCustomerTransactionParametersSamplerBuilder
 {
 
 	@Test
-	public void testSample() throws Exception
+	public void testBuild() throws Exception
 	{
 		SeedFactory seedFactory = new SeedFactory(1234);
 		CustomerTransactionParametersSamplerBuilder builder = new CustomerTransactionParametersSamplerBuilder(seedFactory);

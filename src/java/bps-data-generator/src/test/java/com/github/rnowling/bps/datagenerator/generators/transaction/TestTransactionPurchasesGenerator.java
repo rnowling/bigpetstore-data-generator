@@ -11,6 +11,7 @@ import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.SeedFactory;
 import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovModelBuilder;
+import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
@@ -110,8 +111,10 @@ public class TestTransactionPurchasesGenerator
 		
 		PurchasingProfile profile = createProfile(dogFoodCategory, catFoodCategory, seedFactory);
 		
-		CustomerTransactionParametersSampler generator = new CustomerTransactionParametersSampler(seedFactory);
-		CustomerTransactionParameters parameters = generator.sample();
+		CustomerTransactionParametersSamplerBuilder transParamsBuilder = new CustomerTransactionParametersSamplerBuilder(seedFactory);
+		Sampler<CustomerTransactionParameters> sampler = transParamsBuilder.build();
+		
+		CustomerTransactionParameters parameters = sampler.sample();
 		
 		CustomerInventoryBuilder inventoryBuilder = new CustomerInventoryBuilder(parameters, seedFactory);
 		inventoryBuilder.addProductCategory(dogFoodCategory);
