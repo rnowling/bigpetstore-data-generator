@@ -20,11 +20,11 @@ import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
 import com.github.rnowling.bps.datagenerator.generators.store.StoreSamplerBuilder;
 
-public class TestCustomerGenerator
+public class TestCustomerSampler
 {
 
 	@Test
-	public void testGenerate() throws Exception
+	public void testSample() throws Exception
 	{
 		ZipcodeReader zipcodeReader = new ZipcodeReader();
 		zipcodeReader.setCoordinatesFile(Constants.COORDINATES_FILE);
@@ -49,9 +49,9 @@ public class TestCustomerGenerator
 			stores.add(store);
 		}
 		
-		CustomerGenerator customerGenerator = new CustomerGenerator(stores, inputData, factory);
+		CustomerSampler customerGenerator = new CustomerSampler(stores, inputData, factory);
 		
-		Customer customer = customerGenerator.generate();
+		Customer customer = customerGenerator.sample();
 		
 		assertNotNull(customer);
 		assertTrue(customer.getId() >= 0);
