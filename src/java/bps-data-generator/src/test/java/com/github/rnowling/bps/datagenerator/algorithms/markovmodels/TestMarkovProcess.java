@@ -14,7 +14,7 @@ public class TestMarkovProcess
 {
 
 	@Test
-	public void test()
+	public void test() throws Exception
 	{
 		SeedFactory factory = new SeedFactory(1245);
 		MarkovModelBuilder<String> builder = MarkovModelBuilder.create();

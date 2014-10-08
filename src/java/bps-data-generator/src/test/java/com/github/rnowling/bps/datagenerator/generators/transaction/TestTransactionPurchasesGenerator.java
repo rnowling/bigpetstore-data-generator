@@ -101,7 +101,7 @@ public class TestTransactionPurchasesGenerator
 	}
 
 	@Test
-	public void testGenerator()
+	public void testGenerator() throws Exception
 	{
 		SeedFactory seedFactory = new SeedFactory(1234);
 		

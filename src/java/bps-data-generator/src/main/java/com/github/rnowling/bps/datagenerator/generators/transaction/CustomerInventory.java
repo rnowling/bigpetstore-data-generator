@@ -16,7 +16,7 @@ public class CustomerInventory
 		this.productCategoryInventories = ImmutableMap.copyOf(productCategoryInventories);
 	}
 	
-	public void simulatePurchase(double time, Product product)
+	public void simulatePurchase(double time, Product product) throws Exception
 	{
 		String category = product.getFieldValueAsString(Constants.PRODUCT_CATEGORY);
 		ProductCategoryInventory inventory = productCategoryInventories.get(category);

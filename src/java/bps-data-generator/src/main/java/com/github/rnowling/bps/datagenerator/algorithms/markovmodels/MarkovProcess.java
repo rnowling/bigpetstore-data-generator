@@ -39,7 +39,7 @@ public class MarkovProcess<T> implements Sampler<T>
 		return new MarkovProcess<T>(model, factory);
 	}
 	
-	public T sample()
+	public T sample() throws Exception
 	{
 		if(currentState == null)
 		{

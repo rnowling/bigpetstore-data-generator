@@ -21,7 +21,7 @@ public class TestPurchasingProcessesBuilder
 {
 	
 	@Test
-	public void testBuild()
+	public void testBuild() throws Exception
 	{	
 		MarkovModelBuilder<Product> markovBuilder = new MarkovModelBuilder<Product>();
 		

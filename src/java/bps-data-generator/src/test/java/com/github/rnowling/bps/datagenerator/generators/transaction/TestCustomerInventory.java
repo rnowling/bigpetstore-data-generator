@@ -19,7 +19,7 @@ public class TestCustomerInventory
 {
 	
 	@Test
-	public void testPurchase()
+	public void testPurchase() throws Exception
 	{
 		SeedFactory seedFactory = new SeedFactory(1234);
 		

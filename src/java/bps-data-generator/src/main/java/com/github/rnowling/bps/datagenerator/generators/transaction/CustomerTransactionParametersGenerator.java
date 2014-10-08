@@ -40,7 +40,7 @@ public class CustomerTransactionParametersGenerator implements Generator<Custome
 				seedFactory);
 	}
 	
-	protected void generatePets(CustomerTransactionParametersBuilder builder)
+	protected void generatePets(CustomerTransactionParametersBuilder builder) throws Exception
 	{
 		int nPets = this.nPetsSampler.sample();
 		
@@ -51,7 +51,7 @@ public class CustomerTransactionParametersGenerator implements Generator<Custome
 		}
 	}
 	
-	public CustomerTransactionParameters generate()
+	public CustomerTransactionParameters generate() throws Exception
 	{
 		CustomerTransactionParametersBuilder builder = new CustomerTransactionParametersBuilder();
 		

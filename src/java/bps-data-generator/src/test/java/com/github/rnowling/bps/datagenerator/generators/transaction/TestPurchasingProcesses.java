@@ -17,7 +17,7 @@ public class TestPurchasingProcesses
 {
 	
 	@Test
-	public void testSimulatePurchase()
+	public void testSimulatePurchase() throws Exception
 	{
 		Map<Product, Double> productPDF = Maps.newHashMap();
 		

@@ -19,7 +19,7 @@ public class TestCustomerInventoryBuilder
 {
 	
 	@Test
-	public void testBuild()
+	public void testBuild() throws Exception
 	{
 		SeedFactory seedFactory = new SeedFactory(1234);
 		

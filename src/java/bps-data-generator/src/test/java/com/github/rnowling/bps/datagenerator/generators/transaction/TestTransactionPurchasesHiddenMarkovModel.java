@@ -104,7 +104,7 @@ public class TestTransactionPurchasesHiddenMarkovModel
 		return builder.build();
 	}
 
-	protected TransactionPurchasesHiddenMarkovModel createHMM()
+	protected TransactionPurchasesHiddenMarkovModel createHMM() throws Exception
 	{
 		SeedFactory seedFactory = new SeedFactory(1234);
 		
@@ -128,7 +128,7 @@ public class TestTransactionPurchasesHiddenMarkovModel
 	}
 	
 	@Test
-	public void testChooseCategory()
+	public void testChooseCategory() throws Exception
 	{
 		TransactionPurchasesHiddenMarkovModel hmm = createHMM();
 		
@@ -141,7 +141,7 @@ public class TestTransactionPurchasesHiddenMarkovModel
 	}
 	
 	@Test
-	public void testChooseProduct()
+	public void testChooseProduct() throws Exception
 	{
 		TransactionPurchasesHiddenMarkovModel hmm = createHMM();
 		
@@ -157,7 +157,7 @@ public class TestTransactionPurchasesHiddenMarkovModel
 	}
 	
 	@Test
-	public void testSample()
+	public void testSample() throws Exception
 	{	
 		TransactionPurchasesHiddenMarkovModel hmm = createHMM();
 		

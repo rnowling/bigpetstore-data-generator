@@ -10,7 +10,7 @@ public class TestGaussianSampler
 {
 
 	@Test
-	public void testSample()
+	public void testSample() throws Exception
 	{
 		double mean = 2.0;
 		double var = 1.0;

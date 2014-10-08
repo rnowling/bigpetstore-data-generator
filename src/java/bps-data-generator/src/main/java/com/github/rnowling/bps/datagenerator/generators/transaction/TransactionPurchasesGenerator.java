@@ -34,7 +34,7 @@ public class TransactionPurchasesGenerator implements Generator<ImmutableList<Pr
 		this.transactionTime = transactionTime;
 	}
 	
-	public ImmutableList<Product> generate()
+	public ImmutableList<Product> generate() throws Exception
 	{
 		Sampler<Product> productSampler = new TransactionPurchasesHiddenMarkovModel(purchasingProcesses,
 				transactionParameters, inventory, transactionTime, seedFactory);

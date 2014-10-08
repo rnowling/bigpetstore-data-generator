@@ -14,7 +14,7 @@ public class TestRouletteWheelSampler
 {
 
 	@Test
-	public void testSample()
+	public void testSample() throws Exception
 	{
 		Map<String, Double> dataPoints = ImmutableMap.of(
 				"a", 0.25,
@@ -33,7 +33,7 @@ public class TestRouletteWheelSampler
 	}
 	
 	@Test
-	public void testSampleUnnormalized()
+	public void testSampleUnnormalized() throws Exception
 	{
 		Map<String, Double> dataPoints = ImmutableMap.of(
 				"a", 1.0,

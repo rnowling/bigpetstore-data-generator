@@ -14,7 +14,7 @@ public class TestBoundedMultiModalGaussianSampler
 {
 
 	@Test
-	public void testSample()
+	public void testSample() throws Exception
 	{
 		double upperbound = 10.0;
 		double lowerbound = 1.0;

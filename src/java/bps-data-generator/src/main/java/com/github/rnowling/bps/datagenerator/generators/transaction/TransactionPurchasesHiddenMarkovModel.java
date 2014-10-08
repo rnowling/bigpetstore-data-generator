@@ -49,7 +49,7 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Product>
 		return weight;
 	}
 	
-	protected String chooseCategory()
+	protected String chooseCategory() throws Exception
 	{
 		ImmutableMap<String, Double> exhaustionTimes = this.inventory.getExhaustionTimes();
 		Map<String, Double> weights = Maps.newHashMap();
@@ -71,12 +71,12 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Product>
 		return sampler.sample();
 	}
 	
-	protected Product chooseProduct(String category)
+	protected Product chooseProduct(String category) throws Exception
 	{
 		return this.purchasingProcesses.simulatePurchase(category);
 	}
 
-	public Product sample()
+	public Product sample() throws Exception
 	{
 		String category = this.chooseCategory();
 		

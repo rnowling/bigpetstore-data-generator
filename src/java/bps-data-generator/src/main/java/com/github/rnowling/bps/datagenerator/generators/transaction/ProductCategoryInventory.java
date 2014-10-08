@@ -22,7 +22,7 @@ public class ProductCategoryInventory
 				amountUsedAverage, amountUsedVariance, seedFactory);
 	}
 	
-	public void simulatePurchase(double time, Product product)
+	public void simulatePurchase(double time, Product product) throws Exception
 	{
 		double amountPurchased = product.getFieldValueAsDouble(Constants.PRODUCT_QUANTITY);
 		

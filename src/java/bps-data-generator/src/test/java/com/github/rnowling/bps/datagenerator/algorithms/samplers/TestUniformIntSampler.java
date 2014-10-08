@@ -10,7 +10,7 @@ public class TestUniformIntSampler
 {
 
 	@Test
-	public void testSample()
+	public void testSample() throws Exception
 	{
 		int upperbound = 10;
 		int lowerbound = 1;
@@ -26,7 +26,7 @@ public class TestUniformIntSampler
 	}
 	
 	@Test
-	public void testSampleInclusive()
+	public void testSampleInclusive() throws Exception
 	{
 		int upperbound = 2;
 		int lowerbound = 1;

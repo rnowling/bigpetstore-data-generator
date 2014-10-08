@@ -44,7 +44,7 @@ public class ProductCategoryMarkovModelGenerator implements Generator<MarkovMode
 				seedFactory);
 	}
 	
-	protected void generateWeights()
+	protected void generateWeights() throws Exception
 	{
 		fieldWeights = Maps.newHashMap();
 		fieldSimilarityWeights = Maps.newHashMap();
@@ -97,7 +97,7 @@ public class ProductCategoryMarkovModelGenerator implements Generator<MarkovMode
 		return weightSum;
 	}
 	
-	public MarkovModel<Product> generate()
+	public MarkovModel<Product> generate() throws Exception
 	{
 		generateWeights();
 		fieldWeights = normalize(fieldWeights);

@@ -12,7 +12,7 @@ public class TestProductCategoryUsageSimulator
 {
 	
 	@Test
-	public void testSimulate()
+	public void testSimulate() throws Exception
 	{
 		SeedFactory seedFactory = new SeedFactory(1234);
 		

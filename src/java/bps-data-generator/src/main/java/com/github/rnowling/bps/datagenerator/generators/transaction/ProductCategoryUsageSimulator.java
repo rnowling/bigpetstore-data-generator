@@ -23,7 +23,7 @@ public class ProductCategoryUsageSimulator
 		R = new GaussianSampler(0.0, 1.0, seedFactory);
 	}
 	
-	private void step(ProductCategoryUsageTrajectory trajectory)
+	private void step(ProductCategoryUsageTrajectory trajectory) throws Exception
 	{
 		// given in days since last usage
 		double timestep = timestepSampler.sample();
@@ -43,7 +43,7 @@ public class ProductCategoryUsageSimulator
 		trajectory.append(time, remainingAmount);
 	}
 	
-	public ProductCategoryUsageTrajectory simulate(double initialTime, double initialAmount)
+	public ProductCategoryUsageTrajectory simulate(double initialTime, double initialAmount) throws Exception
 	{
 		ProductCategoryUsageTrajectory trajectory = new ProductCategoryUsageTrajectory(initialTime, initialAmount);
 		

@@ -10,7 +10,7 @@ public class TestExponentialSampler
 {
 
 	@Test
-	public void testSample()
+	public void testSample() throws Exception
 	{
 		double lambda = 1.0 / 2.0;
 		

@@ -21,7 +21,7 @@ public class PurchasingProfileGenerator implements Generator<PurchasingProfile>
 		this.seedFactory = seedFactory;
 	}
 	
-	public PurchasingProfile generate()
+	public PurchasingProfile generate() throws Exception
 	{
 		PurchasingProfileBuilder builder = new PurchasingProfileBuilder();
 		for(ProductCategory productCategory : productCategories)

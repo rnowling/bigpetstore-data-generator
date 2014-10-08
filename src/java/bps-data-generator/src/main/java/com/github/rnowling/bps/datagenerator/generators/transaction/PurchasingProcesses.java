@@ -15,7 +15,7 @@ public class PurchasingProcesses
 		this.processes = ImmutableMap.copyOf(processes);
 	}
 	
-	public Product simulatePurchase(String productCategory)
+	public Product simulatePurchase(String productCategory) throws Exception
 	{
 		return this.processes.get(productCategory).sample();
 	}
