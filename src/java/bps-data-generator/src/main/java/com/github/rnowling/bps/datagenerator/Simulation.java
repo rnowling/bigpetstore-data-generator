@@ -13,7 +13,7 @@ import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
 import com.github.rnowling.bps.datagenerator.generators.customer.CustomerGenerator;
-import com.github.rnowling.bps.datagenerator.generators.store.StoreGenerator;
+import com.github.rnowling.bps.datagenerator.generators.store.StoreSampler;
 
 public class Simulation
 {
@@ -53,12 +53,12 @@ public class Simulation
 	private void generateStores(int nStores) throws Exception
 	{
 		System.out.println("Generating stores");
-		StoreGenerator generator = new StoreGenerator(inputData.getZipcodeTable(), this.seedFactory);
+		StoreSampler generator = new StoreSampler(inputData.getZipcodeTable(), this.seedFactory);
 		
 		stores = new Vector<Store>();
 		for(int i = 0; i < nStores; i++)
 		{
-			Store store = generator.generate();
+			Store store = generator.sample();
 			stores.add(store);
 		}
 		

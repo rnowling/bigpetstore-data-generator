@@ -12,13 +12,13 @@ import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.generators.Generator;
 
-public class StoreGenerator implements Generator<Store>
+public class StoreSampler implements Sampler<Store>
 {
 
 	Sampler<ZipcodeRecord> locationSampler;
 	int currentId;
 	
-	public StoreGenerator(List<ZipcodeRecord> zipcodeTable, SeedFactory factory)
+	public StoreSampler(List<ZipcodeRecord> zipcodeTable, SeedFactory factory)
 	{
 		ProbabilityDensityFunction<ZipcodeRecord> locationPopulationPDF = new StoreLocationPopulationPDF(zipcodeTable);
 		ProbabilityDensityFunction<ZipcodeRecord> locationIncomePDF = new StoreLocationIncomePDF(zipcodeTable, Constants.INCOME_SCALING_FACTOR);
@@ -48,7 +48,7 @@ public class StoreGenerator implements Generator<Store>
 		return "Store_" + id;
 	}
 	
-	public Store generate() throws Exception
+	public Store sample() throws Exception
 	{
 		int id = generateId();
 		ZipcodeRecord location = generateLocation();

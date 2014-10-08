@@ -13,11 +13,11 @@ import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
 
-public class TestStoreGenerator
+public class TestStoreSampler
 {
 
 	@Test
-	public void testGenerate() throws Exception
+	public void testSampler() throws Exception
 	{
 		ZipcodeReader reader = new ZipcodeReader();
 		reader.setCoordinatesFile(Constants.COORDINATES_FILE);
@@ -30,9 +30,9 @@ public class TestStoreGenerator
 		
 		SeedFactory factory = new SeedFactory(1234);
 		
-		StoreGenerator generator = new StoreGenerator(zipcodes, factory);
+		StoreSampler generator = new StoreSampler(zipcodes, factory);
 		
-		Store store = generator.generate();
+		Store store = generator.sample();
 		assertNotNull(store);
 		assertTrue(store.getId() >= 0);
 		assertNotNull(store.getName());

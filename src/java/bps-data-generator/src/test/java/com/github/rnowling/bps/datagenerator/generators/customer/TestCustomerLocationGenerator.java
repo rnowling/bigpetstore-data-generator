@@ -12,7 +12,7 @@ import com.github.rnowling.bps.datagenerator.SeedFactory;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
-import com.github.rnowling.bps.datagenerator.generators.store.StoreGenerator;
+import com.github.rnowling.bps.datagenerator.generators.store.StoreSampler;
 
 public class TestCustomerLocationGenerator
 {
@@ -28,12 +28,12 @@ public class TestCustomerLocationGenerator
 		
 		SeedFactory factory = new SeedFactory(1234);
 		
-		StoreGenerator storeGenerator = new StoreGenerator(zipcodes, factory);
+		StoreSampler storeGenerator = new StoreSampler(zipcodes, factory);
 		
 		List<Store> stores = new ArrayList<Store>();
 		for(int i = 0; i < 10; i++)
 		{
-			Store store = storeGenerator.generate();
+			Store store = storeGenerator.sample();
 			stores.add(store);
 		}
 		
