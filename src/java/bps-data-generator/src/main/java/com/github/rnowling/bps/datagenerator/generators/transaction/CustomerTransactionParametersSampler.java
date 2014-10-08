@@ -9,17 +9,16 @@ import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSa
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.UniformIntSampler;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
-import com.github.rnowling.bps.datagenerator.generators.Generator;
 import com.google.common.collect.Maps;
 
-public class CustomerTransactionParametersGenerator implements Generator<CustomerTransactionParameters>
+public class CustomerTransactionParametersSampler implements Sampler<CustomerTransactionParameters>
 {
 	final private Sampler<Integer> nPetsSampler;
 	final private Sampler<PetSpecies> petSpeciesSampler;
 	final private Sampler<Double> purchaseTriggerTimeSampler;
 	final private Sampler<Double> transactionTriggerTimeSampler;
 
-	public CustomerTransactionParametersGenerator(SeedFactory seedFactory)
+	public CustomerTransactionParametersSampler(SeedFactory seedFactory)
 	{
 
 		this.nPetsSampler = new UniformIntSampler(Constants.MIN_PETS, Constants.MAX_PETS, seedFactory);
@@ -51,7 +50,7 @@ public class CustomerTransactionParametersGenerator implements Generator<Custome
 		}
 	}
 	
-	public CustomerTransactionParameters generate() throws Exception
+	public CustomerTransactionParameters sample() throws Exception
 	{
 		CustomerTransactionParametersBuilder builder = new CustomerTransactionParametersBuilder();
 		

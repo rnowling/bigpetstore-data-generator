@@ -7,16 +7,16 @@ import org.junit.Test;
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.SeedFactory;
 
-public class TestCustomerTransactionParametersGenerator
+public class TestCustomerTransactionParametersSampler
 {
 
 	@Test
 	public void testGenerator() throws Exception
 	{
 		SeedFactory seedFactory = new SeedFactory(1234);
-		CustomerTransactionParametersGenerator generator = new CustomerTransactionParametersGenerator(seedFactory);
+		CustomerTransactionParametersSampler generator = new CustomerTransactionParametersSampler(seedFactory);
 		
-		CustomerTransactionParameters transParams = generator.generate();
+		CustomerTransactionParameters transParams = generator.sample();
 		
 		assertTrue(transParams.countPets() >= Constants.MIN_PETS);
 		assertTrue(transParams.countPets() <= Constants.MAX_PETS);

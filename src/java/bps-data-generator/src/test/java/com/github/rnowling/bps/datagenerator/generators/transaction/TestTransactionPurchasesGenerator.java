@@ -110,8 +110,8 @@ public class TestTransactionPurchasesGenerator
 		
 		PurchasingProfile profile = createProfile(dogFoodCategory, catFoodCategory, seedFactory);
 		
-		CustomerTransactionParametersGenerator generator = new CustomerTransactionParametersGenerator(seedFactory);
-		CustomerTransactionParameters parameters = generator.generate();
+		CustomerTransactionParametersSampler generator = new CustomerTransactionParametersSampler(seedFactory);
+		CustomerTransactionParameters parameters = generator.sample();
 		
 		CustomerInventoryBuilder inventoryBuilder = new CustomerInventoryBuilder(parameters, seedFactory);
 		inventoryBuilder.addProductCategory(dogFoodCategory);

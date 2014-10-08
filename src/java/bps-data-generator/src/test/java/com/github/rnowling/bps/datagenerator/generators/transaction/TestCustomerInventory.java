@@ -23,9 +23,9 @@ public class TestCustomerInventory
 	{
 		SeedFactory seedFactory = new SeedFactory(1234);
 		
-		CustomerTransactionParametersGenerator generator = new CustomerTransactionParametersGenerator(seedFactory);
+		CustomerTransactionParametersSampler generator = new CustomerTransactionParametersSampler(seedFactory);
 		
-		CustomerTransactionParameters parameters = generator.generate();
+		CustomerTransactionParameters parameters = generator.sample();
 		
 		ProductCategoryBuilder builder = new ProductCategoryBuilder();
 		builder.addApplicableSpecies(PetSpecies.DOG);
