@@ -121,10 +121,10 @@ public class TestTransactionPurchasesSampler
 		inventoryBuilder.addProductCategory(catFoodCategory);
 		CustomerInventory inventory = inventoryBuilder.build();
 		
-		TransactionPurchasesSampler tranGen = new TransactionPurchasesSampler(profile,
+		TransactionPurchasesSamplerBuilder tranGen = new TransactionPurchasesSamplerBuilder(profile,
 				parameters, inventory, 0.0, seedFactory);
 		
-		List<Product> products = tranGen.sample();
+		List<Product> products = tranGen.build().sample();
 		
 		assertTrue(products.size() > 0);
 	}
