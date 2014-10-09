@@ -12,6 +12,7 @@ import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.SeedFactory;
 import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovModelBuilder;
+import com.github.rnowling.bps.datagenerator.algorithms.samplers.DoubleSequenceSampler;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
@@ -125,7 +126,7 @@ public class TestTransactionPurchasesHiddenMarkovModel
 		CustomerInventory inventory = inventoryBuilder.build();
 		
 		TransactionPurchasesHiddenMarkovModel hmm = new TransactionPurchasesHiddenMarkovModel(processes,
-				parameters, inventory, 0.0, seedFactory);
+				parameters, inventory, new DoubleSequenceSampler(), seedFactory);
 		
 		return hmm;
 	}
@@ -135,7 +136,7 @@ public class TestTransactionPurchasesHiddenMarkovModel
 	{
 		TransactionPurchasesHiddenMarkovModel hmm = createHMM();
 		
-		String category = hmm.chooseCategory();
+		String category = hmm.chooseCategory(1.0, 0);
 		
 		assertNotNull(category);
 		assertTrue(category.equals(TransactionPurchasesHiddenMarkovModel.STOP_STATE) ||
@@ -164,16 +165,18 @@ public class TestTransactionPurchasesHiddenMarkovModel
 	{	
 		TransactionPurchasesHiddenMarkovModel hmm = createHMM();
 		
-		Product product = hmm.sample();
+		Purchase purchase = hmm.sample();
 		
-		// first product should never be null
-		assertNotNull(product);
-		assertTrue(product.getFieldValue(Constants.PRODUCT_CATEGORY).equals("dog food") || 
-				product.getFieldValue(Constants.PRODUCT_CATEGORY).equals("cat food"));
+		assertTrue(purchase.getPurchasedProducts().size() > 0);
 		
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < purchase.getPurchasedProducts().size(); i++)
 		{
-			product = hmm.sample();
+			Product product = purchase.getPurchasedProducts().get(i);
+			
+			// first product should never be null
+			assertNotNull(product);
+			assertTrue(product.getFieldValue(Constants.PRODUCT_CATEGORY).equals("dog food") || 
+					product.getFieldValue(Constants.PRODUCT_CATEGORY).equals("cat food"));
 		}
 		
 	}
