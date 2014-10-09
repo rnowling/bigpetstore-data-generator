@@ -18,19 +18,19 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Purchase>
 	protected final static String STOP_STATE = "STOP";
 	
 	final PurchasingProcesses purchasingProcesses;
-	final CustomerTransactionParameters transactionParameters;
+	final double averagePurchaseTriggerTime;
 	final CustomerInventory inventory;
 	final Sampler<Double> transactionTimeSampler;
 	
 	final SeedFactory seedFactory;
 	
 	public TransactionPurchasesHiddenMarkovModel(PurchasingProcesses purchasingProcesses,
-			CustomerTransactionParameters transactionParameters, CustomerInventory inventory,
+			double averagePurchaseTriggerTime, CustomerInventory inventory,
 				Sampler<Double> transactionTimeSampler, SeedFactory seedFactory)
 	{
 		this.purchasingProcesses = purchasingProcesses;
 		this.inventory = inventory;
-		this.transactionParameters = transactionParameters;
+		this.averagePurchaseTriggerTime = averagePurchaseTriggerTime;
 		this.transactionTimeSampler = transactionTimeSampler;
 		
 		this.seedFactory = seedFactory;
@@ -39,7 +39,7 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Purchase>
 	protected double categoryWeight(double exhaustionTime, double transactionTime)
 	{
 		double remainingTime = Math.max(0.0, exhaustionTime - transactionTime);
-		double triggerTime = this.transactionParameters.averagePurchaseTriggerTime;
+		double triggerTime = this.averagePurchaseTriggerTime;
 		double lambda = 1.0 / triggerTime;
 		double weight = lambda * Math.exp(-1.0 * lambda * remainingTime);
 		

@@ -126,7 +126,7 @@ public class TestTransactionPurchasesHiddenMarkovModel
 		CustomerInventory inventory = inventoryBuilder.build();
 		
 		TransactionPurchasesHiddenMarkovModel hmm = new TransactionPurchasesHiddenMarkovModel(processes,
-				parameters, inventory, new DoubleSequenceSampler(), seedFactory);
+				parameters.averagePurchaseTriggerTime, inventory, new DoubleSequenceSampler(), seedFactory);
 		
 		return hmm;
 	}
