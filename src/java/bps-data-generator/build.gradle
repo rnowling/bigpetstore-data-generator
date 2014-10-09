@@ -5,10 +5,17 @@ apply plugin: 'java'
 version = '0.2'
 
 jar {
-	manifest {
-		attributes 'Title': 'BigPetStore Data Generator', 'Version': version
-		attributes 'Main-Class': 'com.github.rnowling.bps.datagenerator.Driver'
-	}
+    
+    from {
+        configurations.runtime.collect { 
+            it.isDirectory() ? it : zipTree(it)
+        }
+    } 
+
+    manifest {
+	attributes 'Title': 'BigPetStore Data Generator', 'Version': version
+	attributes 'Main-Class': 'com.github.rnowling.bps.datagenerator.Driver'
+    }
 }
 
 repositories {
