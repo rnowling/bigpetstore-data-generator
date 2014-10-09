@@ -1,6 +1,6 @@
 package com.github.rnowling.bps.datagenerator.generators.purchasingprofile;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 import com.github.rnowling.bps.datagenerator.SeedFactory;
@@ -17,7 +17,7 @@ public class PurchasingProfileSamplerBuilder
 	final ImmutableList<ProductCategory> productCategories;
 	final SeedFactory seedFactory;
 	
-	public PurchasingProfileSamplerBuilder(List<ProductCategory> productCategories, SeedFactory seedFactory)
+	public PurchasingProfileSamplerBuilder(Collection<ProductCategory> productCategories, SeedFactory seedFactory)
 	{
 		this.productCategories = ImmutableList.copyOf(productCategories);
 		this.seedFactory = seedFactory;

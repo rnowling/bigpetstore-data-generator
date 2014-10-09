@@ -38,9 +38,12 @@ public class CustomerInventoryBuilder
 		Map<String, ProductCategoryInventory> inventories = Maps.newHashMap();
 		for(ProductCategory productCategory : productCategories)
 		{
-			ProductCategoryInventory inventory = new ProductCategoryInventory(productCategory,
+			if(parameters.countPetsBySpecies(productCategory.getApplicableSpecies()) > 0)
+			{
+				ProductCategoryInventory inventory = new ProductCategoryInventory(productCategory,
 					parameters, seedFactory);
-			inventories.put(productCategory.getCategoryLabel(), inventory);
+				inventories.put(productCategory.getCategoryLabel(), inventory);
+			}
 		}
 		
 		return new CustomerInventory(inventories);

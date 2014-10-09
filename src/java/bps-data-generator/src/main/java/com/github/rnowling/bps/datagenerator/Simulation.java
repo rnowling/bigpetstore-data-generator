@@ -1,6 +1,6 @@
 package com.github.rnowling.bps.datagenerator;
 
-import java.io.FileNotFoundException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -8,13 +8,20 @@ import java.util.Vector;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
+import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
+import com.github.rnowling.bps.datagenerator.datamodels.outputs.Transaction;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
+import com.github.rnowling.bps.datagenerator.datareaders.ProductsReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
 import com.github.rnowling.bps.datagenerator.generators.customer.CustomerSamplerBuilder;
+import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfileSamplerBuilder;
 import com.github.rnowling.bps.datagenerator.generators.store.StoreSamplerBuilder;
+import com.github.rnowling.bps.datagenerator.generators.transaction.TransactionSamplerBuilder;
+import com.google.common.collect.Lists;
 
 public class Simulation
 {
@@ -22,18 +29,22 @@ public class Simulation
 	SeedFactory seedFactory;
 	int nStores;
 	int nCustomers;
+	double simulationTime;
+	Collection<ProductCategory> productCategories;
 	
 	List<Store> stores;
 	List<Customer> customers;
+	List<Transaction> transactions;
 	
-	public Simulation(int nStores, int nCustomers, long seed)
+	public Simulation(int nStores, int nCustomers, double simulationTime, long seed)
 	{
 		this.nStores = nStores;
 		this.nCustomers = nCustomers;
+		this.simulationTime = simulationTime;
 		seedFactory = new SeedFactory(seed);
 	}
 	
-	private void loadData() throws FileNotFoundException
+	private void loadData() throws Exception
 	{
 		System.out.println("Reading zipcode data");
 		ZipcodeReader zipcodeReader = new ZipcodeReader();
@@ -47,6 +58,11 @@ public class Simulation
 		NameReader nameReader = new NameReader(Constants.NAMEDB_FILE);
 		Names names = nameReader.readData();
 		System.out.println("Read " + names.getFirstNames().size() + " first names and " + names.getLastNames().size() + " last names");
+		
+		System.out.println("Reading product data");
+		ProductsReader reader = new ProductsReader(Constants.PRODUCTS_FILE);
+		productCategories = reader.readData();
+		System.out.println("Read " + productCategories.size() + " product categories");
 		
 		inputData = new InputData(zipcodeTable, names);
 	}
@@ -87,10 +103,44 @@ public class Simulation
 		System.out.println("Generated " + customers.size() + " customers");
 	}
 	
+	public void generateTransactions(double simulationLength) throws Exception
+	{
+		Sampler<PurchasingProfile> ppSampler =
+				new PurchasingProfileSamplerBuilder(productCategories, seedFactory).build();
+		
+		transactions = Lists.newArrayList();
+		
+		for(Customer customer : customers)
+		{
+			PurchasingProfile profile = ppSampler.sample();
+			
+			Sampler<Transaction> sampler =
+					new TransactionSamplerBuilder(stores, productCategories,
+							customer, profile, seedFactory).build();
+			
+			while(true)
+			{
+				Transaction transaction = sampler.sample();
+				
+				System.out.println("Transaction Time: " + transaction.getDateTime());
+				
+				if(transaction.getDateTime() > simulationLength)
+					break;
+				transactions.add(transaction);
+			}
+		}
+	}
+	
 	public void simulate() throws Exception
 	{
 		loadData();
 		generateStores(nStores);
+		System.out.println("Generated " + stores.size() + " stores");
 		generateCustomers(nCustomers);
+		System.out.println("Generated " + customers.size() + " customers");
+		generateTransactions(simulationTime);
+		System.out.println("Generated " + transactions.size() + " transactions");
+		
+		
 	}
 }

@@ -91,6 +91,7 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Purchase>
 			}
 			
 			Product product = this.chooseProduct(category);
+			
 			purchasedProducts.add(product);
 			
 			this.inventory.simulatePurchase(transactionTime, product);

@@ -15,7 +15,7 @@ public class ProductCategoryInventory
 	{
 		
 		double amountUsedAverage = productCategory.getBaseAmountUsedAverage() * parameters.countPetsBySpecies(productCategory.getApplicableSpecies());
-		double amountUsedVariance = productCategory.getBaseAmountUsedVariance() * parameters.countPetsBySpecies(productCategory.getApplicableSpecies());
+		double amountUsedVariance = productCategory.getBaseAmountUsedVariance() * parameters.countPetsBySpecies(productCategory.getApplicableSpecies());		
 		
 		trajectory = new ProductCategoryUsageTrajectory(0.0, 0.0);
 		simulator = new ProductCategoryUsageSimulator(productCategory.getDailyUsageRate(),
@@ -27,7 +27,7 @@ public class ProductCategoryInventory
 		double amountPurchased = product.getFieldValueAsDouble(Constants.PRODUCT_QUANTITY);
 		
 		double amountRemainingBeforePurchase = trajectory.amountAtTime(time);
-
+		
 		trajectory = simulator.simulate(time, amountRemainingBeforePurchase + amountPurchased);
 	}
 	
