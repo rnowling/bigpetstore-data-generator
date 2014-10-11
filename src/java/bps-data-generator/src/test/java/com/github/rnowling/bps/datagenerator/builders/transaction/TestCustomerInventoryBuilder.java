@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.samplers.transaction;
+package com.github.rnowling.bps.datagenerator.builders.transaction;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -8,6 +8,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
+import com.github.rnowling.bps.datagenerator.builders.transaction.CustomerInventoryBuilder;
 import com.github.rnowling.bps.datagenerator.builders.transaction.CustomerTransactionParameters;
 import com.github.rnowling.bps.datagenerator.builders.transaction.CustomerTransactionParametersSamplerBuilder;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
@@ -15,16 +16,15 @@ import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.datareaders.ProductCategoryBuilder;
 import com.github.rnowling.bps.datagenerator.samplers.transaction.CustomerInventory;
-import com.github.rnowling.bps.datagenerator.samplers.transaction.ProductCategoryInventory;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 import com.google.common.collect.Maps;
 
-public class TestCustomerInventory
+public class TestCustomerInventoryBuilder
 {
 	
 	@Test
-	public void testPurchase() throws Exception
+	public void testBuild() throws Exception
 	{
 		SeedFactory seedFactory = new SeedFactory(1234);
 		
@@ -40,15 +40,12 @@ public class TestCustomerInventory
 		builder.setDailyUsageRate(2.0);
 		builder.setCategory("dog food");
 		
-		
 		ProductCategory category = builder.build();
 		
-		ProductCategoryInventory productInventory = new ProductCategoryInventory(category, parameters, seedFactory);
+		CustomerInventoryBuilder inventoryBuilder = new CustomerInventoryBuilder(parameters, seedFactory);
+		inventoryBuilder.addProductCategory(category);
 		
-		Map<String, ProductCategoryInventory> inventories = Maps.newHashMap();
-		inventories.put("dog food", productInventory);
-		
-		CustomerInventory inventory = new CustomerInventory(inventories);
+		CustomerInventory inventory = inventoryBuilder.build();
 		
 		for(Map.Entry<String, Double> entry : inventory.getExhaustionTimes().entrySet())
 		{

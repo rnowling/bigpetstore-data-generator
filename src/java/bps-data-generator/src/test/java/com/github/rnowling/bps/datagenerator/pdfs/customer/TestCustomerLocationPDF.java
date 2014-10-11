@@ -8,10 +8,10 @@ import java.util.List;
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
+import com.github.rnowling.bps.datagenerator.builders.store.StoreSamplerBuilder;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
-import com.github.rnowling.bps.datagenerator.generators.store.StoreSamplerBuilder;
 import com.github.rnowling.bps.datagenerator.pdfs.customer.CustomerLocationPDF;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;

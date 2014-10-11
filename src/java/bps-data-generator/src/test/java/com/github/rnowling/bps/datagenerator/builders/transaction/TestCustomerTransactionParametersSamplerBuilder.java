@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.samplers.transaction;
+package com.github.rnowling.bps.datagenerator.builders.transaction;
 
 import static org.junit.Assert.assertTrue;
 
@@ -10,11 +10,11 @@ import com.github.rnowling.bps.datagenerator.builders.transaction.CustomerTransa
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 
-public class TestCustomerTransactionParametersSampler
+public class TestCustomerTransactionParametersSamplerBuilder
 {
 
 	@Test
-	public void testSample() throws Exception
+	public void testBuild() throws Exception
 	{
 		SeedFactory seedFactory = new SeedFactory(1234);
 		CustomerTransactionParametersSamplerBuilder builder = new CustomerTransactionParametersSamplerBuilder(seedFactory);

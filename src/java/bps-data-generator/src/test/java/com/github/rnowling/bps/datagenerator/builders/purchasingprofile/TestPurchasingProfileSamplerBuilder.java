@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.samplers.purchasingprofile;
+package com.github.rnowling.bps.datagenerator.builders.purchasingprofile;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -15,11 +15,11 @@ import com.github.rnowling.bps.datagenerator.datareaders.ProductsReader;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 
-public class TestPurchasingProfileSampler
+public class TestPurchasingProfileSamplerBuilder
 {
 
 	@Test
-	public void testSample() throws Exception
+	public void testBuild() throws Exception
 	{
 		SeedFactory seedFactory = new SeedFactory(1245);
 		

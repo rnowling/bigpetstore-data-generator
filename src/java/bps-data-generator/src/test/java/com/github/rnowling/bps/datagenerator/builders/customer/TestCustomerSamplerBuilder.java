@@ -1,31 +1,29 @@
-package com.github.rnowling.bps.datagenerator.samplers.customer;
+package com.github.rnowling.bps.datagenerator.builders.customer;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.builders.customer.CustomerSamplerBuilder;
-import com.github.rnowling.bps.datagenerator.builders.store.StoreSamplerBuilder;
-import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
-import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
+import com.github.rnowling.bps.datagenerator.samplers.customer.CustomerSampler;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.SequenceSampler;
 
-public class TestCustomerSampler
+public class TestCustomerSamplerBuilder
 {
 
 	@Test
-	public void testBuild() throws Exception
+	public void testSample() throws Exception
 	{
 		ZipcodeReader zipcodeReader = new ZipcodeReader();
 		zipcodeReader.setCoordinatesFile(Constants.COORDINATES_FILE);
@@ -36,22 +34,13 @@ public class TestCustomerSampler
 		NameReader nameReader = new NameReader(Constants.NAMEDB_FILE);
 		Names names = nameReader.readData();
 		
-		InputData inputData = new InputData(zipcodes, names);
-		
 		SeedFactory factory = new SeedFactory(1234);
 		
-		StoreSamplerBuilder storeSamplerBuilder = new StoreSamplerBuilder(zipcodes, factory);
-		Sampler<Store> storeSampler = storeSamplerBuilder.build();
+		Sampler<Customer> sampler = new CustomerSampler(new SequenceSampler(),
+				RouletteWheelSampler.createUniform(names.getFirstNames().keySet(), factory), 
+				RouletteWheelSampler.createUniform(names.getLastNames().keySet(), factory), 
+				RouletteWheelSampler.createUniform(zipcodes, factory));
 		
-		List<Store> stores = new ArrayList<Store>();
-		for(int i = 0; i < 10; i++)
-		{
-			Store store = storeSampler.sample();
-			stores.add(store);
-		}
-		
-		CustomerSamplerBuilder builder = new CustomerSamplerBuilder(stores, inputData, factory);
-		Sampler<Customer> sampler = builder.build();
 		Customer customer = sampler.sample();
 		
 		assertNotNull(customer);
