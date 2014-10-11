@@ -7,6 +7,7 @@ import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
+import com.github.rnowling.bps.datagenerator.samplers.customer.CustomerSampler;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.pdfs.ProbabilityDensityFunction;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.RouletteWheelSampler;

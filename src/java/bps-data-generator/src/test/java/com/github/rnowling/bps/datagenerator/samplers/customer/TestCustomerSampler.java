@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.customer;
+package com.github.rnowling.bps.datagenerator.samplers.customer;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -16,6 +16,7 @@ import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
+import com.github.rnowling.bps.datagenerator.generators.customer.CustomerSamplerBuilder;
 import com.github.rnowling.bps.datagenerator.generators.store.StoreSamplerBuilder;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
