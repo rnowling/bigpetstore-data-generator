@@ -9,10 +9,10 @@ public class ProposedPurchaseTimeSampler implements Sampler<Double>
 	final Sampler<Double> arrivalTimeSampler;
 	
 	public ProposedPurchaseTimeSampler(CustomerInventory customerInventory,
-			Sampler<Double> transactionTimeDiffSampler)
+			Sampler<Double> arrivalTimeSampler)
 	{
 		this.customerInventory = customerInventory;
-		this.arrivalTimeSampler = transactionTimeDiffSampler;
+		this.arrivalTimeSampler = arrivalTimeSampler;
 	}
 	
 	protected double categoryProposedTime(double exhaustionTime) throws Exception
