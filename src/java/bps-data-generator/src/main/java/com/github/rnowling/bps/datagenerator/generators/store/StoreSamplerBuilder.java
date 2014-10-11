@@ -5,6 +5,8 @@ import java.util.List;
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
+import com.github.rnowling.bps.datagenerator.pdfs.store.StoreLocationIncomePDF;
+import com.github.rnowling.bps.datagenerator.pdfs.store.StoreLocationPopulationPDF;
 import com.github.rnowling.bps.datagenerator.samplers.store.StoreSampler;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.pdfs.JointPDF;

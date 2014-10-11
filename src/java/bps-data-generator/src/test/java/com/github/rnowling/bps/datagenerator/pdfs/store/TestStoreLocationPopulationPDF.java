@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.store;
+package com.github.rnowling.bps.datagenerator.pdfs.store;
 
 import static org.junit.Assert.assertTrue;
 
@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
+import com.github.rnowling.bps.datagenerator.pdfs.store.StoreLocationIncomePDF;
 
 public class TestStoreLocationPopulationPDF
 {

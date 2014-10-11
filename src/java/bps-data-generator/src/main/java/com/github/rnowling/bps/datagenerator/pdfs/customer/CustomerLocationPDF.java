@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.customer;
+package com.github.rnowling.bps.datagenerator.pdfs.customer;
 
 import java.util.List;
 import java.util.Map;

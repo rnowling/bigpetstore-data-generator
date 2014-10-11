@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.store;
+package com.github.rnowling.bps.datagenerator.pdfs.store;
 
 import java.util.List;
 
