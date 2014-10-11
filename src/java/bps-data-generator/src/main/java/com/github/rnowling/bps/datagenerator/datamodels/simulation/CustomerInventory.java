@@ -1,9 +1,8 @@
-package com.github.rnowling.bps.datagenerator.samplers.transaction;
+package com.github.rnowling.bps.datagenerator.datamodels.simulation;
 
 import java.util.Map;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 

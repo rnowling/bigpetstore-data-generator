@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.builders.transaction.CustomerTransactionParameters;
 import com.github.rnowling.bps.datagenerator.builders.transaction.CustomerTransactionParametersSamplerBuilder;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerTransactionParameters;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 

@@ -2,6 +2,7 @@ package com.github.rnowling.bps.datagenerator.samplers.transaction;
 
 import java.util.Random;
 
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerInventory;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.ExponentialSampler;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;

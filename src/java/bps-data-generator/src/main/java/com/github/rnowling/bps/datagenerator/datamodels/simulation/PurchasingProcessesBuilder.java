@@ -1,9 +1,7 @@
-package com.github.rnowling.bps.datagenerator.builders.transaction;
+package com.github.rnowling.bps.datagenerator.datamodels.simulation;
 
 import java.util.Map;
 
-import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
-import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.samplers.transaction.PurchasingProcesses;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModel;

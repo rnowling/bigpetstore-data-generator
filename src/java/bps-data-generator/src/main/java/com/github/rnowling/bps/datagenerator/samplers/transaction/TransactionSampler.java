@@ -3,6 +3,7 @@ package com.github.rnowling.bps.datagenerator.samplers.transaction;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Transaction;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.Purchase;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 
 public class TransactionSampler implements Sampler<Transaction>

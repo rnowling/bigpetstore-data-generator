@@ -3,9 +3,12 @@ package com.github.rnowling.bps.datagenerator.builders.transaction;
 import java.util.Collection;
 
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerInventory;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerInventoryBuilder;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerTransactionParameters;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.Purchase;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProcessesBuilder;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProfile;
-import com.github.rnowling.bps.datagenerator.samplers.transaction.CustomerInventory;
-import com.github.rnowling.bps.datagenerator.samplers.transaction.Purchase;
 import com.github.rnowling.bps.datagenerator.samplers.transaction.PurchasingProcesses;
 import com.github.rnowling.bps.datagenerator.samplers.transaction.TransactionPurchasesHiddenMarkovModel;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;

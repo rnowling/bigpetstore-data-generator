@@ -1,8 +1,6 @@
-package com.github.rnowling.bps.datagenerator.samplers.transaction;
+package com.github.rnowling.bps.datagenerator.datamodels.simulation;
 
 import java.util.List;
-
-import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 
 public class Purchase
 {

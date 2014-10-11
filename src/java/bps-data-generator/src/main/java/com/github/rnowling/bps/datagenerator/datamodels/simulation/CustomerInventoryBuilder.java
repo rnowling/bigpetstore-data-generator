@@ -1,12 +1,10 @@
-package com.github.rnowling.bps.datagenerator.builders.transaction;
+package com.github.rnowling.bps.datagenerator.datamodels.simulation;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
-import com.github.rnowling.bps.datagenerator.samplers.transaction.CustomerInventory;
-import com.github.rnowling.bps.datagenerator.samplers.transaction.ProductCategoryInventory;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

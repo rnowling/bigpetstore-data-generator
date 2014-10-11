@@ -1,9 +1,7 @@
-package com.github.rnowling.bps.datagenerator.samplers.transaction;
+package com.github.rnowling.bps.datagenerator.datamodels.simulation;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.builders.transaction.CustomerTransactionParameters;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
-import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 
 public class ProductCategoryInventory

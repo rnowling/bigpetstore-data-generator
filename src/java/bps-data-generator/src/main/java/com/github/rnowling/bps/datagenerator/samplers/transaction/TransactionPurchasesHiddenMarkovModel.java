@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.rnowling.bps.datagenerator.Constants;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerInventory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.Purchase;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;

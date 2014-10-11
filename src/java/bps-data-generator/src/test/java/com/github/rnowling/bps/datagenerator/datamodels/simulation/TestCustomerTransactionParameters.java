@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.builders.transaction;
+package com.github.rnowling.bps.datagenerator.datamodels.simulation;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,8 +6,8 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import com.github.rnowling.bps.datagenerator.builders.transaction.CustomerTransactionParameters;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerTransactionParameters;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 

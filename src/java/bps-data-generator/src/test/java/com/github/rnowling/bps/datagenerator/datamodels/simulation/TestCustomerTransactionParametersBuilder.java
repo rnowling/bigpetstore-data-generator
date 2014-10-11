@@ -1,12 +1,12 @@
-package com.github.rnowling.bps.datagenerator.builders.transaction;
+package com.github.rnowling.bps.datagenerator.datamodels.simulation;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.github.rnowling.bps.datagenerator.builders.transaction.CustomerTransactionParameters;
-import com.github.rnowling.bps.datagenerator.builders.transaction.CustomerTransactionParametersBuilder;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerTransactionParameters;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerTransactionParametersBuilder;
 
 public class TestCustomerTransactionParametersBuilder
 {
