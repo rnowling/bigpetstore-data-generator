@@ -1,10 +1,11 @@
-package com.github.rnowling.bps.datagenerator.generators.transaction;
+package com.github.rnowling.bps.datagenerator.samplers.transaction;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
+import com.github.rnowling.bps.datagenerator.samplers.transaction.ProductCategoryUsageTrajectory;
 
 public class TestProductCategoryUsageTrajectory
 {

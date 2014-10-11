@@ -7,6 +7,8 @@ import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Transaction;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProfile;
+import com.github.rnowling.bps.datagenerator.samplers.transaction.Purchase;
+import com.github.rnowling.bps.datagenerator.samplers.transaction.TransactionSampler;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;

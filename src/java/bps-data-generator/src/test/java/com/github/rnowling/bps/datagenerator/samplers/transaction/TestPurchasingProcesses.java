@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.transaction;
+package com.github.rnowling.bps.datagenerator.samplers.transaction;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
+import com.github.rnowling.bps.datagenerator.samplers.transaction.PurchasingProcesses;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;

@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.purchasingprofile;
+package com.github.rnowling.bps.datagenerator.samplers.purchasingprofile;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -11,6 +11,7 @@ import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.datareaders.ProductsReader;
+import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfileSamplerBuilder;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 

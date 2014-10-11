@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.transaction;
+package com.github.rnowling.bps.datagenerator.samplers.transaction;
 
 import java.util.Map;
 

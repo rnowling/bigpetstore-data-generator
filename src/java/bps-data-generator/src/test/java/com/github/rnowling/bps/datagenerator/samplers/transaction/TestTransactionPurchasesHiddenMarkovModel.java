@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.transaction;
+package com.github.rnowling.bps.datagenerator.samplers.transaction;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -15,6 +15,14 @@ import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.datareaders.ProductCategoryBuilder;
 import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfileBuilder;
+import com.github.rnowling.bps.datagenerator.generators.transaction.CustomerInventoryBuilder;
+import com.github.rnowling.bps.datagenerator.generators.transaction.CustomerTransactionParameters;
+import com.github.rnowling.bps.datagenerator.generators.transaction.CustomerTransactionParametersSamplerBuilder;
+import com.github.rnowling.bps.datagenerator.generators.transaction.PurchasingProcessesBuilder;
+import com.github.rnowling.bps.datagenerator.samplers.transaction.CustomerInventory;
+import com.github.rnowling.bps.datagenerator.samplers.transaction.Purchase;
+import com.github.rnowling.bps.datagenerator.samplers.transaction.PurchasingProcesses;
+import com.github.rnowling.bps.datagenerator.samplers.transaction.TransactionPurchasesHiddenMarkovModel;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModelBuilder;
@@ -126,7 +134,7 @@ public class TestTransactionPurchasesHiddenMarkovModel
 		CustomerInventory inventory = inventoryBuilder.build();
 		
 		TransactionPurchasesHiddenMarkovModel hmm = new TransactionPurchasesHiddenMarkovModel(processes,
-				parameters.averagePurchaseTriggerTime, inventory, new DoubleSequenceSampler(), seedFactory);
+				parameters.getAveragePurchaseTriggerTime(), inventory, new DoubleSequenceSampler(), seedFactory);
 		
 		return hmm;
 	}

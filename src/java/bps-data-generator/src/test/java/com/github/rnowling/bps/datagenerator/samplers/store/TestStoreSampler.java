@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.store;
+package com.github.rnowling.bps.datagenerator.samplers.store;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -12,6 +12,7 @@ import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
+import com.github.rnowling.bps.datagenerator.samplers.store.StoreSampler;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;

@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.transaction;
+package com.github.rnowling.bps.datagenerator.samplers.transaction;
 
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.ExponentialSampler;

@@ -1,6 +1,8 @@
-package com.github.rnowling.bps.datagenerator.generators.transaction;
+package com.github.rnowling.bps.datagenerator.samplers.transaction;
 
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
+import com.github.rnowling.bps.datagenerator.generators.transaction.CustomerTransactionParameters;
+import com.github.rnowling.bps.datagenerator.generators.transaction.CustomerTransactionParametersBuilder;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 
 public class CustomerTransactionParametersSampler implements Sampler<CustomerTransactionParameters>

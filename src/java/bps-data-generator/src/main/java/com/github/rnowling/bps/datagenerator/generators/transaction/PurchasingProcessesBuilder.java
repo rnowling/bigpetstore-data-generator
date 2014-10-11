@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProfile;
+import com.github.rnowling.bps.datagenerator.samplers.transaction.PurchasingProcesses;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovProcess;

@@ -1,10 +1,12 @@
-package com.github.rnowling.bps.datagenerator.generators.transaction;
+package com.github.rnowling.bps.datagenerator.samplers.transaction;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
+import com.github.rnowling.bps.datagenerator.generators.transaction.CustomerTransactionParameters;
+import com.github.rnowling.bps.datagenerator.generators.transaction.CustomerTransactionParametersSamplerBuilder;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 

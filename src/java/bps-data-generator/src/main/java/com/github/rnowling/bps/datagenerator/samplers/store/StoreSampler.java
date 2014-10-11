@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.store;
+package com.github.rnowling.bps.datagenerator.samplers.store;
 
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
