@@ -3,7 +3,7 @@ package com.github.rnowling.bps.datagenerator.generators.purchasingprofile;
 import java.util.Map;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
 import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovModelBuilder;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.BoundedMultiModalGaussianSampler;

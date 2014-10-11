@@ -1,6 +1,6 @@
 package com.github.rnowling.bps.datagenerator.generators.transaction;
 
-import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
 
 public class TransactionTimeSamplerBuilder
 {

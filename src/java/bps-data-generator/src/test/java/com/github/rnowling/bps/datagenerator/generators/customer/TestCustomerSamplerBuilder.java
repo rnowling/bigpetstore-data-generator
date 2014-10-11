@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.SequenceSampler;

@@ -9,7 +9,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
 import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovModelBuilder;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.DoubleSequenceSampler;

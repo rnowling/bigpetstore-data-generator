@@ -2,7 +2,7 @@ package com.github.rnowling.bps.datagenerator.algorithms.samplers;
 
 import java.util.Random;
 
-import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
 
 public class GaussianSampler implements Sampler<Double>
 {

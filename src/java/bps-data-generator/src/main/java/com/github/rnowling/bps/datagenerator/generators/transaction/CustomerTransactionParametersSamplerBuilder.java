@@ -3,7 +3,7 @@ package com.github.rnowling.bps.datagenerator.generators.transaction;
 import java.util.Arrays;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.BoundedMultiModalGaussianSampler;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;

@@ -3,7 +3,7 @@ package com.github.rnowling.bps.datagenerator.generators.store;
 import java.util.List;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
 import com.github.rnowling.bps.datagenerator.algorithms.pdfs.JointPDF;
 import com.github.rnowling.bps.datagenerator.algorithms.pdfs.ProbabilityDensityFunction;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSampler;

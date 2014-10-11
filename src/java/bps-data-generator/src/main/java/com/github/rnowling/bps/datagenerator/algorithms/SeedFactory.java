@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator;
+package com.github.rnowling.bps.datagenerator.algorithms;
 
 import java.util.Random;
 

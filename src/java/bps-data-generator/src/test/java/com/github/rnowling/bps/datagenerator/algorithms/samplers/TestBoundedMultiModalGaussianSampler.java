@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.google.common.collect.Lists;
 

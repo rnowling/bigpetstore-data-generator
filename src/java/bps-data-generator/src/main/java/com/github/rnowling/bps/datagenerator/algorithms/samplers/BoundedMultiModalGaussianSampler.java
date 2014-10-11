@@ -3,7 +3,7 @@ package com.github.rnowling.bps.datagenerator.algorithms.samplers;
 import java.util.List;
 import java.util.Random;
 
-import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.google.common.collect.ImmutableList;
 

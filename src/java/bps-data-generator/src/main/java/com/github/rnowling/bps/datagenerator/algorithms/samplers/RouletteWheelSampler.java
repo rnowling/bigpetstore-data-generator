@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
 
-import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
 import com.github.rnowling.bps.datagenerator.algorithms.pdfs.ProbabilityDensityFunction;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.google.common.collect.ImmutableList;

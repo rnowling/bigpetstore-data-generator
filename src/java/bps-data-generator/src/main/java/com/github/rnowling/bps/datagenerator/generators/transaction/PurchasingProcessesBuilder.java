@@ -2,7 +2,7 @@ package com.github.rnowling.bps.datagenerator.generators.transaction;
 
 import java.util.Map;
 
-import com.github.rnowling.bps.datagenerator.SeedFactory;
+import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
 import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovProcess;
 import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
