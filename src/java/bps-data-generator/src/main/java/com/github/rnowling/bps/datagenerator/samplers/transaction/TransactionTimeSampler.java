@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerInventory;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.pdfs.ConditionalProbabilityDensityFunction;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.ExponentialSampler;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 
@@ -13,12 +14,16 @@ public class TransactionTimeSampler implements Sampler<Double>
 	private final ExponentialSampler transactionTimeDiffSampler;
 	private final Random rng;
 	private final CustomerInventory customerInventory;
+	private final ConditionalProbabilityDensityFunction<Double, Double> transactionTimePDF;
 	private double lastTransactionTime;
 	
-	public TransactionTimeSampler(double averageTransactionTriggerTime, 
+	public TransactionTimeSampler(double averageTransactionTriggerTime,
+			ConditionalProbabilityDensityFunction<Double, Double> transactionTimePDF,
 			CustomerInventory customerInventory,
 			SeedFactory seedFactory)
 	{
+		this.transactionTimePDF = transactionTimePDF;
+		
 		double lambda = 1.0 / averageTransactionTriggerTime;
 		this.transactionTimeDiffSampler = new ExponentialSampler(lambda, seedFactory);
 		rng = new Random(seedFactory.getNextSeed());
@@ -46,14 +51,7 @@ public class TransactionTimeSampler implements Sampler<Double>
 	
 	protected double proposedTimeProbability(double proposedTime)
 	{
-		if(proposedTime >= this.lastTransactionTime)
-		{
-			return 1.0;
-		}
-		else
-		{
-			return 0.0;
-		}
+		return transactionTimePDF.probability(proposedTime, this.lastTransactionTime);
 	}
 	
 	public Double sample()

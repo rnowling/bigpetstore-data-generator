@@ -2,6 +2,7 @@ package com.github.rnowling.bps.datagenerator.builders.transaction;
 
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerInventory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerTransactionParameters;
+import com.github.rnowling.bps.datagenerator.pdfs.transaction.TransactionTimePDF;
 import com.github.rnowling.bps.datagenerator.samplers.transaction.TransactionTimeSampler;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 
@@ -28,7 +29,8 @@ public class TransactionTimeSamplerBuilder
 	
 	public TransactionTimeSampler build()
 	{
-		return new TransactionTimeSampler(transactionParameters.getAverageTransactionTriggerTime(),
+		return new TransactionTimeSampler(transactionParameters.getAverageTransactionTriggerTime(), 
+				new TransactionTimePDF(),
 				customerInventory, seedFactory);
 	}
 }
