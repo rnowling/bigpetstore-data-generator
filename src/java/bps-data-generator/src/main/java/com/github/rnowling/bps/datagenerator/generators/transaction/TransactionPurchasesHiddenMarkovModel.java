@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
+import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.RouletteWheelSampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

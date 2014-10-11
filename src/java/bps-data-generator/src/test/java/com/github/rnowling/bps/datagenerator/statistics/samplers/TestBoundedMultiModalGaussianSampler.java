@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.algorithms.samplers;
+package com.github.rnowling.bps.datagenerator.statistics.samplers;
 
 import static org.junit.Assert.assertTrue;
 
@@ -6,8 +6,10 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
+import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.BoundedMultiModalGaussianSampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 import com.google.common.collect.Lists;
 
 public class TestBoundedMultiModalGaussianSampler

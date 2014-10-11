@@ -1,9 +1,9 @@
 package com.github.rnowling.bps.datagenerator.generators.transaction;
 
-import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.ExponentialSampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.GaussianSampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
+import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.ExponentialSampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.GaussianSampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 
 public class ProductCategoryUsageSimulator
 {

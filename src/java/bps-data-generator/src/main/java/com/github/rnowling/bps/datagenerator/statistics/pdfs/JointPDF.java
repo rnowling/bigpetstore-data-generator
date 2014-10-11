@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.algorithms.pdfs;
+package com.github.rnowling.bps.datagenerator.statistics.pdfs;
 
 import java.util.List;
 

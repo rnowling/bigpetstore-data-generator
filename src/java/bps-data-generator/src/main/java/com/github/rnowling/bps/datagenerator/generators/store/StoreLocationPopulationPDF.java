@@ -2,8 +2,8 @@ package com.github.rnowling.bps.datagenerator.generators.store;
 
 import java.util.List;
 
-import com.github.rnowling.bps.datagenerator.algorithms.pdfs.ProbabilityDensityFunction;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
+import com.github.rnowling.bps.datagenerator.statistics.pdfs.ProbabilityDensityFunction;
 
 public class StoreLocationPopulationPDF implements ProbabilityDensityFunction<ZipcodeRecord>
 {

@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.algorithms.samplers;
+package com.github.rnowling.bps.datagenerator.statistics.samplers;
 
 public class DoubleSequenceSampler implements Sampler<Double>
 {

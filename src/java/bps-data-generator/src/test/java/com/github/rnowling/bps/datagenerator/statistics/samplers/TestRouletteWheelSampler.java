@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.algorithms.samplers;
+package com.github.rnowling.bps.datagenerator.statistics.samplers;
 
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItem;
@@ -7,7 +7,9 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.RouletteWheelSampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 import com.google.common.collect.ImmutableMap;
 
 public class TestRouletteWheelSampler

@@ -9,17 +9,17 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
-import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovModel;
-import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovModelBuilder;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.DoubleSequenceSampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.datareaders.ProductCategoryBuilder;
 import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfileBuilder;
+import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModel;
+import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModelBuilder;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.DoubleSequenceSampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 

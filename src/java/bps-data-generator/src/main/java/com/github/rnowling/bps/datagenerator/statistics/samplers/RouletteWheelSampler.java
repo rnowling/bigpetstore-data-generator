@@ -1,12 +1,12 @@
-package com.github.rnowling.bps.datagenerator.algorithms.samplers;
+package com.github.rnowling.bps.datagenerator.statistics.samplers;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
 
-import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
-import com.github.rnowling.bps.datagenerator.algorithms.pdfs.ProbabilityDensityFunction;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
+import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.pdfs.ProbabilityDensityFunction;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 

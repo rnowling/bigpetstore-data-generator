@@ -1,12 +1,13 @@
-package com.github.rnowling.bps.datagenerator.algorithms.markovmodels;
+package com.github.rnowling.bps.datagenerator.statistics.markovmodels;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.matchers.JUnitMatchers.*;
 
-import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovModel;
-import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovModelBuilder;
+import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModel;
+import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModelBuilder;
 
 public class TestMarkovModelBuilder
 {

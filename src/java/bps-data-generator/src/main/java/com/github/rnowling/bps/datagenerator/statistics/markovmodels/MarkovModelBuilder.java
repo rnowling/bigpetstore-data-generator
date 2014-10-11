@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.algorithms.markovmodels;
+package com.github.rnowling.bps.datagenerator.statistics.markovmodels;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableTable;

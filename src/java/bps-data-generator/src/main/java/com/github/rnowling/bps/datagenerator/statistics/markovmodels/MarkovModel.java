@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.algorithms.markovmodels;
+package com.github.rnowling.bps.datagenerator.statistics.markovmodels;
 
 import java.util.Map;
 

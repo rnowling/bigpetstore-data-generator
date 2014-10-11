@@ -1,8 +1,8 @@
-package com.github.rnowling.bps.datagenerator.algorithms.samplers;
+package com.github.rnowling.bps.datagenerator.statistics.samplers;
 
 import java.util.Random;
 
-import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 
 public class GaussianSampler implements Sampler<Double>
 {

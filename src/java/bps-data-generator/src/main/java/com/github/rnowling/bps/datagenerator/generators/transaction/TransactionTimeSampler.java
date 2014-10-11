@@ -2,9 +2,9 @@ package com.github.rnowling.bps.datagenerator.generators.transaction;
 
 import java.util.Random;
 
-import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.ExponentialSampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
+import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.ExponentialSampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 
 
 public class TransactionTimeSampler implements Sampler<Double>

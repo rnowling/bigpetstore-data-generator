@@ -1,10 +1,10 @@
-package com.github.rnowling.bps.datagenerator.algorithms.samplers;
+package com.github.rnowling.bps.datagenerator.statistics.samplers;
 
 import java.util.List;
 import java.util.Random;
 
-import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
+import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.google.common.collect.ImmutableList;
 
 public class BoundedMultiModalGaussianSampler implements Sampler<Double>

@@ -3,15 +3,15 @@ package com.github.rnowling.bps.datagenerator.generators.customer;
 import java.util.List;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
-import com.github.rnowling.bps.datagenerator.algorithms.pdfs.ProbabilityDensityFunction;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.SequenceSampler;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
+import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.pdfs.ProbabilityDensityFunction;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.RouletteWheelSampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.SequenceSampler;
 
 public class CustomerSamplerBuilder
 {

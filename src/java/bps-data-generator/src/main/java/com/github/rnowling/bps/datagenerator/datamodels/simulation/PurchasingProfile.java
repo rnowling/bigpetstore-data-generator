@@ -2,7 +2,7 @@ package com.github.rnowling.bps.datagenerator.datamodels.simulation;
 
 import java.util.Map;
 
-import com.github.rnowling.bps.datagenerator.algorithms.markovmodels.MarkovModel;
+import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModel;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 

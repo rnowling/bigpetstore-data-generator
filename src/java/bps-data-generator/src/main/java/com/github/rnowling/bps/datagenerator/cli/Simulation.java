@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Vector;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
@@ -23,6 +21,8 @@ import com.github.rnowling.bps.datagenerator.generators.customer.CustomerSampler
 import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfileSamplerBuilder;
 import com.github.rnowling.bps.datagenerator.generators.store.StoreSamplerBuilder;
 import com.github.rnowling.bps.datagenerator.generators.transaction.TransactionSamplerBuilder;
+import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 import com.google.common.collect.Lists;
 
 public class Simulation

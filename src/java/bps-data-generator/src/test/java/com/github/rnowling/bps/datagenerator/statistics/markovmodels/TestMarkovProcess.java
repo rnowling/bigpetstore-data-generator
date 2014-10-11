@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.algorithms.markovmodels;
+package com.github.rnowling.bps.datagenerator.statistics.markovmodels;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -8,7 +8,10 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModel;
+import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModelBuilder;
+import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovProcess;
 
 public class TestMarkovProcess
 {

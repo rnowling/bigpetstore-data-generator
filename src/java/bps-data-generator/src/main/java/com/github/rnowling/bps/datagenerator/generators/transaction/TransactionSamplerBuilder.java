@@ -2,15 +2,15 @@ package com.github.rnowling.bps.datagenerator.generators.transaction;
 
 import java.util.Collection;
 
-import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.SequenceSampler;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Transaction;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProfile;
+import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.RouletteWheelSampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.SequenceSampler;
 
 public class TransactionSamplerBuilder
 {

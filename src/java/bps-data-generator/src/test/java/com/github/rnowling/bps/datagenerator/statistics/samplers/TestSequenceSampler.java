@@ -1,8 +1,11 @@
-package com.github.rnowling.bps.datagenerator.algorithms.samplers;
+package com.github.rnowling.bps.datagenerator.statistics.samplers;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.SequenceSampler;
 
 public class TestSequenceSampler
 {

@@ -1,10 +1,10 @@
-package com.github.rnowling.bps.datagenerator.algorithms.markovmodels;
+package com.github.rnowling.bps.datagenerator.statistics.markovmodels;
 
 import java.util.Map;
 
-import com.github.rnowling.bps.datagenerator.algorithms.SeedFactory;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.RouletteWheelSampler;
-import com.github.rnowling.bps.datagenerator.algorithms.samplers.Sampler;
+import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.RouletteWheelSampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableTable;
 
