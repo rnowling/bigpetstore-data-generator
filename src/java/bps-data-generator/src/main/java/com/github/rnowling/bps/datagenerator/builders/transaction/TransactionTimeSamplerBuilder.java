@@ -3,8 +3,11 @@ package com.github.rnowling.bps.datagenerator.builders.transaction;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerInventory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerTransactionParameters;
 import com.github.rnowling.bps.datagenerator.pdfs.transaction.TransactionTimePDF;
+import com.github.rnowling.bps.datagenerator.samplers.transaction.ProposedPurchaseTimeSampler;
 import com.github.rnowling.bps.datagenerator.samplers.transaction.TransactionTimeSampler;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.ExponentialSampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 
 public class TransactionTimeSamplerBuilder
 {
@@ -29,8 +32,13 @@ public class TransactionTimeSamplerBuilder
 	
 	public TransactionTimeSampler build()
 	{
-		return new TransactionTimeSampler(transactionParameters.getAverageTransactionTriggerTime(), 
+		double lambda = 1.0 / transactionParameters.getAverageTransactionTriggerTime();
+		Sampler<Double> arrivalTimeSampler = new ExponentialSampler(lambda, seedFactory);
+		Sampler<Double> proposedTimeSampler = new ProposedPurchaseTimeSampler(customerInventory,
+				arrivalTimeSampler);
+		
+		return new TransactionTimeSampler(proposedTimeSampler, 
 				new TransactionTimePDF(),
-				customerInventory, seedFactory);
+				seedFactory);
 	}
 }
