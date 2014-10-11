@@ -4,10 +4,10 @@ import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerInven
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerTransactionParameters;
 import com.github.rnowling.bps.datagenerator.pdfs.transaction.TransactionTimePDF;
 import com.github.rnowling.bps.datagenerator.samplers.transaction.ProposedPurchaseTimeSampler;
-import com.github.rnowling.bps.datagenerator.samplers.transaction.TransactionTimeSampler;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.ExponentialSampler;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.StatefulRejectSamplingMonteCarloSampler;
 
 public class TransactionTimeSamplerBuilder
 {
@@ -30,15 +30,16 @@ public class TransactionTimeSamplerBuilder
 		this.transactionParameters = parameters;
 	}
 	
-	public TransactionTimeSampler build()
+	public Sampler<Double> build()
 	{
 		double lambda = 1.0 / transactionParameters.getAverageTransactionTriggerTime();
 		Sampler<Double> arrivalTimeSampler = new ExponentialSampler(lambda, seedFactory);
 		Sampler<Double> proposedTimeSampler = new ProposedPurchaseTimeSampler(customerInventory,
 				arrivalTimeSampler);
 		
-		return new TransactionTimeSampler(proposedTimeSampler, 
+		return new StatefulRejectSamplingMonteCarloSampler<Double>(proposedTimeSampler, 
 				new TransactionTimePDF(),
+				0.0,
 				seedFactory);
 	}
 }
