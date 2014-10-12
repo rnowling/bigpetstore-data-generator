@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Vector;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.builders.customer.CustomerSamplerBuilder;
-import com.github.rnowling.bps.datagenerator.builders.purchasingprofile.PurchasingProfileSamplerBuilder;
-import com.github.rnowling.bps.datagenerator.builders.store.StoreSamplerBuilder;
-import com.github.rnowling.bps.datagenerator.builders.transaction.TransactionSamplerBuilder;
+import com.github.rnowling.bps.datagenerator.CustomerGenerator;
+import com.github.rnowling.bps.datagenerator.PurchasingProfileGenerator;
+import com.github.rnowling.bps.datagenerator.StoreGenerator;
+import com.github.rnowling.bps.datagenerator.TransactionGenerator;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
@@ -22,7 +22,6 @@ import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ProductsReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
-import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 import com.google.common.collect.Lists;
 
 public class Simulation
@@ -36,6 +35,7 @@ public class Simulation
 	
 	List<Store> stores;
 	List<Customer> customers;
+	List<PurchasingProfile> purchasingProfiles;
 	List<Transaction> transactions;
 	
 	public Simulation(int nStores, int nCustomers, double simulationTime, long seed)
@@ -69,16 +69,15 @@ public class Simulation
 		inputData = new InputData(zipcodeTable, names);
 	}
 	
-	private void generateStores(int nStores) throws Exception
+	private void generateStores() throws Exception
 	{
 		System.out.println("Generating stores");
-		StoreSamplerBuilder builder = new StoreSamplerBuilder(inputData.getZipcodeTable(), this.seedFactory);
-		Sampler<Store> storeSampler = builder.build();
+		StoreGenerator storeGenerator = new StoreGenerator(inputData, seedFactory);
 		
 		stores = new Vector<Store>();
 		for(int i = 0; i < nStores; i++)
 		{
-			Store store = storeSampler.sample();
+			Store store = storeGenerator.generate();
 			stores.add(store);
 		}
 		
@@ -87,16 +86,15 @@ public class Simulation
 		System.out.println("Generated " + stores.size() + " stores");
 	}
 	
-	private void generateCustomers(int nCustomers) throws Exception
+	private void generateCustomers() throws Exception
 	{
 		System.out.println("Generating customers");
-		CustomerSamplerBuilder builder = new CustomerSamplerBuilder(stores, inputData, this.seedFactory);
-		Sampler<Customer> sampler = builder.build();
+		CustomerGenerator generator = new CustomerGenerator(inputData, stores, seedFactory);
 		
 		customers = new Vector<Customer>();
 		for(int i = 0; i < nCustomers; i++)
 		{
-			Customer customer = sampler.sample();
+			Customer customer = generator.generate();
 			customers.add(customer);
 		}
 		
@@ -105,43 +103,57 @@ public class Simulation
 		System.out.println("Generated " + customers.size() + " customers");
 	}
 	
-	public void generateTransactions(double simulationLength) throws Exception
+	public void generatePurchasingProfiles() throws Exception
 	{
-		Sampler<PurchasingProfile> ppSampler =
-				new PurchasingProfileSamplerBuilder(productCategories, seedFactory).build();
+		System.out.println("Generating purchasing profiles");
+		PurchasingProfileGenerator generator = new PurchasingProfileGenerator(productCategories, seedFactory);
 		
+		purchasingProfiles = new Vector<PurchasingProfile>();
+		for(int i = 0; i < nCustomers; i++)
+		{
+			PurchasingProfile profile = generator.generate();
+			purchasingProfiles.add(profile);
+		}
+		
+		System.out.println("Generated " + purchasingProfiles.size() + " purchasing profiles");
+	}
+	
+	public void generateTransactions() throws Exception
+	{
+		System.out.println("Generating transactions");
 		transactions = Lists.newArrayList();
 		
-		for(Customer customer : customers)
+		for(int i = 0; i < nCustomers; i++)
 		{
-			PurchasingProfile profile = ppSampler.sample();
+			Customer customer = customers.get(i);
+			PurchasingProfile profile = purchasingProfiles.get(i);
 			
-			Sampler<Transaction> sampler =
-					new TransactionSamplerBuilder(stores, productCategories,
-							customer, profile, seedFactory).build();
+			TransactionGenerator generator = new TransactionGenerator(customer,
+					profile, stores, productCategories, seedFactory);
 			
 			while(true)
 			{
-				Transaction transaction = sampler.sample();
+				Transaction transaction = generator.generate();
 				
 				System.out.println("Transaction Time: " + transaction.getDateTime());
 				
-				if(transaction.getDateTime() > simulationLength)
+				if(transaction.getDateTime() > simulationTime)
 					break;
 				transactions.add(transaction);
 			}
 		}
+		
+		System.out.println("Generated " + transactions.size() + " transactions");
 	}
 	
 	public void simulate() throws Exception
 	{
 		loadData();
-		generateStores(nStores);
-		System.out.println("Generated " + stores.size() + " stores");
-		generateCustomers(nCustomers);
-		System.out.println("Generated " + customers.size() + " customers");
-		generateTransactions(simulationTime);
-		System.out.println("Generated " + transactions.size() + " transactions");
+		generateStores();
+		generateCustomers();
+		generatePurchasingProfiles();
+		generateTransactions();
+		
 		
 		
 	}
