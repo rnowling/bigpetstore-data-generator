@@ -1,10 +1,9 @@
-package com.github.rnowling.bps.datagenerator.datareaders;
+package com.github.rnowling.bps.datagenerator.datamodels.inputs;
 
 import java.util.List;
 import java.util.Set;
 
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
-import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
