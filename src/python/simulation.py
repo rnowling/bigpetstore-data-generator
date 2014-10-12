@@ -1,111 +1,53 @@
-from customers import CustomerGenerator
-from customers import load_names
-from customer_simulation import CustomerState
 import simulation_parameters as sim_param
-from stores import StoreGenerator
-import products
-from transactions import TransactionSimulator
-from zipcodes import load_zipcode_data
 
+from readers import load_names
+from readers import load_products
+from readers import load_zipcode_data
+
+from generators.store_generator import StoreGenerator
+from generators.customer_generator import CustomerGenerator
+from generators.purchasing_profile_generator import PurchasingProfileGenerator
+from generators.transaction_generator import TransactionGenerator
+
+from writers import CustomerWriter
+from writers import StoreWriter
+from writers import TransactionItemWriter
+from writers import TransactionWriter
 
 class Simulator(object):
-    def __init__(self):
-        pass
-
     def load_data(self):
-        self.item_categories = products.load_products_json()
-        self.zipcode_objs = load_zipcode_data()
-        self.first_names, self.last_names = load_names()
+        self.item_categories = load_products(sim_param.PRODUCTS_FILE)
+        self.zipcode_objs = load_zipcode_data(**sim_param.ZIPCODE_DATA_FILES)
+        self.names = load_names(sim_param.NAMEDB_FILE)
 
     def generate_stores(self, num=None):
+        self.stores = []
         generator = StoreGenerator(zipcode_objs=self.zipcode_objs,
                                    income_scaling_factor=sim_param.STORE_INCOME_SCALING_FACTOR)
-        self.stores = generator.generate(n=num)
+        for i in xrange(num):
+            store = generator.generate()
+            self.stores.append(store)
 
     def generate_customers(self, num=None):
         generator = CustomerGenerator(zipcode_objs=self.zipcode_objs,
                                       stores=self.stores,
-                                      first_names=self.first_names,
-                                      last_names=self.last_names)
-        self.customers = generator.generate(num)
+                                      names=self.names)
+        self.customers = []
+        for i in xrange(num):
+            customer = generator.generate()
+            self.customers.append(customer)
 
     def generate_transactions(self, end_time=None):
+        profile_generator = PurchasingProfileGenerator(self.item_categories)
+
+        trans_sim = TransactionGenerator(stores=self.stores,
+                                         product_categories=self.item_categories)
+
         for customer in self.customers:
-            state = CustomerState(item_categories=self.item_categories,
-                    customer=customer)
-            trans_sim = TransactionSimulator(stores=self.stores,
-                                             customer_state=state,
-                                             item_categories=self.item_categories)
-            for trans in trans_sim.simulate(end_time):
+            profile = profile_generator.generate()
+            for trans in trans_sim.simulate(customer, profile, end_time):
                 yield trans
 
-class TransactionItemWriter(object):
-    def __init__(self, filename=None):
-        self.fl = open(filename, "w")
-
-    def append(self, trans):
-        for item in trans.purchased_items:
-            item = dict(item)
-            if "food" in item["category"]:
-                item_str = "%s:%s:%s:%s" % \
-                    (item["category"], item["brand"], item["flavor"], 
-                     item["size"])
-            elif "poop bags" == item["category"]:
-                item_str = "%s:%s:%s:%s" % \
-                    (item["category"], item["brand"], item["color"], 
-                     item["size"])
-            else:
-                item_str = "%s:%s:%s" % \
-                    (item["category"], item["brand"], item["size"])
-
-            self.fl.write("%s,%s\n" % (trans.transaction_id(),
-                                  item_str))
-    def close(self):
-        self.fl.close()
-    
-
-class CustomerWriter(object):
-    def __init__(self, filename=None):
-        self.fl = open(filename, "w")
-
-    def append(self, customer):
-        string = "%s,%s,%s\n" % (customer.id,
-                                 customer.name, 
-                                 customer.location)
-                     
-        self.fl.write(string)
-
-    def close(self):
-        self.fl.close()
-
-class StoreWriter(object):
-    def __init__(self, filename=None):
-        self.fl = open(filename, "w")
-
-    def append(self, store):
-        string = "%s,%s\n" % (store.id, store.zipcode)
-        self.fl.write(string)
-
-    def close(self):
-        self.fl.close()
-
-
-class TransactionWriter(object):
-    def __init__(self, filename=None):
-        self.fl = open(filename, "w")
-
-    def append(self, trans):
-            values = [
-                trans.transaction_id(),
-                trans.store.id,
-                trans.customer.id,
-                trans.trans_time,
-                ]
-            string = ",".join(map(str, values)) + "\n"
-            self.fl.write(string)
-
-    def close(self):
-        self.fl.close()
 
 def driver():
     sim = Simulator()

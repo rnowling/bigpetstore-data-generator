@@ -1,3 +1,5 @@
+from datamodels.input_models import ZipcodeRecord
+
 def read_income_data(flname):
     fl = open(flname)
     #skip headers
@@ -9,7 +11,7 @@ def read_income_data(flname):
         # zipcodes in column 3 in the format "ZCTA5 XXXXX"
         zipcode = cols[2].split()[1]
         try:
-            median_household_income = int(cols[5])
+            median_household_income = float(cols[5])
             zipcode_incomes[zipcode] = median_household_income
         except:
             # some records do not contain incomes
@@ -49,33 +51,22 @@ def read_zipcode_coords(flname):
     fl.close()
     return zipcode_coords
 
-class ZipcodeData(object):
-    def __init__(self, zipcode=None, median_household_income=None,
-                 population=None, coords=None):
-        self.zipcode = zipcode
-        self.median_household_income = median_household_income
-        self.population = population
-        self.coords = coords
 
-def load_zipcode_data():
-    zipcode_incomes = read_income_data("../../resources/ACS_12_5YR_S1903/ACS_12_5YR_S1903_with_ann.csv")
-    zipcode_pop = read_population_data("../../resources/population_data.csv")
-    zipcode_coords = read_zipcode_coords("../../resources/zips.csv")
+def load_zipcode_data(income_fl=None, population_fl=None, coordinate_fl=None):
+    zipcode_incomes = read_income_data(income_fl)
+    zipcode_pop = read_population_data(population_fl)
+    zipcode_coords = read_zipcode_coords(coordinate_fl)
 
     all_zipcodes = set(zipcode_incomes.keys()).intersection(set(zipcode_pop.keys())).intersection(set(zipcode_coords))
 
     zipcode_objects = dict()
     for z in all_zipcodes:
-        obj = ZipcodeData(zipcode=z,
-                          median_household_income=zipcode_incomes[z],
-                          population=zipcode_pop[z],
-                          coords=zipcode_coords[z])
+        obj = ZipcodeRecord(zipcode=z,
+                            median_household_income=zipcode_incomes[z],
+                            population=zipcode_pop[z],
+                            coords=zipcode_coords[z])
         zipcode_objects[z] = obj
 
     return zipcode_objects
 
 
-if __name__ == "__main__":
-    zipcode_objects = load_zipcode_data()
-
-    print len(zipcode_objects)

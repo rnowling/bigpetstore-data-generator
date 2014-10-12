@@ -17,3 +17,21 @@ MIN_PETS = 1
 
 STORE_INCOME_SCALING_FACTOR = 100.0
 
+ZIPCODE_DATA_FILES = {
+    "income_fl" : "../../resources/ACS_12_5YR_S1903/ACS_12_5YR_S1903_with_ann.csv",
+    "population_fl" : "../../resources/population_data.csv",
+    "coordinate_fl" : "../../resources/zips.csv"
+    }
+
+NAMEDB_FILE = "../../resources/namedb/data/data.dat"
+
+PRODUCTS_FILE = "../../resources/product_categories.json"
+
+PRODUCT_MSM_FIELD_WEIGHT_GAUSSIANS = [(0.15, 0.1), (0.85, 0.1)]
+PRODUCT_MSM_FIELD_WEIGHT_BOUNDS = (0.05, 0.95)
+
+PRODUCT_MSM_FIELD_SIMILARITY_WEIGHT_GAUSSIANS = [(0.15, 0.1), (0.85, 0.1)]
+PRODUCT_MSM_FIELD_SIMILARITY_WEIGHT_BOUNDS = (0.05, 0.95)
+
+PRODUCT_MSM_LOOPBACK_WEIGHT_GAUSSIANS = [(0.25, 0.1), (0.75, 0.1)]
+PRODUCT_MSM_LOOPBACK_WEIGHT_BOUNDS = (0.05, 0.95)
