@@ -2,45 +2,33 @@ package com.github.rnowling.bps.datagenerator.samplers.purchasingprofile;
 
 import java.util.Map;
 
-import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
-import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModelBuilder;
-import com.github.rnowling.bps.datagenerator.statistics.samplers.BoundedMultiModalGaussianSampler;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 import com.google.common.collect.Maps;
 
 public class ProductCategoryMarkovModelSampler implements Sampler<MarkovModel<Product>>
 {
-	ProductCategory productCategory;
-	Sampler<Double> fieldWeightSampler;
-	Sampler<Double> fieldSimilarityWeightSampler;
-	Sampler<Double> loopbackWeightSampler;
+	final ProductCategory productCategory;
+	final Sampler<Double> fieldWeightSampler;
+	final Sampler<Double> fieldSimilarityWeightSampler;
+	final Sampler<Double> loopbackWeightSampler;
 	
 	Map<String, Double> fieldWeights;
 	Map<String, Double> fieldSimilarityWeights;
 	double loopbackWeight;
 	
-	public ProductCategoryMarkovModelSampler(ProductCategory productCategory, SeedFactory seedFactory)
+	public ProductCategoryMarkovModelSampler(ProductCategory productCategory, 
+			Sampler<Double> fieldWeightSampler, Sampler<Double> fieldSimilarityWeightSampler,
+			Sampler<Double> loopbackWeightSampler)
 	{
 		this.productCategory = productCategory;
 		
-		this.fieldWeightSampler = new BoundedMultiModalGaussianSampler(Constants.PRODUCT_MSM_FIELD_WEIGHT_GAUSSIANS, 
-					Constants.PRODUCT_MSM_FIELD_WEIGHT_LOWERBOUND, 
-					Constants.PRODUCT_MSM_FIELD_WEIGHT_UPPERBOUND,
-					seedFactory);
-		
-		this.fieldSimilarityWeightSampler = new BoundedMultiModalGaussianSampler(Constants.PRODUCT_MSM_FIELD_SIMILARITY_WEIGHT_GAUSSIANS,
-				Constants.PRODUCT_MSM_FIELD_SIMILARITY_WEIGHT_LOWERBOUND, 
-				Constants.PRODUCT_MSM_FIELD_SIMILARITY_WEIGHT_UPPERBOUND,
-				seedFactory);
-		
-		this.loopbackWeightSampler = new BoundedMultiModalGaussianSampler(Constants.PRODUCT_MSM_LOOPBACK_WEIGHT_GAUSSIANS,
-				Constants.PRODUCT_MSM_LOOPBACK_WEIGHT_LOWERBOUND,
-				Constants.PRODUCT_MSM_LOOPBACK_WEIGHT_UPPERBOUND,
-				seedFactory);
+		this.fieldSimilarityWeightSampler = fieldSimilarityWeightSampler;
+		this.fieldWeightSampler = fieldWeightSampler;
+		this.loopbackWeightSampler = loopbackWeightSampler;
 	}
 	
 	protected void generateWeights() throws Exception

@@ -3,6 +3,7 @@ package com.github.rnowling.bps.datagenerator.builders.purchasingprofile;
 import java.util.Collection;
 import java.util.Map;
 
+import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProfile;
@@ -10,6 +11,7 @@ import com.github.rnowling.bps.datagenerator.samplers.purchasingprofile.ProductC
 import com.github.rnowling.bps.datagenerator.samplers.purchasingprofile.PurchasingProfileSampler;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModel;
+import com.github.rnowling.bps.datagenerator.statistics.samplers.BoundedMultiModalGaussianSampler;
 import com.github.rnowling.bps.datagenerator.statistics.samplers.Sampler;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
@@ -18,11 +20,29 @@ public class PurchasingProfileSamplerBuilder
 {
 	final ImmutableList<ProductCategory> productCategories;
 	final SeedFactory seedFactory;
+	final Sampler<Double> fieldWeightSampler;
+	final Sampler<Double> fieldSimilarityWeightSampler;
+	final Sampler<Double> loopbackWeightSampler;
 	
 	public PurchasingProfileSamplerBuilder(Collection<ProductCategory> productCategories, SeedFactory seedFactory)
 	{
 		this.productCategories = ImmutableList.copyOf(productCategories);
 		this.seedFactory = seedFactory;
+		
+		this.fieldWeightSampler = new BoundedMultiModalGaussianSampler(Constants.PRODUCT_MSM_FIELD_WEIGHT_GAUSSIANS, 
+				Constants.PRODUCT_MSM_FIELD_WEIGHT_LOWERBOUND, 
+				Constants.PRODUCT_MSM_FIELD_WEIGHT_UPPERBOUND,
+				seedFactory);
+	
+	this.fieldSimilarityWeightSampler = new BoundedMultiModalGaussianSampler(Constants.PRODUCT_MSM_FIELD_SIMILARITY_WEIGHT_GAUSSIANS,
+			Constants.PRODUCT_MSM_FIELD_SIMILARITY_WEIGHT_LOWERBOUND, 
+			Constants.PRODUCT_MSM_FIELD_SIMILARITY_WEIGHT_UPPERBOUND,
+			seedFactory);
+	
+	this.loopbackWeightSampler = new BoundedMultiModalGaussianSampler(Constants.PRODUCT_MSM_LOOPBACK_WEIGHT_GAUSSIANS,
+			Constants.PRODUCT_MSM_LOOPBACK_WEIGHT_LOWERBOUND,
+			Constants.PRODUCT_MSM_LOOPBACK_WEIGHT_UPPERBOUND,
+			seedFactory);
 	}
 	
 	public Sampler<PurchasingProfile> build() throws Exception
@@ -30,7 +50,8 @@ public class PurchasingProfileSamplerBuilder
 		Map<ProductCategory, Sampler<MarkovModel<Product>>> categorySamplers = Maps.newHashMap();
 		for(ProductCategory productCategory : productCategories)
 		{
-			ProductCategoryMarkovModelSampler sampler = new ProductCategoryMarkovModelSampler(productCategory, seedFactory);
+			ProductCategoryMarkovModelSampler sampler = new ProductCategoryMarkovModelSampler(productCategory, 
+					fieldWeightSampler, fieldSimilarityWeightSampler, loopbackWeightSampler);
 			categorySamplers.put(productCategory, sampler);
 		}
 		
