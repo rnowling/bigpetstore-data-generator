@@ -9,10 +9,10 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
+import com.github.rnowling.bps.datagenerator.builders.purchasingprofile.PurchasingProfileBuilder;
 import com.github.rnowling.bps.datagenerator.builders.transaction.CustomerInventoryBuilder;
 import com.github.rnowling.bps.datagenerator.builders.transaction.CustomerTransactionParametersSamplerBuilder;
 import com.github.rnowling.bps.datagenerator.builders.transaction.PurchasingProcessesBuilder;
-import com.github.rnowling.bps.datagenerator.builders.transaction.PurchasingProfileBuilder;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerInventory;

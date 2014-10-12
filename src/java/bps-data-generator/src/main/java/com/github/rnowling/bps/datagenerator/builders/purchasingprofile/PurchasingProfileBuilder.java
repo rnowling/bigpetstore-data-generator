@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.builders.transaction;
+package com.github.rnowling.bps.datagenerator.builders.purchasingprofile;
 
 import java.util.Map;
 
