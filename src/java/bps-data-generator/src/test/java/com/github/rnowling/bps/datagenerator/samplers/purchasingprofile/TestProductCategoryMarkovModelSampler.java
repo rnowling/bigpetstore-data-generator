@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.builders.purchasingprofile;
+package com.github.rnowling.bps.datagenerator.samplers.purchasingprofile;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -8,10 +8,10 @@ import java.util.List;
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.builders.purchasingprofile.ProductCategoryMarkovModelSampler;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.datareaders.ProductsReader;
+import com.github.rnowling.bps.datagenerator.samplers.purchasingprofile.ProductCategoryMarkovModelSampler;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModel;
 

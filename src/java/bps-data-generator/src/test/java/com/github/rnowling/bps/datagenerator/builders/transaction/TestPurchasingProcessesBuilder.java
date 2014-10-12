@@ -8,10 +8,10 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.builders.purchasingprofile.PurchasingProfileBuilder;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProcessesBuilder;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProfile;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.PurchasingProfileBuilder;
 import com.github.rnowling.bps.datagenerator.samplers.transaction.PurchasingProcesses;
 import com.github.rnowling.bps.datagenerator.statistics.SeedFactory;
 import com.github.rnowling.bps.datagenerator.statistics.markovmodels.MarkovModel;
