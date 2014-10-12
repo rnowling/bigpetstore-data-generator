@@ -1,6 +1,7 @@
-package com.github.rnowling.bps.datagenerator.datamodels.simulation;
+package com.github.rnowling.bps.datagenerator.builders.transaction;
 
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerTransactionParameters;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 

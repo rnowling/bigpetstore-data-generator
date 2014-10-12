@@ -12,7 +12,6 @@ import com.github.rnowling.bps.datagenerator.builders.transaction.CustomerTransa
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerInventory;
-import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerInventoryBuilder;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.CustomerTransactionParameters;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.datareaders.ProductCategoryBuilder;
