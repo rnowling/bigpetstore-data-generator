@@ -5,6 +5,7 @@ import java.util.Collection;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
+import com.github.rnowling.bps.datagenerator.framework.wfs.ConditionalWeightFunction;
 import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfile;
 
 public class TransactionPurchasesSamplerBuilder
@@ -41,8 +42,11 @@ public class TransactionPurchasesSamplerBuilder
 		timeSamplerBuilder.setCustomerTransactionParameters(transactionParameters);
 		Sampler<Double> timeSampler = timeSamplerBuilder.build();
 		
+		ConditionalWeightFunction<Double, Double> categoryWF =
+				new CategoryWeightFunction(transactionParameters.getAveragePurchaseTriggerTime());
+		
 		Sampler<Purchase> sampler = new TransactionPurchasesHiddenMarkovModel(processes,
-				transactionParameters.getAveragePurchaseTriggerTime(), customerInventory, timeSampler,
+				categoryWF, customerInventory, timeSampler,
 				this.seedFactory);
 		
 		return sampler;

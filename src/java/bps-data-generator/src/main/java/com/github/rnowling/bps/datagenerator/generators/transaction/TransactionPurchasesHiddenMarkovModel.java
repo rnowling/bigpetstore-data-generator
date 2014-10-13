@@ -8,6 +8,7 @@ import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
+import com.github.rnowling.bps.datagenerator.framework.wfs.ConditionalWeightFunction;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -18,32 +19,22 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Purchase>
 	protected final static String STOP_STATE = "STOP";
 	
 	final PurchasingProcesses purchasingProcesses;
-	final double averagePurchaseTriggerTime;
+	final ConditionalWeightFunction<Double, Double> categoryWF;
 	final CustomerInventory inventory;
 	final Sampler<Double> transactionTimeSampler;
 	
 	final SeedFactory seedFactory;
 	
 	public TransactionPurchasesHiddenMarkovModel(PurchasingProcesses purchasingProcesses,
-			double averagePurchaseTriggerTime, CustomerInventory inventory,
+			ConditionalWeightFunction<Double, Double> categoryWF, CustomerInventory inventory,
 				Sampler<Double> transactionTimeSampler, SeedFactory seedFactory)
 	{
 		this.purchasingProcesses = purchasingProcesses;
 		this.inventory = inventory;
-		this.averagePurchaseTriggerTime = averagePurchaseTriggerTime;
+		this.categoryWF = categoryWF;
 		this.transactionTimeSampler = transactionTimeSampler;
 		
 		this.seedFactory = seedFactory;
-	}
-	
-	protected double categoryWeight(double exhaustionTime, double transactionTime)
-	{
-		double remainingTime = Math.max(0.0, exhaustionTime - transactionTime);
-		double triggerTime = this.averagePurchaseTriggerTime;
-		double lambda = 1.0 / triggerTime;
-		double weight = lambda * Math.exp(-1.0 * lambda * remainingTime);
-		
-		return weight;
 	}
 	
 	protected String chooseCategory(double transactionTime, int numPurchases) throws Exception
@@ -54,7 +45,7 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Purchase>
 		for(Map.Entry<String, Double> entry : exhaustionTimes.entrySet())
 		{
 			String category = entry.getKey();
-			double weight = this.categoryWeight(entry.getValue(), transactionTime);
+			double weight = this.categoryWF.weight(entry.getValue(), transactionTime);
 			weights.put(category, weight);
 		}
 		

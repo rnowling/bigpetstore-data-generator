@@ -18,13 +18,9 @@ import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModelBuilder;
 import com.github.rnowling.bps.datagenerator.framework.samplers.DoubleSequenceSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
+import com.github.rnowling.bps.datagenerator.framework.wfs.ConditionalWeightFunction;
 import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfileBuilder;
-import com.github.rnowling.bps.datagenerator.generators.transaction.CustomerInventoryBuilder;
-import com.github.rnowling.bps.datagenerator.generators.transaction.CustomerTransactionParametersSamplerBuilder;
-import com.github.rnowling.bps.datagenerator.generators.transaction.PurchasingProcesses;
-import com.github.rnowling.bps.datagenerator.generators.transaction.PurchasingProcessesBuilder;
-import com.github.rnowling.bps.datagenerator.generators.transaction.TransactionPurchasesHiddenMarkovModel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -130,8 +126,11 @@ public class TestTransactionPurchasesHiddenMarkovModel
 		inventoryBuilder.addProductCategory(catFoodCategory);
 		CustomerInventory inventory = inventoryBuilder.build();
 		
+		ConditionalWeightFunction<Double, Double> categoryWF =
+				new CategoryWeightFunction(parameters.getAveragePurchaseTriggerTime());
+		
 		TransactionPurchasesHiddenMarkovModel hmm = new TransactionPurchasesHiddenMarkovModel(processes,
-				parameters.getAveragePurchaseTriggerTime(), inventory, new DoubleSequenceSampler(), seedFactory);
+				categoryWF, inventory, new DoubleSequenceSampler(), seedFactory);
 		
 		return hmm;
 	}
