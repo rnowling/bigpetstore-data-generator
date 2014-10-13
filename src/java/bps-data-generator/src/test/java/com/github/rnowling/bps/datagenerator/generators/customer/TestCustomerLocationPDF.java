@@ -11,10 +11,6 @@ import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
-import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
-import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
-import com.github.rnowling.bps.datagenerator.generators.customer.CustomerLocationPDF;
-import com.github.rnowling.bps.datagenerator.generators.store.StoreSamplerBuilder;
 
 public class TestCustomerLocationPDF
 {
@@ -28,15 +24,10 @@ public class TestCustomerLocationPDF
 		zipcodeReader.setPopulationFile(Constants.POPULATION_FILE);
 		List<ZipcodeRecord> zipcodes = zipcodeReader.readData();
 		
-		SeedFactory factory = new SeedFactory(1234);
-		
-		StoreSamplerBuilder storeSamplerBuilder = new StoreSamplerBuilder(zipcodes, factory);
-		Sampler<Store> storeSampler = storeSamplerBuilder.build();
-		
 		List<Store> stores = new ArrayList<Store>();
 		for(int i = 0; i < 10; i++)
 		{
-			Store store = storeSampler.sample();
+			Store store = new Store(i, "Store_" + i, zipcodes.get(i));
 			stores.add(store);
 		}
 		
