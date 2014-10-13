@@ -2,14 +2,13 @@ package com.github.rnowling.bps.datagenerator.generators.store;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
 
-import com.github.rnowling.bps.datagenerator.Constants;
+import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
-import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
-import com.github.rnowling.bps.datagenerator.generators.store.StoreLocationIncomePDF;
 
 public class TestStoreLocationPopulationPDF
 {
@@ -17,14 +16,11 @@ public class TestStoreLocationPopulationPDF
 	@Test
 	public void testProbability() throws Exception
 	{
-		ZipcodeReader reader = new ZipcodeReader();
-		reader.setCoordinatesFile(Constants.COORDINATES_FILE);
-		reader.setIncomesFile(Constants.INCOMES_FILE);
-		reader.setPopulationFile(Constants.POPULATION_FILE);
-		
-		List<ZipcodeRecord> zipcodes = reader.readData();
-		
-		assertTrue(zipcodes.size() > 0);
+		List<ZipcodeRecord> zipcodes = Arrays.asList(new ZipcodeRecord[] {				
+				new ZipcodeRecord("11111", Pair.create(1.0, 1.0), 30000.0, 100),
+				new ZipcodeRecord("22222", Pair.create(2.0, 2.0), 45000.0, 200),
+				new ZipcodeRecord("33333", Pair.create(3.0, 3.0), 60000.0, 300)
+				});
 		
 		StoreLocationIncomePDF pdf = new StoreLocationIncomePDF(zipcodes, 100.0);
 		
