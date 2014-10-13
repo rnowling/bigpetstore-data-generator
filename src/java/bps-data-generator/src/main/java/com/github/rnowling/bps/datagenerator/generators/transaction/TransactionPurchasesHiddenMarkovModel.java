@@ -6,6 +6,7 @@ import java.util.Map;
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
+import com.github.rnowling.bps.datagenerator.framework.samplers.ConditionalSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.framework.wfs.ConditionalWeightFunction;
@@ -18,14 +19,14 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Purchase>
 	
 	protected final static String STOP_STATE = "STOP";
 	
-	final PurchasingProcesses purchasingProcesses;
+	final ConditionalSampler<Product, String> purchasingProcesses;
 	final ConditionalWeightFunction<Double, Double> categoryWF;
 	final CustomerInventory inventory;
 	final Sampler<Double> transactionTimeSampler;
 	
 	final SeedFactory seedFactory;
 	
-	public TransactionPurchasesHiddenMarkovModel(PurchasingProcesses purchasingProcesses,
+	public TransactionPurchasesHiddenMarkovModel(ConditionalSampler<Product, String> purchasingProcesses,
 			ConditionalWeightFunction<Double, Double> categoryWF, CustomerInventory inventory,
 				Sampler<Double> transactionTimeSampler, SeedFactory seedFactory)
 	{
@@ -61,7 +62,7 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Purchase>
 	
 	protected Product chooseProduct(String category) throws Exception
 	{
-		return this.purchasingProcesses.simulatePurchase(category);
+		return this.purchasingProcesses.sample(category);
 	}
 
 	public Purchase sample() throws Exception

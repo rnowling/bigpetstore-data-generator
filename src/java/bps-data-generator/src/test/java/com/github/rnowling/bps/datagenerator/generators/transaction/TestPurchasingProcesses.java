@@ -39,13 +39,13 @@ public class TestPurchasingProcesses
 		processesMap.put("dog food", sampler);
 		PurchasingProcesses processes = new PurchasingProcesses(processesMap);
 		
-		Product product = processes.simulatePurchase("dog food");
+		Product product = processes.sample("dog food");
 		
 		assertNotNull(product);
 		assertNotNull(product.getFieldValue(Constants.PRODUCT_CATEGORY));
 		assertNotNull(product.getFieldValue(Constants.PRODUCT_QUANTITY));
 		
-		product = processes.simulatePurchase("dog food");
+		product = processes.sample("dog food");
 		
 		assertNotNull(product);
 		assertNotNull(product.getFieldValue(Constants.PRODUCT_CATEGORY));

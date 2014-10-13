@@ -61,13 +61,13 @@ public class TestPurchasingProcessesBuilder
 		
 		PurchasingProcesses processes = builder.build();
 		
-		Product product = processes.simulatePurchase("dog food");
+		Product product = processes.sample("dog food");
 		
 		assertNotNull(product);
 		assertNotNull(product.getFieldValue(Constants.PRODUCT_CATEGORY));
 		assertNotNull(product.getFieldValue(Constants.PRODUCT_QUANTITY));
 		
-		product = processes.simulatePurchase("dog food");
+		product = processes.sample("dog food");
 		
 		assertNotNull(product);
 		assertNotNull(product.getFieldValue(Constants.PRODUCT_CATEGORY));
