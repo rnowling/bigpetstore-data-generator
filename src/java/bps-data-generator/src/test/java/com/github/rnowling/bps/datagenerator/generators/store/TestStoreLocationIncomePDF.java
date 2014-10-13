@@ -22,7 +22,7 @@ public class TestStoreLocationIncomePDF
 				new ZipcodeRecord("33333", Pair.create(3.0, 3.0), 60000.0, 300)
 				});
 		
-		StoreLocationPopulationPDF pdf = new StoreLocationPopulationPDF(zipcodes);
+		StoreLocationIncomePDF pdf = new StoreLocationIncomePDF(zipcodes, 100.0);
 		
 		for(ZipcodeRecord record : zipcodes)
 		{
