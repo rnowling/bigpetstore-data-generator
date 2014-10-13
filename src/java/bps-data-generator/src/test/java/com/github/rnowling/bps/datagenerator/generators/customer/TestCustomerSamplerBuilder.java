@@ -3,21 +3,21 @@ package com.github.rnowling.bps.datagenerator.generators.customer;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
+import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
+import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
-import com.github.rnowling.bps.datagenerator.framework.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
-import com.github.rnowling.bps.datagenerator.framework.samplers.SequenceSampler;
-import com.github.rnowling.bps.datagenerator.generators.customer.CustomerSampler;
 
 public class TestCustomerSamplerBuilder
 {
@@ -34,12 +34,17 @@ public class TestCustomerSamplerBuilder
 		NameReader nameReader = new NameReader(Constants.NAMEDB_FILE);
 		Names names = nameReader.readData();
 		
+		InputData inputData = new InputData(zipcodes, names);
+		
+		List<Store> stores = Arrays.asList(new Store(0, "Store_0", zipcodes.get(0)),
+				new Store(1, "Store_1", zipcodes.get(1)),
+				new Store(2, "Store_2", zipcodes.get(2))
+				);
+		
 		SeedFactory factory = new SeedFactory(1234);
 		
-		Sampler<Customer> sampler = new CustomerSampler(new SequenceSampler(),
-				RouletteWheelSampler.createUniform(names.getFirstNames().keySet(), factory), 
-				RouletteWheelSampler.createUniform(names.getLastNames().keySet(), factory), 
-				RouletteWheelSampler.createUniform(zipcodes, factory));
+		CustomerSamplerBuilder builder = new CustomerSamplerBuilder(stores, inputData, factory);
+		Sampler<Customer> sampler = builder.build();
 		
 		Customer customer = sampler.sample();
 		
