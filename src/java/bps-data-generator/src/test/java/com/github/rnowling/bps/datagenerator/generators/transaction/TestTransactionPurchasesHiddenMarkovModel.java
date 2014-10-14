@@ -16,7 +16,6 @@ import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModelBuilder;
-import com.github.rnowling.bps.datagenerator.framework.samplers.DoubleSequenceSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.framework.wfs.ConditionalWeightFunction;
 import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfile;
