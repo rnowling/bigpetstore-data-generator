@@ -43,12 +43,15 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Purchase>
 		ImmutableMap<String, Double> exhaustionTimes = this.inventory.getExhaustionTimes();
 		Map<String, Double> weights = Maps.newHashMap();
 		
+		String fieldWeights = "";
 		for(Map.Entry<String, Double> entry : exhaustionTimes.entrySet())
 		{
 			String category = entry.getKey();
 			double weight = this.categoryWF.weight(entry.getValue(), transactionTime);
 			weights.put(category, weight);
+			fieldWeights += weight + " ";
 		}
+		System.out.println("Category Weights: " + fieldWeights);
 		
 		if(numPurchases > 0)
 		{
@@ -68,6 +71,7 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Purchase>
 	public Purchase sample() throws Exception
 	{
 		double transactionTime = this.transactionTimeSampler.sample();
+		System.out.println("Transaction Time: " + transactionTime);
 		int numPurchases = 0;
 		
 		List<Product> purchasedProducts = Lists.newArrayList();
@@ -89,6 +93,8 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Purchase>
 			this.inventory.simulatePurchase(transactionTime, product);
 			numPurchases += 1;
 		}
+		
+		System.out.println("Number of products purchased: " + purchasedProducts.size());
 		
 		return new Purchase(transactionTime, purchasedProducts);
 	}

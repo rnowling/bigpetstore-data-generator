@@ -28,6 +28,10 @@ public class TransactionPurchasesSamplerBuilder
 		CustomerTransactionParametersSamplerBuilder builder = new CustomerTransactionParametersSamplerBuilder(seedFactory);
 		CustomerTransactionParameters transactionParameters = builder.build().sample();
 		
+		System.out.println("Number of pets: " + transactionParameters.countPets());
+		System.out.println("Average Transaction Trigger Time: " + transactionParameters.getAverageTransactionTriggerTime());
+		System.out.println("Average Purchase Trigger Time: " + transactionParameters.getAveragePurchaseTriggerTime());
+		
 		CustomerInventoryBuilder inventoryBuilder = new CustomerInventoryBuilder(transactionParameters,
 				seedFactory);
 		inventoryBuilder.addAllProductCategories(productCategories);
