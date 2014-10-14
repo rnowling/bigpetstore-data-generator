@@ -136,6 +136,7 @@ public class Simulation
 				Transaction transaction = generator.generate();
 				
 				System.out.println("Transaction Time: " + transaction.getDateTime());
+				System.out.println("Number of products: " + transaction.getProducts().size());
 				
 				if(transaction.getDateTime() > simulationTime)
 					break;
@@ -153,8 +154,22 @@ public class Simulation
 		generateCustomers();
 		generatePurchasingProfiles();
 		generateTransactions();
-		
-		
-		
 	}
+
+	public List<Store> getStores()
+	{
+		return stores;
+	}
+
+	public List<Customer> getCustomers()
+	{
+		return customers;
+	}
+
+	public List<Transaction> getTransactions()
+	{
+		return transactions;
+	}
+	
+	
 }
