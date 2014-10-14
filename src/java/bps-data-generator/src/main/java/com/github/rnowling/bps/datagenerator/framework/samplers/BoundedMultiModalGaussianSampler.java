@@ -29,9 +29,9 @@ public class BoundedMultiModalGaussianSampler implements Sampler<Double>
 		int idx = rng.nextInt(distributions.size());
 		
 		double mean = distributions.get(idx).getFirst();
-		double var = distributions.get(idx).getSecond();
+		double std = distributions.get(idx).getSecond();
 		
-		double value = mean + rng.nextGaussian() * Math.sqrt(var);
+		double value = mean + rng.nextGaussian() * std;
 		
 		value = Math.min(value, this.max);
 		value = Math.max(value, this.min);
