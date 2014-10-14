@@ -1,12 +1,15 @@
 package com.github.rnowling.bps.datagenerator.generators.transaction;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Transaction;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
+import com.github.rnowling.bps.datagenerator.framework.samplers.ConditionalSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.SequenceSampler;
@@ -19,6 +22,9 @@ public class TransactionSamplerBuilder
 	private final Customer customer;
 	private final PurchasingProfile purchasingProfile;
 	private final SeedFactory seedFactory;
+	
+	CustomerTransactionParameters parameters;
+	CustomerInventory inventory;
 	
 	public TransactionSamplerBuilder(Collection<Store> stores,
 			Collection<ProductCategory> productCategories, 
@@ -33,21 +39,52 @@ public class TransactionSamplerBuilder
 		this.stores = stores; 	
 	}
 	
+	protected void buildParameters() throws Exception
+	{
+		CustomerTransactionParametersSamplerBuilder builder = new CustomerTransactionParametersSamplerBuilder(seedFactory);
+		parameters = builder.build().sample();
+	}
+	
 	protected Sampler<Store> buildStoreSampler()
 	{
 		return RouletteWheelSampler.createUniform(stores, seedFactory);
 	}
 	
-	protected Sampler<Purchase> buildPurchasesSampler() throws Exception
+	protected ConditionalSampler<List<Product>, Double> buildPurchasesSampler() throws Exception
 	{
 		TransactionPurchasesSamplerBuilder builder = new TransactionPurchasesSamplerBuilder(productCategories,
 				purchasingProfile, seedFactory);
+		
+		builder.setTransactionParameters(parameters);
+		builder.setInventory(inventory);
 	
 		return builder.build();
 	}
 	
+	protected Sampler<Double> buildTimeSampler()
+	{
+		TransactionTimeSamplerBuilder builder = new TransactionTimeSamplerBuilder(seedFactory);
+		builder.setCustomerTransactionParameters(parameters);
+		builder.setCustomerInventory(inventory);
+		
+		return builder.build();
+	}
+	
+	protected void buildCustomerInventory()
+	{
+		CustomerInventoryBuilder inventoryBuilder = new CustomerInventoryBuilder(parameters,
+				seedFactory);
+		inventoryBuilder.addAllProductCategories(productCategories);
+		inventory = inventoryBuilder.build();
+	}
+	
 	public Sampler<Transaction> build() throws Exception
 	{
-		return new TransactionSampler(customer, buildPurchasesSampler(), buildStoreSampler(), new SequenceSampler());
+		buildParameters();
+		buildCustomerInventory();
+		
+		Sampler<Double> timeSampler = buildTimeSampler();
+		
+		return new TransactionSampler(customer, timeSampler, buildPurchasesSampler(), buildStoreSampler(), new SequenceSampler());
 	}
 }

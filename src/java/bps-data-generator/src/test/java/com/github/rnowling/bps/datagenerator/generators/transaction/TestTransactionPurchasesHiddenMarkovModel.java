@@ -130,7 +130,7 @@ public class TestTransactionPurchasesHiddenMarkovModel
 				new CategoryWeightFunction(parameters.getAveragePurchaseTriggerTime());
 		
 		TransactionPurchasesHiddenMarkovModel hmm = new TransactionPurchasesHiddenMarkovModel(processes,
-				categoryWF, inventory, new DoubleSequenceSampler(), seedFactory);
+				categoryWF, inventory, seedFactory);
 		
 		return hmm;
 	}
@@ -169,13 +169,13 @@ public class TestTransactionPurchasesHiddenMarkovModel
 	{	
 		TransactionPurchasesHiddenMarkovModel hmm = createHMM();
 		
-		Purchase purchase = hmm.sample();
+		List<Product> purchase = hmm.sample(1.0);
 		
-		assertTrue(purchase.getPurchasedProducts().size() > 0);
+		assertTrue(purchase.size() > 0);
 		
-		for(int i = 0; i < purchase.getPurchasedProducts().size(); i++)
+		for(int i = 0; i < purchase.size(); i++)
 		{
-			Product product = purchase.getPurchasedProducts().get(i);
+			Product product = purchase.get(i);
 			
 			// first product should never be null
 			assertNotNull(product);

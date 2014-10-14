@@ -14,7 +14,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-public class TransactionPurchasesHiddenMarkovModel implements Sampler<Purchase>
+public class TransactionPurchasesHiddenMarkovModel implements ConditionalSampler<List<Product>, Double>
 {
 	
 	protected final static String STOP_STATE = "STOP";
@@ -22,18 +22,16 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Purchase>
 	final ConditionalSampler<Product, String> purchasingProcesses;
 	final ConditionalWeightFunction<Double, Double> categoryWF;
 	final CustomerInventory inventory;
-	final Sampler<Double> transactionTimeSampler;
 	
 	final SeedFactory seedFactory;
 	
 	public TransactionPurchasesHiddenMarkovModel(ConditionalSampler<Product, String> purchasingProcesses,
 			ConditionalWeightFunction<Double, Double> categoryWF, CustomerInventory inventory,
-				Sampler<Double> transactionTimeSampler, SeedFactory seedFactory)
+				SeedFactory seedFactory)
 	{
 		this.purchasingProcesses = purchasingProcesses;
 		this.inventory = inventory;
 		this.categoryWF = categoryWF;
-		this.transactionTimeSampler = transactionTimeSampler;
 		
 		this.seedFactory = seedFactory;
 	}
@@ -68,9 +66,8 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Purchase>
 		return this.purchasingProcesses.sample(category);
 	}
 
-	public Purchase sample() throws Exception
+	public List<Product> sample(Double transactionTime) throws Exception
 	{
-		double transactionTime = this.transactionTimeSampler.sample();
 		System.out.println("Transaction Time: " + transactionTime);
 		int numPurchases = 0;
 		
@@ -96,7 +93,19 @@ public class TransactionPurchasesHiddenMarkovModel implements Sampler<Purchase>
 		
 		System.out.println("Number of products purchased: " + purchasedProducts.size());
 		
-		return new Purchase(transactionTime, purchasedProducts);
+		return purchasedProducts;
+	}
+	
+	public Sampler<List<Product>> fixConditional(final Double transactionTime)
+	{
+		final ConditionalSampler<List<Product>, Double> sampler = this;
+		return new Sampler<List<Product>>()
+		{
+			public List<Product> sample() throws Exception
+			{
+				return sampler.sample(transactionTime);
+			}
+		};
 	}
 	
 }

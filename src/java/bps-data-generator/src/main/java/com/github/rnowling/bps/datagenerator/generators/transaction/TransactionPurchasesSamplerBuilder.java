@@ -1,10 +1,12 @@
 package com.github.rnowling.bps.datagenerator.generators.transaction;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
+import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
-import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
+import com.github.rnowling.bps.datagenerator.framework.samplers.ConditionalSampler;
 import com.github.rnowling.bps.datagenerator.framework.wfs.ConditionalWeightFunction;
 import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfile;
 
@@ -13,6 +15,9 @@ public class TransactionPurchasesSamplerBuilder
 	final SeedFactory seedFactory;
 	final Collection<ProductCategory> productCategories;
 	final PurchasingProfile purchasingProfile;
+	
+	protected CustomerTransactionParameters transactionParameters;
+	protected CustomerInventory inventory;
 	
 	public TransactionPurchasesSamplerBuilder(Collection<ProductCategory> productCategories,
 			PurchasingProfile purchasingProfile,
@@ -23,35 +28,32 @@ public class TransactionPurchasesSamplerBuilder
 		this.purchasingProfile = purchasingProfile;
 	}
 	
-	public Sampler<Purchase> build() throws Exception
+	public void setTransactionParameters(
+			CustomerTransactionParameters transactionParameters)
 	{
-		CustomerTransactionParametersSamplerBuilder builder = new CustomerTransactionParametersSamplerBuilder(seedFactory);
-		CustomerTransactionParameters transactionParameters = builder.build().sample();
-		
+		this.transactionParameters = transactionParameters;
+	}
+
+	public void setInventory(CustomerInventory inventory)
+	{
+		this.inventory = inventory;
+	}
+
+	public ConditionalSampler<List<Product>, Double> build() throws Exception
+	{
 		System.out.println("Number of pets: " + transactionParameters.countPets());
 		System.out.println("Average Transaction Trigger Time: " + transactionParameters.getAverageTransactionTriggerTime());
 		System.out.println("Average Purchase Trigger Time: " + transactionParameters.getAveragePurchaseTriggerTime());
-		
-		CustomerInventoryBuilder inventoryBuilder = new CustomerInventoryBuilder(transactionParameters,
-				seedFactory);
-		inventoryBuilder.addAllProductCategories(productCategories);
-		CustomerInventory customerInventory = inventoryBuilder.build();
 		
 		PurchasingProcessesBuilder processesBuilder = new PurchasingProcessesBuilder(seedFactory);
 		processesBuilder.setPurchasingProfile(purchasingProfile);
 		PurchasingProcesses processes = processesBuilder.build();
 		
-		TransactionTimeSamplerBuilder timeSamplerBuilder = new TransactionTimeSamplerBuilder(this.seedFactory);
-		timeSamplerBuilder.setCustomerInventory(customerInventory);
-		timeSamplerBuilder.setCustomerTransactionParameters(transactionParameters);
-		Sampler<Double> timeSampler = timeSamplerBuilder.build();
-		
 		ConditionalWeightFunction<Double, Double> categoryWF =
 				new CategoryWeightFunction(transactionParameters.getAveragePurchaseTriggerTime());
 		
-		Sampler<Purchase> sampler = new TransactionPurchasesHiddenMarkovModel(processes,
-				categoryWF, customerInventory, timeSampler,
-				this.seedFactory);
+		ConditionalSampler<List<Product>, Double> sampler = new TransactionPurchasesHiddenMarkovModel(processes,
+				categoryWF, inventory, this.seedFactory);
 		
 		return sampler;
 	}
