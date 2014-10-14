@@ -47,5 +47,5 @@ public class Constants
 	public static final String PRODUCT_QUANTITY = "size";
 	public static final String PRODUCT_CATEGORY = "category";
 	
-	public static final double STOP_CATEGORY_WEIGHT = 0.1;
+	public static final double STOP_CATEGORY_WEIGHT = 0.01;
 }
