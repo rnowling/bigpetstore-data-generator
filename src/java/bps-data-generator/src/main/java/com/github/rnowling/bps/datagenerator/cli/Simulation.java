@@ -135,9 +135,6 @@ public class Simulation
 			{
 				Transaction transaction = generator.generate();
 				
-				System.out.println("Transaction Time: " + transaction.getDateTime());
-				System.out.println("Number of products: " + transaction.getProducts().size());
-				
 				if(transaction.getDateTime() > simulationTime)
 					break;
 				transactions.add(transaction);
