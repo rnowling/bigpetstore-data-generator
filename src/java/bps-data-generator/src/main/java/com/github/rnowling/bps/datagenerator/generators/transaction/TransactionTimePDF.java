@@ -5,9 +5,9 @@ import com.github.rnowling.bps.datagenerator.framework.pdfs.ProbabilityDensityFu
 
 public class TransactionTimePDF implements ConditionalProbabilityDensityFunction<Double, Double>
 {	
-	public double probability(Double lastTransactionTime, Double proposedTime)
+	public double probability(Double proposedTime, Double lastTransactionTime)
 	{
-		return fixConditional(lastTransactionTime).probability(lastTransactionTime);
+		return fixConditional(lastTransactionTime).probability(proposedTime);
 	}
 	
 	public ProbabilityDensityFunction<Double> fixConditional(final Double lastTransactionTime)
