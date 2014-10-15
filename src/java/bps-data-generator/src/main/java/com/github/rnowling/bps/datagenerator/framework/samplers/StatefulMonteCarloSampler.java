@@ -6,14 +6,14 @@ import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.pdfs.ConditionalProbabilityDensityFunction;
 
 
-public class StatefulRejectSamplingMonteCarloSampler<T> implements Sampler<T>
+public class StatefulMonteCarloSampler<T> implements Sampler<T>
 {
 	private final Sampler<T> stateSampler;
 	private final Random rng;
 	private final ConditionalProbabilityDensityFunction<T, T> acceptancePDF;
 	private T currentState;
 	
-	public StatefulRejectSamplingMonteCarloSampler(Sampler<T> stateGenerator,
+	public StatefulMonteCarloSampler(Sampler<T> stateGenerator,
 			ConditionalProbabilityDensityFunction<T, T> acceptancePDF,
 			T initialState,
 			SeedFactory seedFactory)

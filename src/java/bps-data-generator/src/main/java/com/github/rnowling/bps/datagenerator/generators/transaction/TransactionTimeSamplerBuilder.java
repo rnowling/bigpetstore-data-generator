@@ -3,7 +3,7 @@ package com.github.rnowling.bps.datagenerator.generators.transaction;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.samplers.ExponentialSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
-import com.github.rnowling.bps.datagenerator.framework.samplers.StatefulRejectSamplingMonteCarloSampler;
+import com.github.rnowling.bps.datagenerator.framework.samplers.StatefulMonteCarloSampler;
 
 public class TransactionTimeSamplerBuilder
 {
@@ -33,7 +33,7 @@ public class TransactionTimeSamplerBuilder
 		Sampler<Double> proposedTimeSampler = new ProposedPurchaseTimeSampler(customerInventory,
 				arrivalTimeSampler);
 		
-		return new StatefulRejectSamplingMonteCarloSampler<Double>(proposedTimeSampler, 
+		return new StatefulMonteCarloSampler<Double>(proposedTimeSampler, 
 				new TransactionTimePDF(),
 				0.0,
 				seedFactory);
