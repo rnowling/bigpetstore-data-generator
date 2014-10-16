@@ -2,6 +2,7 @@ package com.github.rnowling.bps.datagenerator.datareaders;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URL;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -12,9 +13,9 @@ public class NameReader
 {
 	File path;
 	
-	public NameReader(String path)
+	public NameReader(File path)
 	{
-		this.path = new File(path);
+		this.path = path;
 	}
 	
 	public Names readData() throws FileNotFoundException

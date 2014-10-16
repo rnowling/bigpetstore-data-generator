@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModel;
@@ -16,6 +15,7 @@ import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.Purcha
 import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfileBuilder;
 import com.github.rnowling.bps.datagenerator.generators.transaction.PurchasingProcesses;
 import com.github.rnowling.bps.datagenerator.generators.transaction.PurchasingProcessesBuilder;
+import com.github.rnowling.bps.datagenerator.resources.Constants;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 

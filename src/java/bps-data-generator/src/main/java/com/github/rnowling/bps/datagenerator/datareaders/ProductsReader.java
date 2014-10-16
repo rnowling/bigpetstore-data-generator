@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -18,9 +19,9 @@ public class ProductsReader
 {
 	File path;
 	
-	public ProductsReader(String path)
+	public ProductsReader(File path)
 	{
-		this.path = new File(path);
+		this.path = path;
 	}
 	
 	protected Product parseProduct(Object productJson)

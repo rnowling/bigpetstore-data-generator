@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategoryBuilder;
@@ -17,6 +16,7 @@ import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.generators.transaction.CustomerTransactionParameters;
 import com.github.rnowling.bps.datagenerator.generators.transaction.CustomerTransactionParametersSamplerBuilder;
 import com.github.rnowling.bps.datagenerator.generators.transaction.ProductCategoryInventory;
+import com.github.rnowling.bps.datagenerator.resources.Constants;
 import com.google.common.collect.Maps;
 
 public class TestProductCategoryInventory

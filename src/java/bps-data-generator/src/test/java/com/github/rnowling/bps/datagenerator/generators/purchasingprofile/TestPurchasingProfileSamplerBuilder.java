@@ -7,12 +7,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datareaders.ProductsReader;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfileSamplerBuilder;
+import com.github.rnowling.bps.datagenerator.resources.Constants;
 
 public class TestPurchasingProfileSamplerBuilder
 {

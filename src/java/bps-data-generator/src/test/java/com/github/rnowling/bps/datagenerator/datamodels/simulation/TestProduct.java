@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.github.rnowling.bps.datagenerator.Constants;
+import com.github.rnowling.bps.datagenerator.resources.Constants;
 import com.google.common.collect.Maps;
 
 public class TestProduct

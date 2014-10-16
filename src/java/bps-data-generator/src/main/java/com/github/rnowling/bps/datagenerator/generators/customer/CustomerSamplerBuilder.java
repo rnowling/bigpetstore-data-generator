@@ -2,7 +2,6 @@ package com.github.rnowling.bps.datagenerator.generators.customer;
 
 import java.util.List;
 
-import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
@@ -12,6 +11,7 @@ import com.github.rnowling.bps.datagenerator.framework.pdfs.ProbabilityDensityFu
 import com.github.rnowling.bps.datagenerator.framework.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.SequenceSampler;
+import com.github.rnowling.bps.datagenerator.resources.Constants;
 
 public class CustomerSamplerBuilder
 {

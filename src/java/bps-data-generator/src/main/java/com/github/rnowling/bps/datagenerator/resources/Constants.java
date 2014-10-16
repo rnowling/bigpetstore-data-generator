@@ -1,5 +1,7 @@
-package com.github.rnowling.bps.datagenerator;
+package com.github.rnowling.bps.datagenerator.resources;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
 
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
@@ -7,13 +9,25 @@ import com.google.common.collect.ImmutableList;
 
 public class Constants
 {
-	public static final String COORDINATES_FILE = "resources/zips.csv";
-	public static final String INCOMES_FILE = "resources/ACS_12_5YR_S1903/ACS_12_5YR_S1903_with_ann.csv";
-	public static final String POPULATION_FILE = "resources/population_data.csv";
-	
-	public static final String NAMEDB_FILE = "resources/namedb/data/data.dat";
-	
-	public static final String PRODUCTS_FILE = "resources/product_categories.json";
+	public static File
+		COORDINATES_FILE,INCOMES_FILE,POPULATION_FILE,ACS_ann,NAMEDB_FILE,PRODUCTS_FILE ;
+	static{
+		try{
+			NAMEDB_FILE=
+			COORDINATES_FILE = Paths.get(
+					Constants.class.getResource("namedb/data/data.dat").toURI()).toFile();
+			INCOMES_FILE = Paths.get(
+					Constants.class.getResource("ACS_12_5YR_S1903/ACS_12_5YR_S1903_with_ann.csv").toURI()).toFile();
+			POPULATION_FILE = Paths.get(
+					Constants.class.getResource("population_data.csv").toURI()).toFile();
+			PRODUCTS_FILE = Paths.get(
+					Constants.class.getResource("product_categories.json").toURI()).toFile();
+			Constants.class.getResource("namedb/data/data.dat");
+		}
+		catch(Throwable r){
+			throw(new RuntimeException(r));
+		}
+	}
 	
 	public static final double INCOME_SCALING_FACTOR = 100.0;
 	
@@ -48,4 +62,5 @@ public class Constants
 	public static final String PRODUCT_CATEGORY = "category";
 	
 	public static final double STOP_CATEGORY_WEIGHT = 0.01;
+
 }

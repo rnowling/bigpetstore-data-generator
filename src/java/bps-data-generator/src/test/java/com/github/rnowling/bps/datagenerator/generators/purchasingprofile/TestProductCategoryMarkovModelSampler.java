@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.datareaders.ProductsReader;
@@ -15,6 +14,7 @@ import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.framework.samplers.UniformSampler;
 import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.ProductCategoryMarkovModelSampler;
+import com.github.rnowling.bps.datagenerator.resources.Constants;
 
 public class TestProductCategoryMarkovModelSampler
 {

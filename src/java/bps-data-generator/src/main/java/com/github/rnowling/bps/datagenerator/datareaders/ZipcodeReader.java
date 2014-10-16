@@ -2,6 +2,7 @@ package com.github.rnowling.bps.datagenerator.datareaders;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Vector;
 
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
+import com.github.rnowling.bps.datagenerator.resources.Constants;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -21,19 +23,19 @@ public class ZipcodeReader
 	File zipcodePopulationFile = null;
 	File zipcodeCoordinatesFile = null;
 	
-	public void setIncomesFile(String path)
+	public void setIncomesFile(File path)
 	{
-		this.zipcodeIncomesFile = new File(path);
+		this.zipcodeIncomesFile = path;
 	}
 	
-	public void setPopulationFile(String path)
+	public void setPopulationFile(File path)
 	{
-		this.zipcodePopulationFile = new File(path);
+		this.zipcodePopulationFile = path;
 	}
 	
-	public void setCoordinatesFile(String path)
+	public void setCoordinatesFile(File p)
 	{
-		this.zipcodeCoordinatesFile = new File(path);
+		this.zipcodeCoordinatesFile = p;
 	}
 	
 	private ImmutableMap<String, Double> readIncomeData(File path) throws FileNotFoundException
@@ -156,9 +158,9 @@ public class ZipcodeReader
 	public static void main(String[] args) throws FileNotFoundException
 	{
 		ZipcodeReader reader = new ZipcodeReader();
-		reader.setCoordinatesFile("resources/zips.csv");
-		reader.setIncomesFile("resources/ACS_12_5YR_S1903/ACS_12_5YR_S1903_with_ann.csv");
-		reader.setPopulationFile("resources/population_data.csv");
+		reader.setCoordinatesFile(Constants.COORDINATES_FILE);
+		reader.setIncomesFile(Constants.ACS_ann);
+		reader.setPopulationFile(Constants.POPULATION_FILE);
 		
 		List<ZipcodeRecord> table = reader.readData();
 		

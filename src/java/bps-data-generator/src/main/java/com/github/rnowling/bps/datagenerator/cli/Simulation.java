@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
-import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.CustomerGenerator;
 import com.github.rnowling.bps.datagenerator.PurchasingProfileGenerator;
 import com.github.rnowling.bps.datagenerator.StoreGenerator;
@@ -22,6 +21,7 @@ import com.github.rnowling.bps.datagenerator.datareaders.ProductsReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfile;
+import com.github.rnowling.bps.datagenerator.resources.Constants;
 import com.google.common.collect.Lists;
 
 public class Simulation
