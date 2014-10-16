@@ -41,15 +41,12 @@ public class TransactionPurchasesHiddenMarkovModel implements ConditionalSampler
 		ImmutableMap<String, Double> exhaustionTimes = this.inventory.getExhaustionTimes();
 		Map<String, Double> weights = Maps.newHashMap();
 		
-		String fieldWeights = "";
 		for(Map.Entry<String, Double> entry : exhaustionTimes.entrySet())
 		{
 			String category = entry.getKey();
 			double weight = this.categoryWF.weight(entry.getValue(), transactionTime);
 			weights.put(category, weight);
-			fieldWeights += weight + " ";
 		}
-		System.out.println("Category Weights: " + fieldWeights);
 		
 		if(numPurchases > 0)
 		{
