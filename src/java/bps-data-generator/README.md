@@ -38,12 +38,12 @@ Hadoop or Spark applications) or using a command-line interface.
 The data generator CLI requires several parameters.  To get 
 descriptions:
 
-   $ java -jar build/libs/bps-data-generator-0.2.jar
+    $ java -jar build/libs/bps-data-generator-0.2.jar
 
 Here is an example for generating 10 stores, 1000 customers,
 and a year of transactions:
 
-   $ java -jar build/libs/bps-data-generator-0.2.jar generatedData/ 10 1000 365.0
+    $ java -jar build/libs/bps-data-generator-0.2.jar generatedData/ 10 1000 365.0
 
 
 Groovy Drivers for Scripting
