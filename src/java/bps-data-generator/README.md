@@ -43,7 +43,7 @@ descriptions:
 Here is an example for generating 10 stores, 1000 customers,
 and a year of transactions:
 
-    $ java -jar build/libs/bps-data-generator-0.2.jar generatedData/ 10 1000 365.0
+    $ java -jar build/libs/bps-data-generator-0.2.jar resources/ generatedData/ 10 1000 365.0
 
 
 Groovy Drivers for Scripting
