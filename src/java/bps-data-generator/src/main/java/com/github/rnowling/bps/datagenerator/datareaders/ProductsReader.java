@@ -18,9 +18,9 @@ public class ProductsReader
 {
 	File path;
 	
-	public ProductsReader(String path)
+	public ProductsReader(File path)
 	{
-		this.path = new File(path);
+		this.path = path;
 	}
 	
 	protected Product parseProduct(Object productJson)

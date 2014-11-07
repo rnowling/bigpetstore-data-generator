@@ -21,19 +21,19 @@ public class ZipcodeReader
 	File zipcodePopulationFile = null;
 	File zipcodeCoordinatesFile = null;
 	
-	public void setIncomesFile(String path)
+	public void setIncomesFile(File path)
 	{
-		this.zipcodeIncomesFile = new File(path);
+		this.zipcodeIncomesFile = path;
 	}
 	
-	public void setPopulationFile(String path)
+	public void setPopulationFile(File path)
 	{
-		this.zipcodePopulationFile = new File(path);
+		this.zipcodePopulationFile = path;
 	}
 	
-	public void setCoordinatesFile(String path)
+	public void setCoordinatesFile(File path)
 	{
-		this.zipcodeCoordinatesFile = new File(path);
+		this.zipcodeCoordinatesFile = path;
 	}
 	
 	private ImmutableMap<String, Double> readIncomeData(File path) throws FileNotFoundException
@@ -151,17 +151,5 @@ public class ZipcodeReader
 		}
 		
 		return ImmutableList.copyOf(table);
-	}
-	
-	public static void main(String[] args) throws FileNotFoundException
-	{
-		ZipcodeReader reader = new ZipcodeReader();
-		reader.setCoordinatesFile("resources/zips.csv");
-		reader.setIncomesFile("resources/ACS_12_5YR_S1903/ACS_12_5YR_S1903_with_ann.csv");
-		reader.setPopulationFile("resources/population_data.csv");
-		
-		List<ZipcodeRecord> table = reader.readData();
-		
-		System.out.println(table.size());
 	}
 }

@@ -12,9 +12,9 @@ public class NameReader
 {
 	File path;
 	
-	public NameReader(String path)
+	public NameReader(File path)
 	{
-		this.path = new File(path);
+		this.path = path;
 	}
 	
 	public Names readData() throws FileNotFoundException
