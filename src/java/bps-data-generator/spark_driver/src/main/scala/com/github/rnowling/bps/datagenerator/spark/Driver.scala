@@ -75,8 +75,30 @@ object SparkDriver {
 
       println("Generating transactions...")
       val nTrans = transactionRDD.count()
-
       println(s"Generated $nTrans transactions.")
+
+      val transactionStringsRDD = transactionRDD.map { t =>
+        var records : List[String] = List()
+        val products = t.getProducts()
+	for(i <- 0 until products.size()) {
+          val p = products.get(i)
+          var record = t.getId() + ","
+          record += t.getDateTime() + ","
+          record += t.getStore().getId() + ","
+          record += t.getStore().getLocation().getZipcode() + ","
+          record += t.getCustomer().getId() + ","
+	  val name = t.getCustomer().getName()
+	  record += name.getFirst() + " " + name.getSecond() + ","
+	  record += t.getCustomer().getLocation().getZipcode() + ","
+	  record += p
+
+          records = record :: records
+        }
+
+	records
+      }.flatMap { s => s }
+
+      transactionStringsRDD.saveAsTextFile(driver.getOutputDir() + "/transactions.txt")
 
       sc.stop()
   }
