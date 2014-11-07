@@ -46,7 +46,7 @@ public class Driver
 		System.out.println(usage);
 	}
 	
-	private void parseArgs(String[] args)
+	public void parseArgs(String[] args)
 	{
 		if(args.length < 5 || args.length > 6)
 		{
@@ -150,7 +150,7 @@ public class Driver
 		return path;
 	}
 	
-	private InputData loadData() throws Exception
+	public InputData loadData() throws Exception
 	{
 		
 		System.out.println("Reading zipcode data");
@@ -203,9 +203,14 @@ public class Driver
 		outputStream.close();
 	}
 	
+	public Simulation buildSimulation(InputData inputData)
+	{
+		return new Simulation(inputData, nStores, nCustomers, simulationTime, seed);
+	}
+	
 	private void run(InputData inputData) throws Exception
 	{
-		Simulation simulation = new Simulation(inputData, nStores, nCustomers, simulationTime, seed);
+		Simulation simulation = buildSimulation(inputData);
 		
 		simulation.simulate();
 		
@@ -224,5 +229,10 @@ public class Driver
 	{
 		Driver driver = new Driver();
 		driver.run(args);		
+	}
+	
+	public Double getSimulationLength()
+	{
+		return simulationTime;
 	}
 }

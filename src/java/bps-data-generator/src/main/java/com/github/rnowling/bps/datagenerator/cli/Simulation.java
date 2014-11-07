@@ -38,7 +38,7 @@ public class Simulation
 		seedFactory = new SeedFactory(seed);
 	}
 	
-	private void generateStores() throws Exception
+	public void generateStores() throws Exception
 	{
 		System.out.println("Generating stores");
 		StoreGenerator storeGenerator = new StoreGenerator(inputData, seedFactory);
@@ -55,7 +55,7 @@ public class Simulation
 		System.out.println("Generated " + stores.size() + " stores");
 	}
 	
-	private void generateCustomers() throws Exception
+	public void generateCustomers() throws Exception
 	{
 		System.out.println("Generating customers");
 		CustomerGenerator generator = new CustomerGenerator(inputData, stores, seedFactory);
@@ -136,5 +136,13 @@ public class Simulation
 		return transactions;
 	}
 	
+	public List<PurchasingProfile> getPurchasingProfiles()
+	{
+		return purchasingProfiles;
+	}
 	
+	public InputData getInputData()
+	{
+		return inputData;
+	}
 }
