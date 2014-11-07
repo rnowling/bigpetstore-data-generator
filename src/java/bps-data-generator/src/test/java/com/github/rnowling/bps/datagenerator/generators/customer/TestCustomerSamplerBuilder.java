@@ -3,6 +3,7 @@ package com.github.rnowling.bps.datagenerator.generators.customer;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
+import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
@@ -34,7 +36,8 @@ public class TestCustomerSamplerBuilder
 		
 		Names names = new Names(nameList, nameList);
 		
-		InputData inputData = new InputData(zipcodes, names);
+		// don't need product categories for building customers
+		InputData inputData = new InputData(zipcodes, names, new ArrayList<ProductCategory>());
 		
 		List<Store> stores = Arrays.asList(new Store(0, "Store_0", zipcodes.get(0)),
 				new Store(1, "Store_1", zipcodes.get(1)),
