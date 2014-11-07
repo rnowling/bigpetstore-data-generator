@@ -1,7 +1,7 @@
 package com.github.rnowling.bps.datagenerator.generators.store;
 
+import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
-import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 
 public class StoreSampler implements Sampler<Store>

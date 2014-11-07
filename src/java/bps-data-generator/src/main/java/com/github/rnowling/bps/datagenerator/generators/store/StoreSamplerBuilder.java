@@ -3,8 +3,8 @@ package com.github.rnowling.bps.datagenerator.generators.store;
 import java.util.List;
 
 import com.github.rnowling.bps.datagenerator.Constants;
+import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
-import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.pdfs.JointPDF;
 import com.github.rnowling.bps.datagenerator.framework.pdfs.ProbabilityDensityFunction;

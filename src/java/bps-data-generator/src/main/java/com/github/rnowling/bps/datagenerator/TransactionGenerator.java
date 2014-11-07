@@ -3,11 +3,11 @@ package com.github.rnowling.bps.datagenerator;
 import java.util.Collection;
 import java.util.List;
 
+import com.github.rnowling.bps.datagenerator.datamodels.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile;
+import com.github.rnowling.bps.datagenerator.datamodels.Store;
+import com.github.rnowling.bps.datagenerator.datamodels.Transaction;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
-import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
-import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
-import com.github.rnowling.bps.datagenerator.datamodels.outputs.Transaction;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.generators.transaction.TransactionSamplerBuilder;

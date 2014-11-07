@@ -3,7 +3,6 @@ package com.github.rnowling.bps.datagenerator.datamodels;
 import java.io.Serializable;
 import java.util.Map;
 
-import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModel;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;

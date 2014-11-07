@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
+import com.github.rnowling.bps.datagenerator.datamodels.Product;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategoryBuilder;
-import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 

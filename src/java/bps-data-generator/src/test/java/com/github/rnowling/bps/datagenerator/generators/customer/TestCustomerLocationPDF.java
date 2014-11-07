@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
+import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
-import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 
 public class TestCustomerLocationPDF
 {

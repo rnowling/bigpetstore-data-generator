@@ -3,7 +3,7 @@ package com.github.rnowling.bps.datagenerator.generators.transaction;
 import java.util.Map;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
+import com.github.rnowling.bps.datagenerator.datamodels.Product;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 

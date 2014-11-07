@@ -7,7 +7,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
-import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
+import com.github.rnowling.bps.datagenerator.datamodels.Product;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;

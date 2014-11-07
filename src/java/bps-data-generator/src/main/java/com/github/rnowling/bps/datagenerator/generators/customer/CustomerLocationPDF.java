@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
+import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
-import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.framework.pdfs.ProbabilityDensityFunction;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;

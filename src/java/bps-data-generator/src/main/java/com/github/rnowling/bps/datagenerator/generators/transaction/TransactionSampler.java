@@ -2,10 +2,10 @@ package com.github.rnowling.bps.datagenerator.generators.transaction;
 
 import java.util.List;
 
-import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
-import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
-import com.github.rnowling.bps.datagenerator.datamodels.outputs.Transaction;
-import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
+import com.github.rnowling.bps.datagenerator.datamodels.Customer;
+import com.github.rnowling.bps.datagenerator.datamodels.Product;
+import com.github.rnowling.bps.datagenerator.datamodels.Store;
+import com.github.rnowling.bps.datagenerator.datamodels.Transaction;
 import com.github.rnowling.bps.datagenerator.framework.samplers.ConditionalSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 

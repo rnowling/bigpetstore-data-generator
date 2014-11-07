@@ -10,12 +10,12 @@ import java.util.Random;
 
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
+import com.github.rnowling.bps.datagenerator.datamodels.Product;
+import com.github.rnowling.bps.datagenerator.datamodels.Transaction;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
-import com.github.rnowling.bps.datagenerator.datamodels.outputs.Transaction;
-import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ProductsReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;

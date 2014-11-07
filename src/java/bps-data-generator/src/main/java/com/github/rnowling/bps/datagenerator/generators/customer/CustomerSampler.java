@@ -1,8 +1,8 @@
 package com.github.rnowling.bps.datagenerator.generators.customer;
 
+import com.github.rnowling.bps.datagenerator.datamodels.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
-import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 
 public class CustomerSampler implements Sampler<Customer>

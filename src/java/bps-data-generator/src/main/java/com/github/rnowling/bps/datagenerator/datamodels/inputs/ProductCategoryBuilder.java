@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
-import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
+import com.github.rnowling.bps.datagenerator.datamodels.Product;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 

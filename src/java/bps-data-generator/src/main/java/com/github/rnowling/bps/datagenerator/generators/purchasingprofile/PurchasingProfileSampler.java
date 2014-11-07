@@ -2,10 +2,10 @@ package com.github.rnowling.bps.datagenerator.generators.purchasingprofile;
 
 import java.util.Map;
 
+import com.github.rnowling.bps.datagenerator.datamodels.Product;
 import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfileBuilder;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
-import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 
