@@ -1,25 +1,17 @@
 package com.github.rnowling.bps.datagenerator.cli;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
-import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.CustomerGenerator;
 import com.github.rnowling.bps.datagenerator.PurchasingProfileGenerator;
 import com.github.rnowling.bps.datagenerator.StoreGenerator;
 import com.github.rnowling.bps.datagenerator.TransactionGenerator;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
-import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
-import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
-import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Transaction;
-import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
-import com.github.rnowling.bps.datagenerator.datareaders.ProductsReader;
-import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfile;
 import com.google.common.collect.Lists;
@@ -31,42 +23,19 @@ public class Simulation
 	int nStores;
 	int nCustomers;
 	double simulationTime;
-	Collection<ProductCategory> productCategories;
 	
 	List<Store> stores;
 	List<Customer> customers;
 	List<PurchasingProfile> purchasingProfiles;
 	List<Transaction> transactions;
 	
-	public Simulation(int nStores, int nCustomers, double simulationTime, long seed)
+	public Simulation(InputData inputData, int nStores, int nCustomers, double simulationTime, long seed)
 	{
+		this.inputData = inputData;
 		this.nStores = nStores;
 		this.nCustomers = nCustomers;
 		this.simulationTime = simulationTime;
 		seedFactory = new SeedFactory(seed);
-	}
-	
-	private void loadData() throws Exception
-	{
-		System.out.println("Reading zipcode data");
-		ZipcodeReader zipcodeReader = new ZipcodeReader();
-		zipcodeReader.setCoordinatesFile(Constants.COORDINATES_FILE);
-		zipcodeReader.setIncomesFile(Constants.INCOMES_FILE);
-		zipcodeReader.setPopulationFile(Constants.POPULATION_FILE);
-		List<ZipcodeRecord> zipcodeTable = zipcodeReader.readData();
-		System.out.println("Read " + zipcodeTable.size() + " zipcode entries");
-		
-		System.out.println("Reading name data");
-		NameReader nameReader = new NameReader(Constants.NAMEDB_FILE);
-		Names names = nameReader.readData();
-		System.out.println("Read " + names.getFirstNames().size() + " first names and " + names.getLastNames().size() + " last names");
-		
-		System.out.println("Reading product data");
-		ProductsReader reader = new ProductsReader(Constants.PRODUCTS_FILE);
-		productCategories = reader.readData();
-		System.out.println("Read " + productCategories.size() + " product categories");
-		
-		inputData = new InputData(zipcodeTable, names);
 	}
 	
 	private void generateStores() throws Exception
@@ -106,7 +75,7 @@ public class Simulation
 	public void generatePurchasingProfiles() throws Exception
 	{
 		System.out.println("Generating purchasing profiles");
-		PurchasingProfileGenerator generator = new PurchasingProfileGenerator(productCategories, seedFactory);
+		PurchasingProfileGenerator generator = new PurchasingProfileGenerator(inputData.getProductCategories(), seedFactory);
 		
 		purchasingProfiles = new Vector<PurchasingProfile>();
 		for(int i = 0; i < nCustomers; i++)
@@ -129,7 +98,7 @@ public class Simulation
 			PurchasingProfile profile = purchasingProfiles.get(i);
 			
 			TransactionGenerator generator = new TransactionGenerator(customer,
-					profile, stores, productCategories, seedFactory);
+					profile, stores, inputData.getProductCategories(), seedFactory);
 			
 			while(true)
 			{
@@ -146,7 +115,6 @@ public class Simulation
 	
 	public void simulate() throws Exception
 	{
-		loadData();
 		generateStores();
 		generateCustomers();
 		generatePurchasingProfiles();

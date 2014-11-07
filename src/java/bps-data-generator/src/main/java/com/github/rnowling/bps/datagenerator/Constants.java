@@ -8,13 +8,13 @@ import com.google.common.collect.ImmutableList;
 
 public class Constants
 {
-	public static final File COORDINATES_FILE = new File("resources/zips.csv");
-	public static final File INCOMES_FILE = new File("resources/ACS_12_5YR_S1903/ACS_12_5YR_S1903_with_ann.csv");
-	public static final File POPULATION_FILE = new File("resources/population_data.csv");
+	public static final File COORDINATES_FILE = new File("zips.csv");
+	public static final File INCOMES_FILE = new File("ACS_12_5YR_S1903/ACS_12_5YR_S1903_with_ann.csv");
+	public static final File POPULATION_FILE = new File("population_data.csv");
 	
-	public static final File NAMEDB_FILE = new File("resources/namedb/data/data.dat");
+	public static final File NAMEDB_FILE = new File("namedb/data/data.dat");
 	
-	public static final File PRODUCTS_FILE = new File("resources/product_categories.json");
+	public static final File PRODUCTS_FILE = new File("product_categories.json");
 	
 	public static final double INCOME_SCALING_FACTOR = 100.0;
 	
