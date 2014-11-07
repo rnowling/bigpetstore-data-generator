@@ -59,3 +59,25 @@ data generator as instructed above.  Then run the scripts in the `groovy_example
 directory as so:
 
     $ groovy -classpath ../build/libs/bps-data-generator-0.2.jar MonteCarloExponentialSamplingExample.groovy
+
+
+Using the Spark Driver
+----------------------
+To use the Spark driver, build the BPS data generator jar as above. Then create a `lib`
+directory in the `spark_driver` directory and place the jar there:
+
+    $ mkdir spark_driver/lib
+    $ cp build/libs/bps-data-generator-0.2.jar spark_driver/lib
+
+To build the Spark driver, you can use the included `sbt` files:
+
+    $ cd spark_driver
+    $ ./sbt package
+
+The Spark driver jar will now be located at `spark_driver/target/scala-2.10/bps-datagenerator-sparkdriver_2.10-0.2.jar`
+
+To run the driver with Spark, place both jars and the `resources` directory into a common directory and run:
+
+    $ spark-submit --jars bps-data-generator-0.2.jar --master local[2] --class com.github.rnowling.bps.datagenerator.spark.SparkDriver bps-datagenerator-sparkdriver_2.10-0.2.jar resources generated_data 10 1000 365.0
+
+Note that `resources` only needs to be where the master is running.
