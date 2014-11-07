@@ -5,34 +5,34 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
-import com.github.rnowling.bps.datagenerator.Constants;
+import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
-import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
-import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
+import com.google.common.collect.ImmutableMap;
 
 public class TestCustomerSamplerBuilder
 {
 
 	@Test
 	public void testSample() throws Exception
-	{
-		ZipcodeReader zipcodeReader = new ZipcodeReader();
-		zipcodeReader.setCoordinatesFile(Constants.COORDINATES_FILE);
-		zipcodeReader.setIncomesFile(Constants.INCOMES_FILE);
-		zipcodeReader.setPopulationFile(Constants.POPULATION_FILE);
-		List<ZipcodeRecord> zipcodes = zipcodeReader.readData();
+	{	
+		Map<String, Double> nameList = ImmutableMap.of("Fred", 1.0, "George", 1.0, "Gary", 1.0, "Fiona", 1.0);
+		List<ZipcodeRecord> zipcodes = Arrays.asList(new ZipcodeRecord[] {				
+				new ZipcodeRecord("11111", Pair.create(1.0, 1.0), 30000.0, 100),
+				new ZipcodeRecord("22222", Pair.create(2.0, 2.0), 45000.0, 200),
+				new ZipcodeRecord("33333", Pair.create(3.0, 3.0), 60000.0, 300)
+				});
 		
-		NameReader nameReader = new NameReader(Constants.NAMEDB_FILE);
-		Names names = nameReader.readData();
+		Names names = new Names(nameList, nameList);
 		
 		InputData inputData = new InputData(zipcodes, names);
 		
