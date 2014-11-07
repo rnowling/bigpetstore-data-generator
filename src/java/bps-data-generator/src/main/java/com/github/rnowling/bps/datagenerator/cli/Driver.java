@@ -235,4 +235,19 @@ public class Driver
 	{
 		return simulationTime;
 	}
+	
+	public int getNCustomers()
+	{
+		return nCustomers;
+	}
+	
+	public long getSeed()
+	{
+		return seed;
+	}
+	
+	public int getNStores()
+	{
+		return nStores;
+	}
 }
