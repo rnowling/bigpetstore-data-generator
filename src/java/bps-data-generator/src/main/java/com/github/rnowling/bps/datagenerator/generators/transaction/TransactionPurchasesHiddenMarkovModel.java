@@ -65,7 +65,6 @@ public class TransactionPurchasesHiddenMarkovModel implements ConditionalSampler
 
 	public List<Product> sample(Double transactionTime) throws Exception
 	{
-		System.out.println("Transaction Time: " + transactionTime);
 		int numPurchases = 0;
 		
 		List<Product> purchasedProducts = Lists.newArrayList();
@@ -87,8 +86,6 @@ public class TransactionPurchasesHiddenMarkovModel implements ConditionalSampler
 			this.inventory.simulatePurchase(transactionTime, product);
 			numPurchases += 1;
 		}
-		
-		System.out.println("Number of products purchased: " + purchasedProducts.size());
 		
 		return purchasedProducts;
 	}

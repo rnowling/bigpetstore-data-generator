@@ -41,10 +41,6 @@ public class TransactionPurchasesSamplerBuilder
 
 	public ConditionalSampler<List<Product>, Double> build() throws Exception
 	{
-		System.out.println("Number of pets: " + transactionParameters.countPets());
-		System.out.println("Average Transaction Trigger Time: " + transactionParameters.getAverageTransactionTriggerTime());
-		System.out.println("Average Purchase Trigger Time: " + transactionParameters.getAveragePurchaseTriggerTime());
-		
 		PurchasingProcessesBuilder processesBuilder = new PurchasingProcessesBuilder(seedFactory);
 		processesBuilder.setPurchasingProfile(purchasingProfile);
 		PurchasingProcesses processes = processesBuilder.build();
