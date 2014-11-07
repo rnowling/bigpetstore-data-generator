@@ -1,9 +1,8 @@
 package com.github.rnowling.bps.datagenerator.spark
 
 import com.github.rnowling.bps.datagenerator.cli.Driver
-import com.github.rnowling.bps.datagenerator.datamodels.outputs.{Store,Customer,Transaction}
+import com.github.rnowling.bps.datagenerator.datamodels.{Store,Customer,PurchasingProfile,Transaction}
 import com.github.rnowling.bps.datagenerator.{StoreGenerator,CustomerGenerator,PurchasingProfileGenerator,TransactionGenerator}
-import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory
 import org.apache.spark.{SparkContext, SparkConf}
 import org.apache.spark.SparkContext._
