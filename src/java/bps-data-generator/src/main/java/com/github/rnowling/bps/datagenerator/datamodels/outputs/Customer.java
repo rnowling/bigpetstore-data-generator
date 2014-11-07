@@ -1,9 +1,11 @@
 package com.github.rnowling.bps.datagenerator.datamodels.outputs;
 
+import java.io.Serializable;
+
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 
-public class Customer
+public class Customer implements Serializable
 {
 	int id;
 	Pair<String, String> name;

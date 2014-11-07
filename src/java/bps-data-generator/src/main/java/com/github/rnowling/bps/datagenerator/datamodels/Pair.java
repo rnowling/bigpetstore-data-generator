@@ -1,11 +1,12 @@
 package com.github.rnowling.bps.datagenerator.datamodels;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
 
-public class Pair<A, B>
+public class Pair<A, B> implements Serializable
 {
 	A first;
 	B second;

@@ -1,11 +1,12 @@
 package com.github.rnowling.bps.datagenerator.datamodels.simulation;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
-public class Product
+public class Product implements Serializable
 {
 	ImmutableMap<String, Object> fields;
 	

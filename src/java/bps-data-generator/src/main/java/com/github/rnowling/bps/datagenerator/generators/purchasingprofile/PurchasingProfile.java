@@ -1,5 +1,6 @@
 package com.github.rnowling.bps.datagenerator.generators.purchasingprofile;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
@@ -7,7 +8,7 @@ import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModel;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
-public class PurchasingProfile
+public class PurchasingProfile implements Serializable
 {
 	ImmutableMap<String, MarkovModel<Product>> productCategoryProfiles;
 	

@@ -18,12 +18,12 @@ public class MarkovProcess<T> implements Sampler<T>
 	
 	public MarkovProcess(MarkovModel<T> model, SeedFactory factory)
 	{
-		ImmutableTable<T, T, Double> transitionTable = model.getTransitionWeights();
+		Map<T, Map<T, Double>> transitionTable = model.getTransitionWeights();
 		
 		startStateSampler = RouletteWheelSampler.create(model.getStartWeights(), factory);
 		
 		ImmutableMap.Builder<T, Sampler<T>> builder = ImmutableMap.builder();
-		for(Map.Entry<T, Map<T, Double>> entry : transitionTable.rowMap().entrySet())
+		for(Map.Entry<T, Map<T, Double>> entry : transitionTable.entrySet())
 		{
 			builder.put(entry.getKey(), RouletteWheelSampler.create(entry.getValue(), factory));
 		}

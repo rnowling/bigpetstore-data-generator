@@ -1,10 +1,11 @@
 package com.github.rnowling.bps.datagenerator.datamodels.inputs;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class InputData
+public class InputData implements Serializable
 {
 	List<ZipcodeRecord> zipcodeTable;
 	Names names;

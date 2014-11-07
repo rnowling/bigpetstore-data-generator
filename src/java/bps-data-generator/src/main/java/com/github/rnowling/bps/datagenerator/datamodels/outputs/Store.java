@@ -1,8 +1,10 @@
 package com.github.rnowling.bps.datagenerator.datamodels.outputs;
 
+import java.io.Serializable;
+
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 
-public class Store
+public class Store implements Serializable
 {
 	int id;
 	String name;

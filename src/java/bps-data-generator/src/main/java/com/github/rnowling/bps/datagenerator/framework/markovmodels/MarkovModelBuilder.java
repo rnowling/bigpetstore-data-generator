@@ -31,7 +31,7 @@ public class MarkovModelBuilder<S>
 	
 	public MarkovModel<S> build()
 	{
-		return new MarkovModel<S>(transitionWeights.build(), startWeights.build());
+		return new MarkovModel<S>(transitionWeights.build().rowMap(), startWeights.build());
 	}
 	
 	

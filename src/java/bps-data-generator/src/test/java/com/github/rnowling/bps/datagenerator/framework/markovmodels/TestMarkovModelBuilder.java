@@ -35,9 +35,9 @@ public class TestMarkovModelBuilder
 		
 		MarkovModel<String> msm = builder.build();
 		
-		assertThat(msm.getTransitionWeights().rowKeySet(), hasItem("a"));
-		assertThat(msm.getTransitionWeights().columnKeySet(), hasItem("b"));
-		assertEquals((double) msm.getTransitionWeights().get("a", "b"), (double) 1.0, 0.000001);	
+		assertThat(msm.getTransitionWeights().keySet(), hasItem("a"));
+		assertThat(msm.getTransitionWeights().get("a").keySet(), hasItem("b"));
+		assertEquals((double) msm.getTransitionWeights().get("a").get("b"), (double) 1.0, 0.000001);	
 	}
 	
 	@Test
@@ -52,11 +52,11 @@ public class TestMarkovModelBuilder
 		MarkovModel<String> msm = builder.build();
 		
 		assertThat(msm.getStartWeights().keySet(), hasItem("a"));
-		assertThat(msm.getTransitionWeights().rowKeySet(), hasItem("a"));
-		assertThat(msm.getTransitionWeights().columnKeySet(), hasItem("b"));
-		assertThat(msm.getTransitionWeights().columnKeySet(), hasItem("c"));
-		assertEquals((double) msm.getTransitionWeights().get("a", "b"), (double) 1.0, 0.000001);
-		assertEquals((double) msm.getTransitionWeights().get("a", "c"), (double) 1.0, 0.000001);
+		assertThat(msm.getTransitionWeights().keySet(), hasItem("a"));
+		assertThat(msm.getTransitionWeights().get("a").keySet(), hasItem("b"));
+		assertThat(msm.getTransitionWeights().get("a").keySet(), hasItem("c"));
+		assertEquals((double) msm.getTransitionWeights().get("a").get("b"), (double) 1.0, 0.000001);
+		assertEquals((double) msm.getTransitionWeights().get("a").get("c"), (double) 1.0, 0.000001);
 	}
 
 }

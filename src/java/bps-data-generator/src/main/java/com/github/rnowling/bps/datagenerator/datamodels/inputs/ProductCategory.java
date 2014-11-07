@@ -1,5 +1,6 @@
 package com.github.rnowling.bps.datagenerator.datamodels.inputs;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -8,7 +9,7 @@ import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
-public class ProductCategory
+public class ProductCategory implements Serializable
 {
 	String categoryLabel;
 	ImmutableSet<PetSpecies> applicableSpecies;

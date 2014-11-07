@@ -1,11 +1,12 @@
 package com.github.rnowling.bps.datagenerator.datamodels.outputs;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.google.common.collect.ImmutableList;
 
-public class Transaction
+public class Transaction implements Serializable
 {
 	final int id;
 	final Customer customer;

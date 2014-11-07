@@ -1,8 +1,10 @@
 package com.github.rnowling.bps.datagenerator.datamodels.inputs;
 
+import java.io.Serializable;
+
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 
-public class ZipcodeRecord
+public class ZipcodeRecord implements Serializable
 {
 	final String zipcode;
 	final Pair<Double, Double> coordinates;

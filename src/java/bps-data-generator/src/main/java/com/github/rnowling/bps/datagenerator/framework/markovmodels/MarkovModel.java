@@ -1,28 +1,25 @@
 package com.github.rnowling.bps.datagenerator.framework.markovmodels;
 
+import java.io.Serializable;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableTable;
-import com.google.common.collect.Table;
-
-public class MarkovModel<T>
+public class MarkovModel<T> implements Serializable
 {
-	final ImmutableTable<T, T, Double> transitionWeights;
-	final ImmutableMap<T, Double> startWeights;
+	final Map<T, Map<T, Double>> transitionWeights;
+	final Map<T, Double> startWeights;
 	
-	public MarkovModel(Table<T, T, Double> transitionWeights, Map<T, Double> startWeights)
+	public MarkovModel(Map<T, Map<T, Double>> transitionWeights, Map<T, Double> startWeights)
 	{
-		this.transitionWeights = ImmutableTable.copyOf(transitionWeights);
-		this.startWeights = ImmutableMap.copyOf(startWeights);
+		this.transitionWeights = transitionWeights;
+		this.startWeights = startWeights;
 	}
 
-	public ImmutableTable<T, T, Double> getTransitionWeights()
+	public Map<T, Map<T, Double>> getTransitionWeights()
 	{
 		return transitionWeights;
 	}
 
-	public ImmutableMap<T, Double> getStartWeights()
+	public Map<T, Double> getStartWeights()
 	{
 		return startWeights;
 	}
