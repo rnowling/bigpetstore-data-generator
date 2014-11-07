@@ -250,4 +250,9 @@ public class Driver
 	{
 		return nStores;
 	}
+	
+	public File getOutputDir()
+	{
+		return outputDir;
+	}
 }
