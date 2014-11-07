@@ -8,12 +8,12 @@ import com.github.rnowling.bps.datagenerator.CustomerGenerator;
 import com.github.rnowling.bps.datagenerator.PurchasingProfileGenerator;
 import com.github.rnowling.bps.datagenerator.StoreGenerator;
 import com.github.rnowling.bps.datagenerator.TransactionGenerator;
+import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Transaction;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
-import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfile;
 import com.google.common.collect.Lists;
 
 public class Simulation

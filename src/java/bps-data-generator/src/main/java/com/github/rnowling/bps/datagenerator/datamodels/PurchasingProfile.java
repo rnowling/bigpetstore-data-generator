@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.purchasingprofile;
+package com.github.rnowling.bps.datagenerator.datamodels;
 
 import java.io.Serializable;
 import java.util.Map;

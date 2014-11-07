@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.purchasingprofile;
+package com.github.rnowling.bps.datagenerator.datamodels;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -9,10 +9,11 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile;
+import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfileBuilder;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModelBuilder;
-import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfileBuilder;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 

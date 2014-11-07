@@ -3,12 +3,12 @@ package com.github.rnowling.bps.datagenerator.generators.transaction;
 import java.util.Collection;
 import java.util.List;
 
+import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.samplers.ConditionalSampler;
 import com.github.rnowling.bps.datagenerator.framework.wfs.ConditionalWeightFunction;
-import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfile;
 
 public class TransactionPurchasesSamplerBuilder
 {

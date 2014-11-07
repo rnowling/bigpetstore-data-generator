@@ -3,6 +3,7 @@ package com.github.rnowling.bps.datagenerator.generators.transaction;
 import java.util.Collection;
 import java.util.List;
 
+import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.outputs.Store;
@@ -13,7 +14,6 @@ import com.github.rnowling.bps.datagenerator.framework.samplers.ConditionalSampl
 import com.github.rnowling.bps.datagenerator.framework.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.SequenceSampler;
-import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfile;
 
 public class TransactionSamplerBuilder
 {

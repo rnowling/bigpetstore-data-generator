@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
+import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile;
+import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfileBuilder;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategoryBuilder;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
@@ -18,8 +20,6 @@ import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModelBuilder;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.framework.wfs.ConditionalWeightFunction;
-import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfile;
-import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfileBuilder;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 

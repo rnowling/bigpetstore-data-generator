@@ -2,12 +2,12 @@ package com.github.rnowling.bps.datagenerator.generators.transaction;
 
 import java.util.Map;
 
+import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovProcess;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
-import com.github.rnowling.bps.datagenerator.generators.purchasingprofile.PurchasingProfile;
 import com.google.common.collect.Maps;
 
 public class PurchasingProcessesBuilder

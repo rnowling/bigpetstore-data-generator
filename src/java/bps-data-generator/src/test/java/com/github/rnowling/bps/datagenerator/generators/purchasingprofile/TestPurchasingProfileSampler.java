@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
+import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategoryBuilder;
 import com.github.rnowling.bps.datagenerator.datamodels.simulation.Product;
