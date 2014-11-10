@@ -1,0 +1,50 @@
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+apply plugin: 'java' 
+
+version = '0.2'
+
+jar {
+    
+    from {
+        configurations.runtime.collect { 
+            it.isDirectory() ? it : zipTree(it)
+        }
+    } 
+
+    manifest {
+	attributes 'Title': 'BigPetStore Data Generator', 'Version': version
+	attributes 'Main-Class': 'com.github.rnowling.bps.datagenerator.cli.Driver'
+    }
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+test {
+     // show standard out and error on console
+     testLogging.showStandardStreams = true
+
+     // listen to events in the test execution lifecycle
+     beforeTest { descriptor ->
+       logger.lifecycle("Running test: " + descriptor)
+     }
+
+     // listen to standard out and standard error of the test JVM(s)
+     onOutput { descriptor, event ->
+       logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+     }
+
+}
+
+dependencies {
+
+    compile 'org.codehaus.groovy:groovy-all:2.1.6'
+    compile 'com.google.guava:guava:18.0'
+    compile 'com.google.code.gson:gson:2.3'
+
+    testCompile 'junit:junit:4.+'
+    
+}

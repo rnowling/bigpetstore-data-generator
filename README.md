@@ -1,14 +1,84 @@
-bigpetstore-data-generator
+BigPetStore Data Generator
 ==========================
 
-Playground for generating BPS data.
+BigPetStore ...
 
-To run:
+Data Generator ...
 
-    $ cd src/python
-    $ python simulation.py 
+=======
+Building and Testing
+--------------------
+We use the Gradle build system for the BPS data generator so you'll need
+to install Gradle on your system.
+Once that's done, you can use gradle to run the included unit tests
+and build the data generator jar.
 
-To run unit tests, you need to install the nose package for Python. You can then run:
+To build:
+    
+    $ gradle build
 
-    $ cd src/python
-    $ nosetests
+This will create several directories and a jar located at:
+    
+    build/libs/bps-data-generator-0.2.jar
+
+Building automatically runs the included unit tests.  If you would prefer
+to just run the unit tests, you can do so by:
+
+    $ gradle test
+
+
+To clean up the build files, run:
+
+    $ gradle clean
+
+
+Running the Data Generator
+--------------------------
+The data generator can be used as a library (for incorporating in
+Hadoop or Spark applications) or using a command-line interface.
+The data generator CLI requires several parameters.  To get 
+descriptions:
+
+    $ java -jar build/libs/bps-data-generator-0.2.jar
+
+Here is an example for generating 10 stores, 1000 customers,
+and a year of transactions:
+
+    $ java -jar build/libs/bps-data-generator-0.2.jar resources/ generatedData/ 10 1000 365.0
+
+
+Groovy Drivers for Scripting
+----------------------------
+Several Groovy example script drivers are included in the `groovy_example_drivers` directory.
+Groovy scripts can be used to easily call and interact with classes in the data generator
+jar without having to create separate Java projects or worry about compilation.  I've found
+them to be very useful for interactive exploration and validating my implementations
+when unit tests alone aren't sufficient.
+
+To use Groovy scripts, you will need to have Groovy installed on your system.  Build the 
+data generator as instructed above.  Then run the scripts in the `groovy_example_drivers`
+directory as so:
+
+    $ groovy -classpath ../build/libs/bps-data-generator-0.2.jar MonteCarloExponentialSamplingExample.groovy
+
+
+Using the Spark Driver
+----------------------
+To use the Spark driver, build the BPS data generator jar as above. Then create a `lib`
+directory in the `spark_driver` directory and place the jar there:
+
+    $ mkdir spark_driver/lib
+    $ cp build/libs/bps-data-generator-0.2.jar spark_driver/lib
+
+To build the Spark driver, you can use the included `sbt` files:
+
+    $ cd spark_driver
+    $ ./sbt package
+
+The Spark driver jar will now be located at `spark_driver/target/scala-2.10/bps-datagenerator-sparkdriver_2.10-0.2.jar`
+
+To run the driver with Spark, place both jars and the `resources` directory into a common directory and run:
+
+    $ spark-submit --jars bps-data-generator-0.2.jar --master local[2] --class com.github.rnowling.bps.datagenerator.spark.SparkDriver bps-datagenerator-sparkdriver_2.10-0.2.jar resources generated_data 10 1000 365.0
+
+Note that `resources` only needs to be where the master is running.
