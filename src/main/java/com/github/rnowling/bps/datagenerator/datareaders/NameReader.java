@@ -1,7 +1,7 @@
 package com.github.rnowling.bps.datagenerator.datareaders;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -10,9 +10,9 @@ import com.google.common.collect.Maps;
 
 public class NameReader
 {
-	File path;
+	InputStream path;
 	
-	public NameReader(File path)
+	public NameReader(InputStream path)
 	{
 		this.path = path;
 	}

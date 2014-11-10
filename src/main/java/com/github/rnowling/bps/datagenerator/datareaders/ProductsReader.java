@@ -1,8 +1,7 @@
 package com.github.rnowling.bps.datagenerator.datareaders;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +15,9 @@ import com.google.gson.Gson;
 
 public class ProductsReader
 {
-	File path;
+	InputStream path;
 	
-	public ProductsReader(File path)
+	public ProductsReader(InputStream path)
 	{
 		this.path = path;
 	}
@@ -116,8 +115,7 @@ public class ProductsReader
 	{
 		Gson gson = new Gson();
 		
-		
-		Reader reader = new BufferedReader(new FileReader(path));
+		Reader reader = new InputStreamReader(path);
 		Object json = gson.fromJson(reader, Object.class);
 		
 		List<Object> productCategoryObjects = (List<Object>) json;

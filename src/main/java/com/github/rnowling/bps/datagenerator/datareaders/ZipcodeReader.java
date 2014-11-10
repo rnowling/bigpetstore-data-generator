@@ -1,7 +1,7 @@
 package com.github.rnowling.bps.datagenerator.datareaders;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -17,26 +17,26 @@ import com.google.common.collect.Maps;
 
 public class ZipcodeReader
 {
-	File zipcodeIncomesFile = null;
-	File zipcodePopulationFile = null;
-	File zipcodeCoordinatesFile = null;
+	InputStream zipcodeIncomesFile = null;
+	InputStream zipcodePopulationFile = null;
+	InputStream zipcodeCoordinatesFile = null;
 	
-	public void setIncomesFile(File path)
+	public void setIncomesFile(InputStream path)
 	{
 		this.zipcodeIncomesFile = path;
 	}
 	
-	public void setPopulationFile(File path)
+	public void setPopulationFile(InputStream path)
 	{
 		this.zipcodePopulationFile = path;
 	}
 	
-	public void setCoordinatesFile(File path)
+	public void setCoordinatesFile(InputStream path)
 	{
 		this.zipcodeCoordinatesFile = path;
 	}
 	
-	private ImmutableMap<String, Double> readIncomeData(File path) throws FileNotFoundException
+	private ImmutableMap<String, Double> readIncomeData(InputStream path) throws FileNotFoundException
 	{
 		Scanner scanner = new Scanner(path);
 		
@@ -67,7 +67,7 @@ public class ZipcodeReader
 		return ImmutableMap.copyOf(entries);
 	}
 	
-	private ImmutableMap<String, Long> readPopulationData(File path) throws FileNotFoundException
+	private ImmutableMap<String, Long> readPopulationData(InputStream path) throws FileNotFoundException
 	{
 		Scanner scanner = new Scanner(path);
 		
@@ -102,7 +102,7 @@ public class ZipcodeReader
 		return ImmutableMap.copyOf(entries);
 	}
 	
-	private ImmutableMap<String, Pair<Double, Double>> readCoordinates(File path) throws FileNotFoundException
+	private ImmutableMap<String, Pair<Double, Double>> readCoordinates(InputStream path) throws FileNotFoundException
 	{
 		Scanner scanner = new Scanner(path);
 		

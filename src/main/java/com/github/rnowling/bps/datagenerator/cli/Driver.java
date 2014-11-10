@@ -1,8 +1,10 @@
 package com.github.rnowling.bps.datagenerator.cli;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
@@ -28,7 +30,8 @@ public class Driver
 	double simulationTime;
 	long seed;
 	File outputDir;
-	File resourceDir;
+	
+	static final int NPARAMS = 5;
 	
 	private void printUsage()
 	{
@@ -36,7 +39,6 @@ public class Driver
 				"\n" +
 				"Usage: java -jar bps-data-generator-v0.2.java resourceDir outputDir nStores nCustomers simulationLength [seed]\n" +
 				"\n" + 
-				"resourceDir - (string) directory containing input data files\n" +
 				"outputDir - (string) directory to write files\n" +
 				"nStores - (int) number of stores to generate\n" +
 				"nCustomers - (int) number of customers to generate\n" +
@@ -48,84 +50,71 @@ public class Driver
 	
 	public void parseArgs(String[] args)
 	{
-		if(args.length < 5 || args.length > 6)
+		if(args.length != NPARAMS && args.length != (NPARAMS - 1))
 		{
 			printUsage();
 			System.exit(1);
 		}
 		
-		resourceDir = new File(args[0]);
-		if(! resourceDir.exists())
-		{
-			System.err.println("Given path (" + args[0] + ") does not exist.\n");
-			printUsage();
-			System.exit(1);
-		}
+		int i = -1;
 		
-		if(! resourceDir.isDirectory())
-		{
-			System.err.println("Given path (" + args[0] + ") is not a directory.\n");
-			printUsage();
-			System.exit(1);
-		}
-		
-		outputDir = new File(args[1]);
+		outputDir = new File(args[++i]);
 		if(! outputDir.exists())
 		{
-			System.err.println("Given path (" + args[1] + ") does not exist.\n");
+			System.err.println("Given path (" + args[i] + ") does not exist.\n");
 			printUsage();
 			System.exit(1);
 		}
 		
 		if(! outputDir.isDirectory())
 		{
-			System.err.println("Given path (" + args[1] + ") is not a directory.\n");
+			System.err.println("Given path (" + args[i] + ") is not a directory.\n");
 			printUsage();
 			System.exit(1);
 		}
 		
 		try
 		{
-			nStores = Integer.parseInt(args[2]);
+			nStores = Integer.parseInt(args[++i]);
 		}
 		catch(Exception e)
 		{
-			System.err.println("Unable to parse '" + args[2] + "' as an integer for nStores.\n");
+			System.err.println("Unable to parse '" + args[i] + "' as an integer for nStores.\n");
 			printUsage();
 			System.exit(1);
 		}
 		
 		try
 		{
-			nCustomers = Integer.parseInt(args[3]);
+			nCustomers = Integer.parseInt(args[++i]);
 		}
 		catch(Exception e)
 		{
-			System.err.println("Unable to parse '" + args[3] + "' as an integer for nCustomers.\n");
+			System.err.println("Unable to parse '" + args[i] + "' as an integer for nCustomers.\n");
 			printUsage();
 			System.exit(1);
 		}
 		
 		try
 		{
-			simulationTime = Double.parseDouble(args[4]);
+			simulationTime = Double.parseDouble(args[++i]);
 		}
 		catch(Exception e)
 		{
-			System.err.println("Unable to parse '" + args[4] + "' as a float for simulationLength.\n");
+			System.err.println("Unable to parse '" + args[i] + "' as a float for simulationLength.\n");
 			printUsage();
 			System.exit(1);
 		}
 		
-		if(args.length == 6)
+		if(args.length == NPARAMS)
 		{
 			try
 			{
-				seed = Long.parseLong(args[5]);
+				seed = Long.parseLong(args[++i]);
 			}
 			catch(Exception e)
 			{
-				System.err.println("Unable to parse '" + args[5] + "' as a long for the seed.\n");
+				System.err.println("Unable to parse '" + args[i] + "' as a long for the seed.\n");
 				printUsage();
 				System.exit(1);
 			}
@@ -136,18 +125,10 @@ public class Driver
 		}
 	}
 	
-	private File getResourcePath(File filename)
+	private InputStream getResource(File filename) throws Exception
 	{
-		File path = new File(this.resourceDir, filename.toString());
-		
-		if(!path.exists())
-		{
-			System.err.println("Given path (" + path + ") does not exist.\n");
-			printUsage();
-			System.exit(1);
-		}
-		
-		return path;
+		InputStream stream = getClass().getResourceAsStream("/input_data/" + filename);
+		return new BufferedInputStream(stream);
 	}
 	
 	public InputData loadData() throws Exception
@@ -155,19 +136,19 @@ public class Driver
 		
 		System.out.println("Reading zipcode data");
 		ZipcodeReader zipcodeReader = new ZipcodeReader();
-		zipcodeReader.setCoordinatesFile(getResourcePath(Constants.COORDINATES_FILE));
-		zipcodeReader.setIncomesFile(getResourcePath(Constants.INCOMES_FILE));
-		zipcodeReader.setPopulationFile(getResourcePath(Constants.POPULATION_FILE));
+		zipcodeReader.setCoordinatesFile(getResource(Constants.COORDINATES_FILE));
+		zipcodeReader.setIncomesFile(getResource(Constants.INCOMES_FILE));
+		zipcodeReader.setPopulationFile(getResource(Constants.POPULATION_FILE));
 		List<ZipcodeRecord> zipcodeTable = zipcodeReader.readData();
 		System.out.println("Read " + zipcodeTable.size() + " zipcode entries");
 		
 		System.out.println("Reading name data");
-		NameReader nameReader = new NameReader(getResourcePath(Constants.NAMEDB_FILE));
+		NameReader nameReader = new NameReader(getResource(Constants.NAMEDB_FILE));
 		Names names = nameReader.readData();
 		System.out.println("Read " + names.getFirstNames().size() + " first names and " + names.getLastNames().size() + " last names");
 		
 		System.out.println("Reading product data");
-		ProductsReader reader = new ProductsReader(getResourcePath(Constants.PRODUCTS_FILE));
+		ProductsReader reader = new ProductsReader(getResource(Constants.PRODUCTS_FILE));
 		Collection<ProductCategory> productCategories = reader.readData();
 		System.out.println("Read " + productCategories.size() + " product categories");
 		

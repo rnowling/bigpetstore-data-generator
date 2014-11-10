@@ -44,7 +44,7 @@ descriptions:
 Here is an example for generating 10 stores, 1000 customers,
 and a year of transactions:
 
-    $ java -jar build/libs/bps-data-generator-0.2.jar resources/ generatedData/ 10 1000 365.0
+    $ java -jar build/libs/bps-data-generator-0.2.jar generatedData/ 10 1000 365.0
 
 
 Groovy Drivers for Scripting
@@ -77,8 +77,7 @@ To build the Spark driver, you can use the included `sbt` files:
 
 The Spark driver jar will now be located at `spark_driver/target/scala-2.10/bps-datagenerator-sparkdriver_2.10-0.2.jar`
 
-To run the driver with Spark, place both jars and the `resources` directory into a common directory and run:
+To run the driver with Spark, place both jars into a common directory and run:
 
-    $ spark-submit --jars bps-data-generator-0.2.jar --master local[2] --class com.github.rnowling.bps.datagenerator.spark.SparkDriver bps-datagenerator-sparkdriver_2.10-0.2.jar resources generated_data 10 1000 365.0
+    $ spark-submit --jars bps-data-generator-0.2.jar --master local[2] --class com.github.rnowling.bps.datagenerator.spark.SparkDriver bps-datagenerator-sparkdriver_2.10-0.2.jar generated_data 10 1000 365.0
 
-Note that `resources` only needs to be where the master is running.
