@@ -8,12 +8,16 @@ public class ZipcodeRecord implements Serializable
 {
 	final String zipcode;
 	final Pair<Double, Double> coordinates;
+	final String city;
+	final String state;
 	final double medianHouseholdIncome;
 	final long population;
 	
 	public ZipcodeRecord(String zipcode, Pair<Double, Double> coordinates,
-			double medianHouseholdIncome, long population)
+			String city, String state, double medianHouseholdIncome, long population)
 	{
+		this.city = state;
+		this.state = state;
 		this.zipcode = zipcode;
 		this.coordinates = coordinates;
 		this.medianHouseholdIncome = medianHouseholdIncome;
@@ -57,5 +61,13 @@ public class ZipcodeRecord implements Serializable
 		return dist;		
 	}
 	
+	public String getCity()
+	{
+		return city;
+	}
 	
+	public String getState()
+	{
+		return state;
+	}
 }

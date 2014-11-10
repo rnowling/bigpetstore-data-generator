@@ -17,6 +17,21 @@ import com.google.common.collect.Maps;
 
 public class ZipcodeReader
 {
+	private static class ZipcodeLocationRecord
+	{
+		public final Pair<Double, Double> coordinates;
+		public final String state;
+		public final String city;
+		
+		public ZipcodeLocationRecord(Pair<Double, Double> coordinates,
+				String city, String state)
+		{
+			this.coordinates = coordinates;
+			this.city = city;
+			this.state = state;
+		}
+	}
+	
 	InputStream zipcodeIncomesFile = null;
 	InputStream zipcodePopulationFile = null;
 	InputStream zipcodeCoordinatesFile = null;
@@ -102,14 +117,14 @@ public class ZipcodeReader
 		return ImmutableMap.copyOf(entries);
 	}
 	
-	private ImmutableMap<String, Pair<Double, Double>> readCoordinates(InputStream path) throws FileNotFoundException
+	private ImmutableMap<String, ZipcodeLocationRecord> readCoordinates(InputStream path) throws FileNotFoundException
 	{
 		Scanner scanner = new Scanner(path);
 		
 		// skip header
 		scanner.nextLine();
 		
-		Map<String, Pair<Double, Double>> entries = Maps.newHashMap();
+		Map<String, ZipcodeLocationRecord> entries = Maps.newHashMap();
 		while(scanner.hasNextLine())
 		{
 			String line = scanner.nextLine().trim();
@@ -118,12 +133,16 @@ public class ZipcodeReader
 			
 			// remove quote marks
 			String zipcode = cols[0].substring(1, cols[0].length() - 1);
-			Double latitude = Double.parseDouble(cols[2].substring(1, cols[0].length() - 1));
-			Double longitude = Double.parseDouble(cols[3].substring(1, cols[0].length() - 1));
+			String state = cols[1].substring(1, cols[1].length() - 1);
+			Double latitude = Double.parseDouble(cols[2].substring(1, cols[2].length() - 1));
+			Double longitude = Double.parseDouble(cols[3].substring(1, cols[3].length() - 1));
+			String city = cols[4].substring(1, cols[4].length() - 1);
 			
 			Pair<Double, Double> coords = new Pair<Double, Double>(latitude, longitude);
 
-			entries.put(zipcode, coords);
+			ZipcodeLocationRecord record = new ZipcodeLocationRecord(coords, city, state);
+			
+			entries.put(zipcode, record);
 		}
 		
 		scanner.close();
@@ -135,7 +154,7 @@ public class ZipcodeReader
 	{
 		ImmutableMap<String, Double> incomes = readIncomeData(this.zipcodeIncomesFile);
 		ImmutableMap<String, Long> populations = readPopulationData(this.zipcodePopulationFile);
-		ImmutableMap<String, Pair<Double, Double>> coordinates = readCoordinates(this.zipcodeCoordinatesFile);
+		ImmutableMap<String, ZipcodeLocationRecord> coordinates = readCoordinates(this.zipcodeCoordinatesFile);
 		
 		Set<String> zipcodeSubset = new HashSet<String>(incomes.keySet());
 		zipcodeSubset.retainAll(populations.keySet());
@@ -145,7 +164,10 @@ public class ZipcodeReader
 		for(String zipcode : zipcodeSubset)
 		{
 			ZipcodeRecord record = new ZipcodeRecord(zipcode, 
-					coordinates.get(zipcode), incomes.get(zipcode),
+					coordinates.get(zipcode).coordinates, 
+					coordinates.get(zipcode).city,
+					coordinates.get(zipcode).state,
+					incomes.get(zipcode),
 					populations.get(zipcode));
 			table.add(record);
 		}
