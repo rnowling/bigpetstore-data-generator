@@ -28,7 +28,7 @@ public class Driver
 	{
 		String usage = "BigPetStore Data Generator\n" +
 				"\n" +
-				"Usage: java -jar bps-data-generator-v0.2.java resourceDir outputDir nStores nCustomers simulationLength [seed]\n" +
+				"Usage: java -jar bps-data-generator-v0.2.java outputDir nStores nCustomers simulationLength [seed]\n" +
 				"\n" + 
 				"outputDir - (string) directory to write files\n" +
 				"nStores - (int) number of stores to generate\n" +
