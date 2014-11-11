@@ -8,6 +8,7 @@ import org.apache.spark.SparkContext._
 import java.util.ArrayList
 import scala.util.Random
 import java.io.File
+import java.util.Date
 
 object SparkDriver {
   private var nStores: Int = -1
@@ -128,16 +129,19 @@ object SparkDriver {
     }
     println("Done.")
 
-    val conf = new SparkConf()
-      .setAppName("BPS Data Generator")
+    println("Creating SparkConf")
+    val conf = new SparkConf().setAppName("BPS Data Generator")
 
+    println("Creating SparkContext")
     val sc = new SparkContext(conf)
 
+    println("Broadcasting stores and products")
     val storesBC = sc.broadcast(stores)
     val productBC = sc.broadcast(inputData.getProductCategories())
     val customerRDD = sc.parallelize(customers)
     val nextSeed = seedFactory.getNextSeed()
 
+    println("Defining transaction DAG")
     val transactionRDD = customerRDD.mapPartitionsWithIndex { (index, custIter) =>
       val seedFactory = new SeedFactory(nextSeed ^ index)
       val transactionIter = custIter.map{ customer =>
@@ -166,19 +170,36 @@ object SparkDriver {
     val nTrans = transactionRDD.count()
     println(s"Generated $nTrans transactions.")
 
+    val initialDate : Long = new Date().getTime()
+
     val transactionStringsRDD = transactionRDD.map { t =>
       var records : List[String] = List()
       val products = t.getProducts()
       for(i <- 0 until products.size()) {
         val p = products.get(i)
-        var record = t.getId() + ","
-        record += t.getDateTime() + ","
-        record += t.getStore().getId() + ","
-        record += t.getStore().getLocation().getZipcode() + ","
-        record += t.getCustomer().getId() + ","
 	val name = t.getCustomer().getName()
-	record += name.getFirst() + " " + name.getSecond() + ","
-	record += t.getCustomer().getLocation().getZipcode() + ","
+        val custLocation = t.getCustomer().getLocation()
+        val storeLocation = t.getStore().getLocation()
+
+        // days -> milliseconds = days * 24 h / day * 60 min / hr * 60 sec / min * 1000 ms / sec
+        val dateMS = (t.getDateTime * 24.0 * 60.0 * 60.0 * 1000.0).toLong
+        val date = new Date(initialDate + dateMS)
+
+
+        var record = ""
+        record += t.getStore().getId() + ","
+        record += storeLocation.getZipcode() + ","
+        record += storeLocation.getCity() + ","
+        record += storeLocation.getState() + ","
+
+        record += t.getCustomer().getId() + ","
+	record += name.getFirst() + "," + name.getSecond() + ","
+	record += custLocation.getZipcode() + ","
+	record += custLocation.getCity() + ","
+	record += custLocation.getState() + ","
+
+        record += t.getId() + ","
+        record += date + ","
 	record += p
 
         records = record :: records
