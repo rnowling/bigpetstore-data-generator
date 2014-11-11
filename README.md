@@ -64,20 +64,17 @@ directory as so:
 
 Using the Spark Driver
 ----------------------
-To use the Spark driver, build the BPS data generator jar as above. Then create a `lib`
-directory in the `spark_driver` directory and place the jar there:
-
-    $ mkdir spark_driver/lib
-    $ cp build/libs/bps-data-generator-0.2.jar spark_driver/lib
-
 To build the Spark driver, you can use the included `sbt` files:
 
     $ cd spark_driver
-    $ ./sbt package
+    $ ./sbt assembly
 
-The Spark driver jar will now be located at `spark_driver/target/scala-2.10/bps-datagenerator-sparkdriver_2.10-0.2.jar`
+Note that that `assembly` bundles all of the dependencies (including the BigPetStore data generator) jar into the assembly jar.  This prevents dependency resolution problems at run time.
 
-To run the driver with Spark, place both jars into a common directory and run:
+The Spark driver jar will now be located at `spark_driver/target/scala-2.10/bigpetstore-spark-assembly-0.2.jar`
 
-    $ spark-submit --jars bps-data-generator-0.2.jar --master local[2] --class com.github.rnowling.bps.datagenerator.spark.SparkDriver bps-datagenerator-sparkdriver_2.10-0.2.jar generated_data 10 1000 365.0
+To run the driver with Spark, run:
+
+    $ spark-submit --master local[2] --class com.github.rnowling.bps.datagenerator.spark.SparkDriver bigpetstore-spark-assembly-0.2.jar generated_data 10 1000 365.0
+
 
