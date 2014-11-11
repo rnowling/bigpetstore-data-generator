@@ -16,7 +16,7 @@ public class ZipcodeRecord implements Serializable
 	public ZipcodeRecord(String zipcode, Pair<Double, Double> coordinates,
 			String city, String state, double medianHouseholdIncome, long population)
 	{
-		this.city = state;
+		this.city = city;
 		this.state = state;
 		this.zipcode = zipcode;
 		this.coordinates = coordinates;
