@@ -2,7 +2,7 @@ package com.github.rnowling.bps.datagenerator.spark
 
 import com.github.rnowling.bps.datagenerator.cli.Driver
 import com.github.rnowling.bps.datagenerator.datamodels.{Store,Customer,PurchasingProfile,Transaction}
-import com.github.rnowling.bps.datagenerator.{StoreGenerator,CustomerGenerator,PurchasingProfileGenerator,TransactionGenerator}
+import com.github.rnowling.bps.datagenerator.{DataLoader,StoreGenerator,CustomerGenerator,PurchasingProfileGenerator,TransactionGenerator}
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory
 import org.apache.spark.{SparkContext, SparkConf}
 import org.apache.spark.SparkContext._
@@ -11,14 +11,14 @@ import java.util.ArrayList
 object SparkDriver {
   def main(args: Array[String]) {
      val driver: Driver = new Driver()
-     driver.parseArgs(args)
-     
-     val inputData = driver.loadData()
+     driver.parseArgs(args)     
      val nStores = driver.getNStores()
      val nCustomers = driver.getNCustomers()
      val seed = driver.getSeed()
      val simulationLength = driver.getSimulationLength()
   
+     val inputData = new DataLoader().loadData()
+
      val seedFactory = new SeedFactory(seed);
 
      println("Generating stores...")
