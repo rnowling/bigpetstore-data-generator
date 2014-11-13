@@ -19,7 +19,7 @@ To build:
 
 This will create several directories and a jar located at:
     
-    build/libs/bps-data-generator-0.2.jar
+    build/libs/bigpetstore-data-generator-0.2.jar
 
 Building automatically runs the included unit tests.  If you would prefer
 to just run the unit tests, you can do so by:
@@ -39,12 +39,12 @@ Hadoop or Spark applications) or using a command-line interface.
 The data generator CLI requires several parameters.  To get 
 descriptions:
 
-    $ java -jar build/libs/bps-data-generator-0.2.jar
+    $ java -jar build/libs/bigpetstore-data-generator-0.2.jar
 
 Here is an example for generating 10 stores, 1000 customers,
 and a year of transactions:
 
-    $ java -jar build/libs/bps-data-generator-0.2.jar generatedData/ 10 1000 365.0
+    $ java -jar build/libs/bigpetstore-data-generator-0.2.jar generatedData/ 10 1000 365.0
 
 
 Groovy Drivers for Scripting
@@ -59,7 +59,7 @@ To use Groovy scripts, you will need to have Groovy installed on your system.  B
 data generator as instructed above.  Then run the scripts in the `groovy_example_drivers`
 directory as so:
 
-    $ groovy -classpath ../build/libs/bps-data-generator-0.2.jar MonteCarloExponentialSamplingExample.groovy
+    $ groovy -classpath ../build/libs/bigpetstore-data-generator-0.2.jar MonteCarloExponentialSamplingExample.groovy
 
 
 Using the Spark Driver
