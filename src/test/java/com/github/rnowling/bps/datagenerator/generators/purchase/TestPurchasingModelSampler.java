@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.purchasingprofile;
+package com.github.rnowling.bps.datagenerator.generators.purchase;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -13,12 +13,11 @@ import com.github.rnowling.bps.datagenerator.datamodels.Product;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategoryBuilder;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
-import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModel;
-import com.github.rnowling.bps.datagenerator.framework.samplers.UniformSampler;
+import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
-public class TestProductCategoryMarkovModelSampler
+public class TestPurchasingModelSampler
 {
 	
 	private List<ProductCategory> createProducts()
@@ -56,7 +55,7 @@ public class TestProductCategoryMarkovModelSampler
 		bagBuilder.addProduct(new Product(ImmutableMap.of(Constants.PRODUCT_CATEGORY, (Object) "Poop Bags",
 				Constants.PRODUCT_QUANTITY, (Object) 30.0, "Color", "Red")));
 		bagBuilder.addProduct(new Product(ImmutableMap.of(Constants.PRODUCT_CATEGORY, (Object) "Poop Bags",
-				Constants.PRODUCT_QUANTITY, (Object) 120.0, "Flavor", "Multicolor")));
+				Constants.PRODUCT_QUANTITY, (Object) 120.0, "Color", "Multicolor")));
 		productCategories.add(bagBuilder.build());
 		
 		return productCategories;
@@ -69,19 +68,22 @@ public class TestProductCategoryMarkovModelSampler
 		
 		List<ProductCategory> productCategories = createProducts();
 		
-		ProductCategory productCategory = productCategories.get(0);
+		PurchasingModelSamplerBuilder builder = new PurchasingModelSamplerBuilder(productCategories, seedFactory);
+		Sampler<MarkovPurchasingModel> sampler = builder.buildMarkovPurchasingModel();
+		MarkovPurchasingModel profile = sampler.sample();
 		
-		ProductCategoryMarkovModelSampler generator = new ProductCategoryMarkovModelSampler(productCategory, 
-				new UniformSampler(seedFactory), new UniformSampler(seedFactory), new UniformSampler(seedFactory)
-				);
+		assertNotNull(profile);
+		assertNotNull(profile.getProductCategories());
+		assertTrue(profile.getProductCategories().size() > 0);
 		
-		MarkovModel<Product> model = generator.sample();
-		
-		assertNotNull(model);
-		assertNotNull(model.getStartWeights());
-		assertNotNull(model.getTransitionWeights());
-		assertTrue(model.getStartWeights().size() > 0);
-		assertTrue(model.getTransitionWeights().size() > 0);
+		for(String label : profile.getProductCategories())
+		{
+			assertNotNull(profile.getProfile(label));
+			assertNotNull(profile.getProfile(label).getStartWeights());
+			assertTrue(profile.getProfile(label).getStartWeights().size() > 0);
+			assertNotNull(profile.getProfile(label).getTransitionWeights());
+			assertTrue(profile.getProfile(label).getTransitionWeights().size() > 0);
+		}
 	}
 
 }

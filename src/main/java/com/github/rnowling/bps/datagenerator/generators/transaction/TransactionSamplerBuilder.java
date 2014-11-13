@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.github.rnowling.bps.datagenerator.datamodels.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.Product;
-import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.Transaction;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
@@ -14,13 +13,14 @@ import com.github.rnowling.bps.datagenerator.framework.samplers.ConditionalSampl
 import com.github.rnowling.bps.datagenerator.framework.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.SequenceSampler;
+import com.github.rnowling.bps.datagenerator.generators.purchase.PurchasingModel;
 
 public class TransactionSamplerBuilder
 {
 	private final Collection<Store> stores;
 	private final Collection<ProductCategory> productCategories;
 	private final Customer customer;
-	private final PurchasingProfile purchasingProfile;
+	private final PurchasingModel purchasingProfile;
 	private final SeedFactory seedFactory;
 	
 	CustomerTransactionParameters parameters;
@@ -29,7 +29,7 @@ public class TransactionSamplerBuilder
 	public TransactionSamplerBuilder(Collection<Store> stores,
 			Collection<ProductCategory> productCategories, 
 			Customer customer,
-			PurchasingProfile purchasingProfile,
+			PurchasingModel purchasingProfile,
 			SeedFactory seedFactory) throws Exception
 	{
 		this.customer = customer;

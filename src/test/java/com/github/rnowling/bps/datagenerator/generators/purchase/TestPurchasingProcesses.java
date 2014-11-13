@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.transaction;
+package com.github.rnowling.bps.datagenerator.generators.purchase;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -11,7 +11,6 @@ import com.github.rnowling.bps.datagenerator.datamodels.Product;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
-import com.github.rnowling.bps.datagenerator.generators.transaction.PurchasingProcesses;
 import com.google.common.collect.Maps;
 
 public class TestPurchasingProcesses

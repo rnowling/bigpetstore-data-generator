@@ -8,6 +8,18 @@ import com.google.common.collect.ImmutableList;
 
 public class Constants
 {
+	public static enum PurchasingModelType
+	{
+		STATIC,
+		DYNAMIC;
+	}
+	
+	public static enum DistributionType
+	{
+		BOUNDED_MULTIMODAL_GAUSSIAN,
+		EXPONENTIAL;
+	}
+	
 	public static final File COORDINATES_FILE = new File("zips.csv");
 	public static final File INCOMES_FILE = new File("ACS_12_5YR_S1903/ACS_12_5YR_S1903_with_ann.csv");
 	public static final File POPULATION_FILE = new File("population_data.csv");
@@ -32,10 +44,11 @@ public class Constants
 	
 	public static final double AVERAGE_CUSTOMER_STORE_DISTANCE = 5.0; // miles
 	
+	public static final PurchasingModelType PURCHASING_MODEL_TYPE = PurchasingModelType.DYNAMIC;
+	
 	public static final List<Pair<Double, Double>> PRODUCT_MSM_FIELD_WEIGHT_GAUSSIANS = ImmutableList.of(Pair.create(0.15, 0.1), Pair.create(0.85, 0.1));
 	public static final double PRODUCT_MSM_FIELD_WEIGHT_LOWERBOUND = 0.05;
 	public static final double PRODUCT_MSM_FIELD_WEIGHT_UPPERBOUND = 0.95;
-	
 	
 	public static final List<Pair<Double, Double>> PRODUCT_MSM_FIELD_SIMILARITY_WEIGHT_GAUSSIANS = ImmutableList.of(Pair.create(0.15, 0.1), Pair.create(0.85, 0.1));
 	public static final double PRODUCT_MSM_FIELD_SIMILARITY_WEIGHT_LOWERBOUND = 0.05;
@@ -44,6 +57,21 @@ public class Constants
 	public static final List<Pair<Double, Double>> PRODUCT_MSM_LOOPBACK_WEIGHT_GAUSSIANS = ImmutableList.of(Pair.create(0.25, 0.1), Pair.create(0.75, 0.1));
 	public static final double PRODUCT_MSM_LOOPBACK_WEIGHT_LOWERBOUND = 0.05;
 	public static final double PRODUCT_MSM_LOOPBACK_WEIGHT_UPPERBOUND = 0.95;
+	
+	public static final DistributionType STATIC_PURCHASING_MODEL_FIELD_WEIGHT_DISTRIBUTION_TYPE = DistributionType.BOUNDED_MULTIMODAL_GAUSSIAN;
+	public static final DistributionType STATIC_PURCHASING_MODEL_FIELD_VALUE_WEIGHT_DISTRIBUTION_TYPE = DistributionType.EXPONENTIAL;
+	
+	public static final List<Pair<Double, Double>> STATIC_FIELD_WEIGHT_GAUSSIANS = ImmutableList.of(Pair.create(0.15, 0.1), Pair.create(0.85, 0.1));
+	public static final double STATIC_FIELD_WEIGHT_LOWERBOUND = 0.05;
+	public static final double STATIC_FIELD_WEIGHT_UPPERBOUND = 0.95;
+	
+	public static final List<Pair<Double, Double>> STATIC_FIELD_VALUE_WEIGHT_GAUSSIANS = ImmutableList.of(Pair.create(0.15, 0.1), Pair.create(0.85, 0.1));
+	public static final double STATIC_FIELD_VALUE_WEIGHT_LOWERBOUND = 0.05;
+	public static final double STATIC_FIELD_VALUE_WEIGHT_UPPERBOUND = 0.95;
+	
+	public static final double STATIC_FIELD_WEIGHT_EXPONENTIAL = 0.25;
+	public static final double STATIC_FIELD_VALUE_WEIGHT_EXPONENTIAL = 2.0;
+	
 	
 	public static final String PRODUCT_QUANTITY = "size";
 	public static final String PRODUCT_CATEGORY = "category";

@@ -4,23 +4,24 @@ import java.util.Collection;
 import java.util.List;
 
 import com.github.rnowling.bps.datagenerator.datamodels.Product;
-import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.samplers.ConditionalSampler;
 import com.github.rnowling.bps.datagenerator.framework.wfs.ConditionalWeightFunction;
+import com.github.rnowling.bps.datagenerator.generators.purchase.PurchasingProcesses;
+import com.github.rnowling.bps.datagenerator.generators.purchase.PurchasingModel;
 
 public class TransactionPurchasesSamplerBuilder
 {
 	final SeedFactory seedFactory;
 	final Collection<ProductCategory> productCategories;
-	final PurchasingProfile purchasingProfile;
+	final PurchasingModel purchasingProfile;
 	
 	protected CustomerTransactionParameters transactionParameters;
 	protected CustomerInventory inventory;
 	
 	public TransactionPurchasesSamplerBuilder(Collection<ProductCategory> productCategories,
-			PurchasingProfile purchasingProfile,
+			PurchasingModel purchasingProfile,
 			SeedFactory seedFactory)
 	{
 		this.seedFactory = seedFactory;
@@ -41,9 +42,7 @@ public class TransactionPurchasesSamplerBuilder
 
 	public ConditionalSampler<List<Product>, Double> build() throws Exception
 	{
-		PurchasingProcessesBuilder processesBuilder = new PurchasingProcessesBuilder(seedFactory);
-		processesBuilder.setPurchasingProfile(purchasingProfile);
-		PurchasingProcesses processes = processesBuilder.build();
+		PurchasingProcesses processes = purchasingProfile.buildProcesses(seedFactory);
 		
 		ConditionalWeightFunction<Double, Double> categoryWF =
 				new CategoryWeightFunction(transactionParameters.getAveragePurchaseTriggerTime());

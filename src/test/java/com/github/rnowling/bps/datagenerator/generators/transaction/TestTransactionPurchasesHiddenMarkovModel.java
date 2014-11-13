@@ -11,8 +11,6 @@ import org.junit.Test;
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
 import com.github.rnowling.bps.datagenerator.datamodels.Product;
-import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile;
-import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfileBuilder;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategoryBuilder;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
@@ -20,6 +18,8 @@ import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModel;
 import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModelBuilder;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.framework.wfs.ConditionalWeightFunction;
+import com.github.rnowling.bps.datagenerator.generators.purchase.MarkovPurchasingModel;
+import com.github.rnowling.bps.datagenerator.generators.purchase.PurchasingProcesses;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -64,16 +64,13 @@ public class TestTransactionPurchasesHiddenMarkovModel
 		MarkovModel<Product> dogFoodModel = createMarkovModel(dogFoodCategory);
 		MarkovModel<Product> catFoodModel = createMarkovModel(catFoodCategory);
 		
-		PurchasingProfileBuilder profileBuilder = new PurchasingProfileBuilder();
-		profileBuilder.addProfile("dog food", dogFoodModel);
-		profileBuilder.addProfile("cat food", catFoodModel);
+		Map<String, MarkovModel<Product>> models = Maps.newHashMap();
+		models.put("dog food", dogFoodModel);
+		models.put("cat food", catFoodModel);
 		
-		PurchasingProfile profile = profileBuilder.build();
+		MarkovPurchasingModel profile = new MarkovPurchasingModel(models);
 		
-		PurchasingProcessesBuilder builder = new PurchasingProcessesBuilder(seedFactory);
-		builder.setPurchasingProfile(profile);
-		
-		return builder.build();
+		return profile.buildProcesses(seedFactory);
 	}
 	
 	protected ProductCategory createCategory(String category)

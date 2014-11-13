@@ -39,4 +39,9 @@ public class Pair<A, B> implements Serializable
 			list.add(Pair.create(entry.getKey(), entry.getValue()));
 		return list;
 	}
+	
+	public String toString()
+	{
+		return "Pair(" + first + ", " + second + ")";
+	}
 }

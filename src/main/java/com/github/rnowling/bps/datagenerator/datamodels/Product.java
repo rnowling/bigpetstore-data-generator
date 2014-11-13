@@ -8,6 +8,8 @@ import com.google.common.collect.ImmutableSet;
 
 public class Product implements Serializable
 {
+	private static final long serialVersionUID = 4519472063058037956L;
+	
 	ImmutableMap<String, Object> fields;
 	
 	public Product(Map<String, Object> fields)

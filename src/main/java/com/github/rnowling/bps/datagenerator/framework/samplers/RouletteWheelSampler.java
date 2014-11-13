@@ -6,6 +6,7 @@ import java.util.Random;
 
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
+import com.github.rnowling.bps.datagenerator.framework.pdfs.DiscretePDF;
 import com.github.rnowling.bps.datagenerator.framework.pdfs.ProbabilityDensityFunction;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
@@ -18,6 +19,11 @@ public class RouletteWheelSampler<T> implements Sampler<T>
 	public static <T> RouletteWheelSampler<T> create(Map<T, Double> domainWeights, SeedFactory factory)
 	{
 		return new RouletteWheelSampler<T>(domainWeights, factory);
+	}
+	
+	public static <T> RouletteWheelSampler<T> create(DiscretePDF<T> pdf, SeedFactory factory)
+	{
+		return new RouletteWheelSampler<T>(pdf.getData(), pdf, factory);
 	}
 	
 	public static <T> RouletteWheelSampler<T> create(Collection<T> data, ProbabilityDensityFunction<T> pdf, SeedFactory factory)

@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.transaction;
+package com.github.rnowling.bps.datagenerator.generators.purchase;
 
 import java.util.Map;
 
@@ -25,4 +25,5 @@ public class PurchasingProcesses implements ConditionalSampler<Product, String>
 	{
 		return this.processes.get(productCategory);
 	}
+
 }

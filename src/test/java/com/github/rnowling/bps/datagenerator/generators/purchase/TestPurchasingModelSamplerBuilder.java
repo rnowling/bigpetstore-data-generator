@@ -1,4 +1,4 @@
-package com.github.rnowling.bps.datagenerator.generators.purchasingprofile;
+package com.github.rnowling.bps.datagenerator.generators.purchase;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -10,7 +10,6 @@ import org.junit.Test;
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.PetSpecies;
 import com.github.rnowling.bps.datagenerator.datamodels.Product;
-import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategoryBuilder;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
@@ -18,7 +17,7 @@ import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
-public class TestPurchasingProfileSamplerBuilder
+public class TestPurchasingModelSamplerBuilder
 {
 	
 	private List<ProductCategory> createProducts()
@@ -69,9 +68,9 @@ public class TestPurchasingProfileSamplerBuilder
 		
 		List<ProductCategory> productCategories = createProducts();
 		
-		PurchasingProfileSamplerBuilder builder = new PurchasingProfileSamplerBuilder(productCategories, seedFactory);
-		Sampler<PurchasingProfile> sampler = builder.build();
-		PurchasingProfile profile = sampler.sample();
+		PurchasingModelSamplerBuilder builder = new PurchasingModelSamplerBuilder(productCategories, seedFactory);
+		Sampler<MarkovPurchasingModel> sampler = builder.buildMarkovPurchasingModel();
+		MarkovPurchasingModel profile = sampler.sample();
 		
 		assertNotNull(profile);
 		assertNotNull(profile.getProductCategories());

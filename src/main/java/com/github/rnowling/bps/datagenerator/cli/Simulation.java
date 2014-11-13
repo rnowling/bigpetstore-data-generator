@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Vector;
 
 import com.github.rnowling.bps.datagenerator.CustomerGenerator;
-import com.github.rnowling.bps.datagenerator.PurchasingProfileGenerator;
+import com.github.rnowling.bps.datagenerator.PurchasingModelGenerator;
 import com.github.rnowling.bps.datagenerator.StoreGenerator;
 import com.github.rnowling.bps.datagenerator.TransactionGenerator;
 import com.github.rnowling.bps.datagenerator.datamodels.Customer;
-import com.github.rnowling.bps.datagenerator.datamodels.PurchasingProfile;
 import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.Transaction;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
+import com.github.rnowling.bps.datagenerator.generators.purchase.PurchasingModel;
 import com.google.common.collect.Lists;
 
 public class Simulation
@@ -26,7 +26,7 @@ public class Simulation
 	
 	List<Store> stores;
 	List<Customer> customers;
-	List<PurchasingProfile> purchasingProfiles;
+	List<PurchasingModel> purchasingProfiles;
 	List<Transaction> transactions;
 	
 	public Simulation(InputData inputData, int nStores, int nCustomers, double simulationTime, long seed)
@@ -75,12 +75,12 @@ public class Simulation
 	public void generatePurchasingProfiles() throws Exception
 	{
 		System.out.println("Generating purchasing profiles");
-		PurchasingProfileGenerator generator = new PurchasingProfileGenerator(inputData.getProductCategories(), seedFactory);
+		PurchasingModelGenerator generator = new PurchasingModelGenerator(inputData.getProductCategories(), seedFactory);
 		
-		purchasingProfiles = new Vector<PurchasingProfile>();
+		purchasingProfiles = new Vector<PurchasingModel>();
 		for(int i = 0; i < nCustomers; i++)
 		{
-			PurchasingProfile profile = generator.generate();
+			PurchasingModel profile = generator.generate();
 			purchasingProfiles.add(profile);
 		}
 		
@@ -95,7 +95,7 @@ public class Simulation
 		for(int i = 0; i < nCustomers; i++)
 		{
 			Customer customer = customers.get(i);
-			PurchasingProfile profile = purchasingProfiles.get(i);
+			PurchasingModel profile = purchasingProfiles.get(i);
 			
 			TransactionGenerator generator = new TransactionGenerator(customer,
 					profile, stores, inputData.getProductCategories(), seedFactory);
@@ -136,7 +136,7 @@ public class Simulation
 		return transactions;
 	}
 	
-	public List<PurchasingProfile> getPurchasingProfiles()
+	public List<PurchasingModel> getPurchasingProfiles()
 	{
 		return purchasingProfiles;
 	}
