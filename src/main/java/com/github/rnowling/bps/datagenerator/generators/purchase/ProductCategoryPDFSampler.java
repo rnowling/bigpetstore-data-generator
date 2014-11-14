@@ -42,16 +42,8 @@ public class ProductCategoryPDFSampler implements Sampler<DiscretePDF<Product>>
 		return normalized;
 	}
 	
-	protected Map<Product, Double> generateProductWeights() throws Exception
+	protected Map<String, Map<Object, Double>> generateFieldValueWeights() throws Exception
 	{
-		Map<String, Double> fieldWeights = Maps.newHashMap();
-		for(String fieldName : productCategory.getFieldNames())
-		{
-			double weight = fieldWeightSampler.sample();
-			fieldWeights.put(fieldName, weight);
-		}
-		fieldWeights = normalize(fieldWeights);
-		
 		Map<String, Set<Object>> allFieldValues = Maps.newHashMap();
 		for(String fieldName : productCategory.getFieldNames())
 		{
@@ -74,8 +66,28 @@ public class ProductCategoryPDFSampler implements Sampler<DiscretePDF<Product>>
 				fieldValueWeights.put(fieldValue, fieldValueWeight);
 			}
 
-			allFieldValueWeights.put(fieldName, normalize(fieldValueWeights));
+			allFieldValueWeights.put(fieldName, fieldValueWeights);
 		}
+		
+		return allFieldValueWeights;
+	}
+	
+	protected Map<String, Double> generateFieldWeights() throws Exception
+	{
+		Map<String, Double> fieldWeights = Maps.newHashMap();
+		for(String fieldName : productCategory.getFieldNames())
+		{
+			double weight = fieldWeightSampler.sample();
+			fieldWeights.put(fieldName, weight);
+		}
+		
+		return normalize(fieldWeights);
+	}
+	
+	protected Map<Product, Double> generateProductWeights() throws Exception
+	{
+		Map<String, Double> fieldWeights = generateFieldWeights();
+		Map<String, Map<Object, Double>> allFieldValueWeights = generateFieldValueWeights();
 		
 		Map<Product, Double> productWeights = Maps.newHashMap();
 		for(Product p : productCategory.getProducts())
