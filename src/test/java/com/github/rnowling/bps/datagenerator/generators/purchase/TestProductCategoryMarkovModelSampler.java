@@ -1,10 +1,10 @@
 package com.github.rnowling.bps.datagenerator.generators.purchase;
 
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import org.junit.Test;
 
 import com.github.rnowling.bps.datagenerator.Constants;
@@ -14,10 +14,11 @@ import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategoryBuilder;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.markovmodels.MarkovModel;
+import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.UniformSampler;
-import com.github.rnowling.bps.datagenerator.generators.purchase.ProductCategoryMarkovModelSampler;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 public class TestProductCategoryMarkovModelSampler
 {
@@ -72,8 +73,16 @@ public class TestProductCategoryMarkovModelSampler
 		
 		ProductCategory productCategory = productCategories.get(0);
 		
+		Sampler<Double> fieldWeightSampler = new UniformSampler(seedFactory);
+		
+		Map<String, Double> fieldWeights = Maps.newHashMap();
+		for(String fieldName : productCategory.getFieldNames())
+		{
+			fieldWeights.put(fieldName, fieldWeightSampler.sample());
+		}
+		
 		ProductCategoryMarkovModelSampler generator = new ProductCategoryMarkovModelSampler(productCategory, 
-				new UniformSampler(seedFactory), new UniformSampler(seedFactory), new UniformSampler(seedFactory)
+				fieldWeights, new UniformSampler(seedFactory), new UniformSampler(seedFactory)
 				);
 		
 		MarkovModel<Product> model = generator.sample();

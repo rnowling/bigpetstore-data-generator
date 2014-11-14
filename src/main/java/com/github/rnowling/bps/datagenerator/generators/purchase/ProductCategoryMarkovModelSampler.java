@@ -12,33 +12,30 @@ import com.google.common.collect.Maps;
 public class ProductCategoryMarkovModelSampler implements Sampler<MarkovModel<Product>>
 {
 	final ProductCategory productCategory;
-	final Sampler<Double> fieldWeightSampler;
 	final Sampler<Double> fieldSimilarityWeightSampler;
 	final Sampler<Double> loopbackWeightSampler;
 	
-	Map<String, Double> fieldWeights;
+	final Map<String, Double> fieldWeights;
 	Map<String, Double> fieldSimilarityWeights;
 	double loopbackWeight;
 	
 	public ProductCategoryMarkovModelSampler(ProductCategory productCategory, 
-			Sampler<Double> fieldWeightSampler, Sampler<Double> fieldSimilarityWeightSampler,
+			Map<String, Double> fieldWeights, Sampler<Double> fieldSimilarityWeightSampler,
 			Sampler<Double> loopbackWeightSampler)
 	{
 		this.productCategory = productCategory;
 		
 		this.fieldSimilarityWeightSampler = fieldSimilarityWeightSampler;
-		this.fieldWeightSampler = fieldWeightSampler;
+		this.fieldWeights = fieldWeights;
 		this.loopbackWeightSampler = loopbackWeightSampler;
 	}
 	
 	protected void generateWeights() throws Exception
 	{
-		fieldWeights = Maps.newHashMap();
 		fieldSimilarityWeights = Maps.newHashMap();
 		
 		for(String fieldName : productCategory.getFieldNames())
 		{
-			fieldWeights.put(fieldName, fieldWeightSampler.sample());
 			fieldSimilarityWeights.put(fieldName,fieldSimilarityWeightSampler.sample());
 		}
 		

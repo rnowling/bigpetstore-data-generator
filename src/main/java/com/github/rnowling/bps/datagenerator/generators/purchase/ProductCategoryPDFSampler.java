@@ -13,15 +13,15 @@ import com.google.common.collect.Sets;
 public class ProductCategoryPDFSampler implements Sampler<DiscretePDF<Product>>
 {
 	private final ProductCategory productCategory;
-	private final Sampler<Double> fieldWeightSampler;
 	private final Sampler<Double> fieldValueWeightSampler;
+	private final Map<String, Double> fieldWeights;
 	
 	public ProductCategoryPDFSampler(ProductCategory productCategory,
-			Sampler<Double> fieldWeightSampler,
+			Map<String, Double> fieldWeights,
 			Sampler<Double> fieldValueWeightSampler)
 	{
 		this.productCategory = productCategory;
-		this.fieldWeightSampler = fieldWeightSampler;
+		this.fieldWeights = fieldWeights;
 		this.fieldValueWeightSampler = fieldValueWeightSampler;
 	}
 	
@@ -72,21 +72,8 @@ public class ProductCategoryPDFSampler implements Sampler<DiscretePDF<Product>>
 		return allFieldValueWeights;
 	}
 	
-	protected Map<String, Double> generateFieldWeights() throws Exception
-	{
-		Map<String, Double> fieldWeights = Maps.newHashMap();
-		for(String fieldName : productCategory.getFieldNames())
-		{
-			double weight = fieldWeightSampler.sample();
-			fieldWeights.put(fieldName, weight);
-		}
-		
-		return fieldWeights;
-	}
-	
 	protected Map<Product, Double> generateProductWeights() throws Exception
 	{
-		Map<String, Double> fieldWeights = generateFieldWeights();
 		Map<String, Map<Object, Double>> allFieldValueWeights = generateFieldValueWeights();
 		
 		Map<Product, Double> productWeights = Maps.newHashMap();

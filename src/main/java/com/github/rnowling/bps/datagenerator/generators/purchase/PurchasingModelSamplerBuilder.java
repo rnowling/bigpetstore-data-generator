@@ -1,7 +1,9 @@
 package com.github.rnowling.bps.datagenerator.generators.purchase;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.Product;
@@ -24,6 +26,27 @@ public class PurchasingModelSamplerBuilder
 	{
 		this.productCategories = ImmutableList.copyOf(productCategories);
 		this.seedFactory = seedFactory;
+	}
+	
+	protected Map<String, Double> generateFieldWeights(Sampler<Double> fieldWeightSampler) throws Exception
+	{
+		Set<String> fieldNames = new HashSet<String>();
+		for(ProductCategory pc : productCategories)
+		{
+			for(String fieldName : pc.getFieldNames())
+			{
+				fieldNames.add(fieldName);
+			}
+		}
+		
+		Map<String, Double> fieldWeights = Maps.newHashMap();
+		for(String fieldName : fieldNames)
+		{
+			double weight = fieldWeightSampler.sample();
+			fieldWeights.put(fieldName, weight);
+		}
+		
+		return fieldWeights;
 	}
 	
 	public Sampler<StaticPurchasingModel> buildStaticPurchasingModel() throws Exception
@@ -55,11 +78,13 @@ public class PurchasingModelSamplerBuilder
 			fieldValueWeightSampler = new ExponentialSampler(Constants.STATIC_FIELD_VALUE_WEIGHT_EXPONENTIAL, seedFactory);
 		}
 		
+		Map<String, Double> fieldWeights = generateFieldWeights(fieldWeightSampler);
+		
 		Map<ProductCategory, Sampler<DiscretePDF<Product>>> categorySamplers = Maps.newHashMap();
 		for(ProductCategory productCategory : productCategories)
 		{
 			Sampler<DiscretePDF<Product>> sampler = new ProductCategoryPDFSampler(productCategory,
-					fieldWeightSampler, fieldValueWeightSampler);
+					fieldWeights, fieldValueWeightSampler);
 			categorySamplers.put(productCategory, sampler);
 		}
 		
@@ -84,11 +109,13 @@ public class PurchasingModelSamplerBuilder
 				Constants.PRODUCT_MSM_LOOPBACK_WEIGHT_UPPERBOUND,
 				seedFactory);
 		
+		Map<String, Double> fieldWeights = generateFieldWeights(fieldWeightSampler);
+		
 		Map<ProductCategory, Sampler<MarkovModel<Product>>> categorySamplers = Maps.newHashMap();
 		for(ProductCategory productCategory : productCategories)
 		{
 			ProductCategoryMarkovModelSampler sampler = new ProductCategoryMarkovModelSampler(productCategory, 
-					fieldWeightSampler, fieldSimilarityWeightSampler, loopbackWeightSampler);
+					fieldWeights, fieldSimilarityWeightSampler, loopbackWeightSampler);
 			categorySamplers.put(productCategory, sampler);
 		}
 		
