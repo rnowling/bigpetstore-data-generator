@@ -88,7 +88,6 @@ public class ProductCategoryMarkovModelSampler implements Sampler<MarkovModel<Pr
 	{
 		generateWeights();
 		fieldWeights = normalize(fieldWeights);
-		fieldSimilarityWeights = normalize(fieldSimilarityWeights);
 		
 		MarkovModelBuilder<Product> builder = new MarkovModelBuilder<Product>();
 		
