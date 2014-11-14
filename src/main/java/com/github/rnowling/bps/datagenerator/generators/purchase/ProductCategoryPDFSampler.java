@@ -81,7 +81,7 @@ public class ProductCategoryPDFSampler implements Sampler<DiscretePDF<Product>>
 			fieldWeights.put(fieldName, weight);
 		}
 		
-		return normalize(fieldWeights);
+		return fieldWeights;
 	}
 	
 	protected Map<Product, Double> generateProductWeights() throws Exception
