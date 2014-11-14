@@ -44,25 +44,7 @@ public class ProductCategoryMarkovModelSampler implements Sampler<MarkovModel<Pr
 		
 		loopbackWeight = loopbackWeightSampler.sample();
 	}
-	
-	protected <T> Map<T, Double> normalize(Map<T, Double> weights)
-	{
-		Map<T, Double> normalized = Maps.newHashMap();
 		
-		double weightSum = 0.0;
-		for(double weight : weights.values())
-		{
-			weightSum += weight;
-		}
-		
-		for(Map.Entry<T, Double> entry : weights.entrySet())
-		{
-			normalized.put(entry.getKey(), entry.getValue() / weightSum);
-		}
-		
-		return normalized;
-	}
-	
 	protected double productPairWeight(Product product1, Product product2)
 	{
 		double weightSum = 0.0;
@@ -87,7 +69,6 @@ public class ProductCategoryMarkovModelSampler implements Sampler<MarkovModel<Pr
 	public MarkovModel<Product> sample() throws Exception
 	{
 		generateWeights();
-		fieldWeights = normalize(fieldWeights);
 		
 		MarkovModelBuilder<Product> builder = new MarkovModelBuilder<Product>();
 		
