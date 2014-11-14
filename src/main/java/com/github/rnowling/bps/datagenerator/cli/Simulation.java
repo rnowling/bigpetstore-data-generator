@@ -1,5 +1,6 @@
 package com.github.rnowling.bps.datagenerator.cli;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -13,6 +14,8 @@ import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.Transaction;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
+import com.github.rnowling.bps.datagenerator.framework.samplers.RouletteWheelSampler;
+import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.generators.purchase.PurchasingModel;
 import com.google.common.collect.Lists;
 
@@ -22,18 +25,20 @@ public class Simulation
 	SeedFactory seedFactory;
 	int nStores;
 	int nCustomers;
+	int nPurchasingModels;
 	double simulationTime;
 	
 	List<Store> stores;
 	List<Customer> customers;
-	List<PurchasingModel> purchasingProfiles;
+	Sampler<PurchasingModel> purchasingModelSampler;
 	List<Transaction> transactions;
 	
-	public Simulation(InputData inputData, int nStores, int nCustomers, double simulationTime, long seed)
+	public Simulation(InputData inputData, int nStores, int nCustomers, int nPurchasingModels, double simulationTime, long seed)
 	{
 		this.inputData = inputData;
 		this.nStores = nStores;
 		this.nCustomers = nCustomers;
+		this.nPurchasingModels = nPurchasingModels;
 		this.simulationTime = simulationTime;
 		seedFactory = new SeedFactory(seed);
 	}
@@ -77,14 +82,16 @@ public class Simulation
 		System.out.println("Generating purchasing profiles");
 		PurchasingModelGenerator generator = new PurchasingModelGenerator(inputData.getProductCategories(), seedFactory);
 		
-		purchasingProfiles = new Vector<PurchasingModel>();
-		for(int i = 0; i < nCustomers; i++)
+		Collection<PurchasingModel> purchasingProfiles = new Vector<PurchasingModel>();
+		for(int i = 0; i < nPurchasingModels; i++)
 		{
 			PurchasingModel profile = generator.generate();
 			purchasingProfiles.add(profile);
 		}
 		
 		System.out.println("Generated " + purchasingProfiles.size() + " purchasing profiles");
+		
+		purchasingModelSampler = RouletteWheelSampler.createUniform(purchasingProfiles, seedFactory);
 	}
 	
 	public void generateTransactions() throws Exception
@@ -95,7 +102,7 @@ public class Simulation
 		for(int i = 0; i < nCustomers; i++)
 		{
 			Customer customer = customers.get(i);
-			PurchasingModel profile = purchasingProfiles.get(i);
+			PurchasingModel profile = purchasingModelSampler.sample();
 			
 			TransactionGenerator generator = new TransactionGenerator(customer,
 					profile, stores, inputData.getProductCategories(), seedFactory);
@@ -134,11 +141,6 @@ public class Simulation
 	public List<Transaction> getTransactions()
 	{
 		return transactions;
-	}
-	
-	public List<PurchasingModel> getPurchasingProfiles()
-	{
-		return purchasingProfiles;
 	}
 	
 	public InputData getInputData()

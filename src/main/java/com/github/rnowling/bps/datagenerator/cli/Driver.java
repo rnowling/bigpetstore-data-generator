@@ -18,11 +18,12 @@ public class Driver
 {
 	int nStores;
 	int nCustomers;
+	int nPurchasingModels;
 	double simulationTime;
 	long seed;
 	File outputDir;
 	
-	static final int NPARAMS = 5;
+	static final int NPARAMS = 6;
 	
 	private void printUsage()
 	{
@@ -33,6 +34,7 @@ public class Driver
 				"outputDir - (string) directory to write files\n" +
 				"nStores - (int) number of stores to generate\n" +
 				"nCustomers - (int) number of customers to generate\n" +
+				"nPurchasingModels - (int) number of purchasing models to generate\n" + 
 				"simulationLength - (float) number of days to simulate\n" +
 				"seed - (long) seed for RNG. If not given, one is reandomly generated.\n";
 		
@@ -82,6 +84,17 @@ public class Driver
 		catch(Exception e)
 		{
 			System.err.println("Unable to parse '" + args[i] + "' as an integer for nCustomers.\n");
+			printUsage();
+			System.exit(1);
+		}
+		
+		try
+		{
+			nPurchasingModels = Integer.parseInt(args[++i]);
+		}
+		catch(Exception e)
+		{
+			System.err.println("Unable to parse '" + args[i] + "' as an integer for nPurchasingModels.\n");
 			printUsage();
 			System.exit(1);
 		}
@@ -145,7 +158,7 @@ public class Driver
 	
 	public Simulation buildSimulation(InputData inputData)
 	{
-		return new Simulation(inputData, nStores, nCustomers, simulationTime, seed);
+		return new Simulation(inputData, nStores, nCustomers, nPurchasingModels, simulationTime, seed);
 	}
 	
 	private void run(InputData inputData) throws Exception
