@@ -2,7 +2,7 @@ import AssemblyKeys._
 
 name := "bigpetstore-spark"
 
-version := "0.2"
+version := "0.2.1"
 
 scalaVersion := "2.10.4"
 
@@ -10,7 +10,7 @@ resolvers += Resolver.bintrayRepo("rnowling", "bigpetstore")
 
 libraryDependencies += "org.apache.spark" %% "spark-core" % "1.1.0" % "provided"
 
-libraryDependencies += "com.github.rnowling.bigpetstore" % "bigpetstore-data-generator" % "0.2"
+libraryDependencies += "com.github.rnowling.bigpetstore" % "bigpetstore-data-generator" % "0.2.1"
 
 assemblySettings
 
