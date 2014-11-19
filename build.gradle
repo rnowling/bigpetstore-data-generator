@@ -2,10 +2,10 @@ apply plugin: 'eclipse'
 apply plugin: 'groovy'
 apply plugin: 'java' 
 
-version = '0.2'
+group = 'com.github.rnowling.bigpetstore'
+version = '0.2.1'
 
 jar {
-    
     from {
         configurations.runtime.collect { 
             it.isDirectory() ? it : zipTree(it)
