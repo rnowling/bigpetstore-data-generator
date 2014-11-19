@@ -1,20 +1,28 @@
-name := "bps-datagenerator-sparkdriver"
+import AssemblyKeys._
 
-version := "0.2"
+name := "bigpetstore-spark"
+
+version := "0.2.1"
 
 scalaVersion := "2.10.4"
 
-libraryDependencies += "org.apache.spark" %% "spark-core" % "1.1.0"
+resolvers += Resolver.bintrayRepo("rnowling", "bigpetstore")
 
-// libraryDependencies += "com.github.scopt" %% "scopt" % "3.2.0"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "1.1.0" % "provided"
 
-// libraryDependencies += "com.twitter" %% "algebird-core" % "0.1.11"
+libraryDependencies += "com.github.rnowling.bigpetstore" % "bigpetstore-data-generator" % "0.2.1"
 
-// libraryDependencies += "org.apache.cassandra" % "cassandra-all" % "1.2.6"
+assemblySettings
 
-// libraryDependencies += "org.apache.hbase" % "hbase" % "0.94.6"
+mergeStrategy in assembly := {
+  case m if m.toLowerCase.endsWith("manifest.mf")          => MergeStrategy.discard
+  case m if m.toLowerCase.matches("meta-inf.*\\.sf$")      => MergeStrategy.discard
+  case "log4j.properties"                                  => MergeStrategy.discard
+  case m if m.toLowerCase.startsWith("meta-inf/services/") => MergeStrategy.filterDistinctLines
+  case "reference.conf"                                    => MergeStrategy.concat
+  case _                                                   => MergeStrategy.first
+}
 
-// libraryDependencies +=  "org.scalatest" % "scalatest_2.10.0-M4" % "1.9-2.10.0-M4-B1"
 
-// libraryDependencies +=  "junit" % "junit" % "4.8.1" % "test"
+
 
