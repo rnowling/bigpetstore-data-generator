@@ -2,7 +2,8 @@ apply plugin: 'eclipse'
 apply plugin: 'groovy'
 apply plugin: 'java' 
 
-version = '0.2'
+group = 'com.github.rnowling.bigpetstore'
+version = '0.3-SNAPSHOT'
 
 jar {
     
