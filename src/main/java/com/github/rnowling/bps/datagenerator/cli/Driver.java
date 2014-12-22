@@ -143,10 +143,14 @@ public class Driver
 				record += transaction.getDateTime() + ",";
 				record += transaction.getStore().getId() + ",";
 				record += transaction.getStore().getLocation().getZipcode() + ",";
+				record += transaction.getStore().getLocation().getCity() + ",";
+				record += transaction.getStore().getLocation().getState() + ",";
 				record += transaction.getCustomer().getId() + ",";
 				Pair<String, String> name = transaction.getCustomer().getName();
 				record += name.getFirst() + " " + name.getSecond() + ",";
 				record += transaction.getCustomer().getLocation().getZipcode() + ",";
+				record += transaction.getCustomer().getLocation().getCity() + ",";
+				record += transaction.getCustomer().getLocation().getState() + ",";
 				record += product.toString() + "\n";
 				
 				outputStream.write(record.getBytes());
