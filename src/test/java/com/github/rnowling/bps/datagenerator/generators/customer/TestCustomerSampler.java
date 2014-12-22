@@ -7,20 +7,50 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
+import com.github.rnowling.bps.datagenerator.Constants;
 import com.github.rnowling.bps.datagenerator.datamodels.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
+import com.github.rnowling.bps.datagenerator.framework.pdfs.ProbabilityDensityFunction;
+import com.github.rnowling.bps.datagenerator.framework.samplers.ConditionalSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.SequenceSampler;
+import com.google.common.collect.Maps;
 
 public class TestCustomerSampler
 {
+	protected ConditionalSampler<ZipcodeRecord, Store> buildLocationSampler(List<Store> stores, List<ZipcodeRecord> records,
+			SeedFactory factory)
+	{
+		final Map<Store, Sampler<ZipcodeRecord>> locationSamplers = Maps.newHashMap();
+		for(Store store : stores)
+		{
+			ProbabilityDensityFunction<ZipcodeRecord> locationPDF = new CustomerLocationPDF(records,
+					store, Constants.AVERAGE_CUSTOMER_STORE_DISTANCE);
+			Sampler<ZipcodeRecord> locationSampler = RouletteWheelSampler.create(records, locationPDF, factory);
+			locationSamplers.put(store, locationSampler);
+		}
+			
+		return new ConditionalSampler<ZipcodeRecord, Store>()
+				{
+					public ZipcodeRecord sample(Store store) throws Exception
+					{
+						return locationSamplers.get(store).sample();
+					}
+					
+					public Sampler<ZipcodeRecord> fixConditional(Store store)
+					{
+						return locationSamplers.get(store);
+					}
+				};
+	}
 
 	@Test
 	public void testBuild() throws Exception
@@ -45,7 +75,7 @@ public class TestCustomerSampler
 		Sampler<Integer> idSampler = new SequenceSampler();
 		Sampler<String> nameSampler = RouletteWheelSampler.createUniform(nameList, factory);
 		Sampler<Store> storeSampler = RouletteWheelSampler.createUniform(stores, factory);
-		Sampler<ZipcodeRecord> zipcodeSampler = RouletteWheelSampler.createUniform(zipcodes, factory);
+		ConditionalSampler<ZipcodeRecord, Store> zipcodeSampler = buildLocationSampler(stores, zipcodes, factory);
 		
 		Sampler<Customer> sampler = new CustomerSampler(idSampler, nameSampler, nameSampler, storeSampler, zipcodeSampler);
 		

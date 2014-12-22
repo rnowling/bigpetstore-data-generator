@@ -3,7 +3,6 @@ package com.github.rnowling.bps.datagenerator.generators.customer;
 import java.util.List;
 import java.util.Map;
 
-import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.framework.pdfs.ProbabilityDensityFunction;
@@ -14,13 +13,13 @@ public class CustomerLocationPDF implements ProbabilityDensityFunction<ZipcodeRe
 {
 	private final Map<ZipcodeRecord, Double> pdf;
 	
-	public CustomerLocationPDF(List<ZipcodeRecord> zipcodes, List<Store> stores, double averageDistance)
+	public CustomerLocationPDF(List<ZipcodeRecord> zipcodes, Store store, double averageDistance)
 	{
-		this.pdf = build(zipcodes, stores, averageDistance);
+		this.pdf = build(zipcodes, store, averageDistance);
 	}
 	
 	protected ImmutableMap<ZipcodeRecord, Double> build(List<ZipcodeRecord> zipcodeTable,
-			List<Store> stores, double averageDistance)
+			Store store, double averageDistance)
 	{
 		double lambda = 1.0 / averageDistance;
 		
@@ -28,8 +27,7 @@ public class CustomerLocationPDF implements ProbabilityDensityFunction<ZipcodeRe
 		double totalWeight = 0.0;
 		for(ZipcodeRecord record : zipcodeTable)
 		{
-			Pair<Store, Double> closestStore = findClosestStore(stores, record);
-			double dist = closestStore.getSecond();
+			double dist = record.distance(store.getLocation());
 			
 			double weight = lambda * Math.exp(-1.0 * lambda * dist);
 			totalWeight += weight;
@@ -43,22 +41,6 @@ public class CustomerLocationPDF implements ProbabilityDensityFunction<ZipcodeRe
 		}
 		
 		return ImmutableMap.copyOf(pdf);
-	}
-
-	private Pair<Store, Double> findClosestStore(List<Store> stores, ZipcodeRecord record)
-	{
-		Pair<Store, Double> closestStore = new Pair<Store, Double>(null, Double.MAX_VALUE);
-		
-		for(Store store : stores)
-		{
-			double dist = record.distance(store.getLocation());
-			if(dist < closestStore.getSecond())
-			{
-				closestStore = new Pair<Store, Double>(store, dist);
-			}
-		}
-		
-		return closestStore;
 	}
 	
 	public double probability(ZipcodeRecord record)

@@ -32,7 +32,7 @@ public class TestCustomerLocationPDF
 			stores.add(store);
 		}
 		
-		CustomerLocationPDF customerLocationPDF = new CustomerLocationPDF(zipcodes, stores, 
+		CustomerLocationPDF customerLocationPDF = new CustomerLocationPDF(zipcodes, stores.get(0), 
 					Constants.AVERAGE_CUSTOMER_STORE_DISTANCE);
 		
 		double prob = customerLocationPDF.probability(zipcodes.get(0));

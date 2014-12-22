@@ -4,6 +4,7 @@ import com.github.rnowling.bps.datagenerator.datamodels.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
+import com.github.rnowling.bps.datagenerator.framework.samplers.ConditionalSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 
 public class CustomerSampler implements Sampler<Customer>
@@ -12,12 +13,12 @@ public class CustomerSampler implements Sampler<Customer>
 	private final Sampler<String> firstNameSampler;
 	private final Sampler<String> lastNameSampler;
 	private final Sampler<Store> storeSampler;
-	private final Sampler<ZipcodeRecord> locationSampler;
+	private final ConditionalSampler<ZipcodeRecord, Store> locationSampler;
 	
 	
 	public CustomerSampler(Sampler<Integer> idSampler, Sampler<String> firstNameSampler,
 			Sampler<String> lastNameSampler, Sampler<Store> storeSampler,
-			Sampler<ZipcodeRecord> locationSampler)
+			ConditionalSampler<ZipcodeRecord, Store> locationSampler)
 	{
 		this.idSampler = idSampler;
 		this.firstNameSampler = firstNameSampler;
@@ -32,7 +33,7 @@ public class CustomerSampler implements Sampler<Customer>
 		Pair<String, String> name = Pair.create(firstNameSampler.sample(),
 				lastNameSampler.sample());
 		Store store = storeSampler.sample();
-		ZipcodeRecord location = locationSampler.sample();
+		ZipcodeRecord location = locationSampler.sample(store);
 		
 		return new Customer(id, name, store, location);
 	}
