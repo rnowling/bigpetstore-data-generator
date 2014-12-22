@@ -35,10 +35,11 @@ public class CustomerSamplerBuilder
 		Sampler<Integer> idSampler = new SequenceSampler();
 		Sampler<String> firstNameSampler = RouletteWheelSampler.create(inputData.getNames().getFirstNames(), seedFactory);
 		Sampler<String> lastNameSampler = RouletteWheelSampler.create(inputData.getNames().getLastNames(), seedFactory);
+		Sampler<Store> storeSampler = RouletteWheelSampler.createUniform(stores, seedFactory);
 		Sampler<ZipcodeRecord> locationSampler = RouletteWheelSampler.create(inputData.getZipcodeTable(), 
 				locationPDF, seedFactory);
 		
-		return new CustomerSampler(idSampler, firstNameSampler, lastNameSampler, locationSampler);
+		return new CustomerSampler(idSampler, firstNameSampler, lastNameSampler, storeSampler, locationSampler);
 	}
 
 }

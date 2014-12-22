@@ -1,10 +1,8 @@
 package com.github.rnowling.bps.datagenerator;
 
 import java.util.Collection;
-import java.util.List;
 
 import com.github.rnowling.bps.datagenerator.datamodels.Customer;
-import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.Transaction;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
@@ -16,10 +14,10 @@ public class TransactionGenerator
 {
 	Sampler<Transaction> sampler;
 	
-	public TransactionGenerator(Customer customer, PurchasingModel profile, List<Store> stores,
+	public TransactionGenerator(Customer customer, PurchasingModel profile, 
 			Collection<ProductCategory> productCategories, SeedFactory seedFactory) throws Exception
 	{
-		sampler = new TransactionSamplerBuilder(stores, productCategories,
+		sampler = new TransactionSamplerBuilder(productCategories,
 				customer, profile, seedFactory).build();
 	}
 	

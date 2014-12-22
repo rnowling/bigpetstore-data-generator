@@ -5,19 +5,16 @@ import java.util.List;
 
 import com.github.rnowling.bps.datagenerator.datamodels.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.Product;
-import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.Transaction;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.samplers.ConditionalSampler;
-import com.github.rnowling.bps.datagenerator.framework.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.SequenceSampler;
 import com.github.rnowling.bps.datagenerator.generators.purchase.PurchasingModel;
 
 public class TransactionSamplerBuilder
 {
-	private final Collection<Store> stores;
 	private final Collection<ProductCategory> productCategories;
 	private final Customer customer;
 	private final PurchasingModel purchasingProfile;
@@ -26,8 +23,7 @@ public class TransactionSamplerBuilder
 	CustomerTransactionParameters parameters;
 	CustomerInventory inventory;
 	
-	public TransactionSamplerBuilder(Collection<Store> stores,
-			Collection<ProductCategory> productCategories, 
+	public TransactionSamplerBuilder(Collection<ProductCategory> productCategories, 
 			Customer customer,
 			PurchasingModel purchasingProfile,
 			SeedFactory seedFactory) throws Exception
@@ -35,19 +31,13 @@ public class TransactionSamplerBuilder
 		this.customer = customer;
 		this.seedFactory = seedFactory;
 		this.purchasingProfile = purchasingProfile;
-		this.productCategories = productCategories;
-		this.stores = stores; 	
+		this.productCategories = productCategories;	
 	}
 	
 	protected void buildParameters() throws Exception
 	{
 		CustomerTransactionParametersSamplerBuilder builder = new CustomerTransactionParametersSamplerBuilder(seedFactory);
 		parameters = builder.build().sample();
-	}
-	
-	protected Sampler<Store> buildStoreSampler()
-	{
-		return RouletteWheelSampler.createUniform(stores, seedFactory);
 	}
 	
 	protected ConditionalSampler<List<Product>, Double> buildPurchasesSampler() throws Exception
@@ -85,6 +75,6 @@ public class TransactionSamplerBuilder
 		
 		Sampler<Double> timeSampler = buildTimeSampler();
 		
-		return new TransactionSampler(customer, timeSampler, buildPurchasesSampler(), buildStoreSampler(), new SequenceSampler());
+		return new TransactionSampler(customer, timeSampler, buildPurchasesSampler(), new SequenceSampler());
 	}
 }

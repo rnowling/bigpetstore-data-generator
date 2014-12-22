@@ -6,6 +6,8 @@ import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 
 public class Store implements Serializable
 {
+	private static final long serialVersionUID = 2347066623022747969L;
+	
 	int id;
 	String name;
 	ZipcodeRecord location;

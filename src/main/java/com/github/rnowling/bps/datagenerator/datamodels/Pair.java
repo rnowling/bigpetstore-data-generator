@@ -8,6 +8,8 @@ import com.google.common.collect.Lists;
 
 public class Pair<A, B> implements Serializable
 {
+	private static final long serialVersionUID = -105021821052665898L;
+	
 	A first;
 	B second;
 	

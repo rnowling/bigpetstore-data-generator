@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.github.rnowling.bps.datagenerator.datamodels.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.Product;
-import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.Transaction;
 import com.github.rnowling.bps.datagenerator.framework.samplers.ConditionalSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
@@ -13,18 +12,16 @@ public class TransactionSampler implements Sampler<Transaction>
 {
 	private final Sampler<Double> timeSampler;
 	private final ConditionalSampler<List<Product>, Double> purchasesSampler;
-	private final Sampler<Store> storeSampler;
 	private final Sampler<Integer> idSampler;
 	private final Customer customer;
 	
 	public TransactionSampler(Customer customer, Sampler<Double> timeSampler,
 			ConditionalSampler<List<Product>, Double> purchasesSampler,
-			Sampler<Store> storeSampler, Sampler<Integer> idSampler)
+			Sampler<Integer> idSampler)
 	{
 		this.timeSampler = timeSampler;
 		this.customer = customer;
 		this.purchasesSampler = purchasesSampler;
-		this.storeSampler = storeSampler;
 		this.idSampler = idSampler;
 	}
 	
@@ -33,10 +30,9 @@ public class TransactionSampler implements Sampler<Transaction>
 	{	
 		Double transactionTime = timeSampler.sample();
 		List<Product> purchase = purchasesSampler.sample(transactionTime);
-		Store store = this.storeSampler.sample();
 		Integer id = idSampler.sample();
 			
-		Transaction transaction = new Transaction(id, customer, store,
+		Transaction transaction = new Transaction(id, customer, customer.getStore(),
 				transactionTime, purchase);
 		
 		return transaction;

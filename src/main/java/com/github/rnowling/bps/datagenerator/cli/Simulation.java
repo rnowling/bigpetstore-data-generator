@@ -105,7 +105,7 @@ public class Simulation
 			PurchasingModel profile = purchasingModelSampler.sample();
 			
 			TransactionGenerator generator = new TransactionGenerator(customer,
-					profile, stores, inputData.getProductCategories(), seedFactory);
+					profile, inputData.getProductCategories(), seedFactory);
 			
 			while(true)
 			{

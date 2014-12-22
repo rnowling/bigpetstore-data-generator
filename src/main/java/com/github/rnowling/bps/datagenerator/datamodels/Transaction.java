@@ -7,6 +7,8 @@ import com.google.common.collect.ImmutableList;
 
 public class Transaction implements Serializable
 {
+	private static final long serialVersionUID = 103133601154354349L;
+	
 	final int id;
 	final Customer customer;
 	final Store store;
