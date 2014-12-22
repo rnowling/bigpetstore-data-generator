@@ -56,12 +56,12 @@ public class CustomerSamplerBuilder
 	
 	public Sampler<Customer> build()
 	{
-		
+		ProbabilityDensityFunction<Store> storePDF = new CustomerStorePDF(stores);
 		
 		Sampler<Integer> idSampler = new SequenceSampler();
 		Sampler<String> firstNameSampler = RouletteWheelSampler.create(inputData.getNames().getFirstNames(), seedFactory);
 		Sampler<String> lastNameSampler = RouletteWheelSampler.create(inputData.getNames().getLastNames(), seedFactory);
-		Sampler<Store> storeSampler = RouletteWheelSampler.createUniform(stores, seedFactory);
+		Sampler<Store> storeSampler = RouletteWheelSampler.create(stores, storePDF, seedFactory);
 		
 		return new CustomerSampler(idSampler, firstNameSampler, lastNameSampler, storeSampler, buildLocationSampler());
 	}
