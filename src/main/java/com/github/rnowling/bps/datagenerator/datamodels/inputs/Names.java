@@ -7,6 +7,8 @@ import com.google.common.collect.ImmutableMap;
 
 public class Names implements Serializable
 {
+	private static final long serialVersionUID = 2731634747628534453L;
+	
 	final ImmutableMap<String, Double> firstNames;
 	final ImmutableMap<String, Double> lastNames;
 	

@@ -7,6 +7,8 @@ import java.util.List;
 
 public class InputData implements Serializable
 {
+	private static final long serialVersionUID = 9078989799806707788L;
+	
 	List<ZipcodeRecord> zipcodeTable;
 	Names names;
 	Collection<ProductCategory> productCategories;

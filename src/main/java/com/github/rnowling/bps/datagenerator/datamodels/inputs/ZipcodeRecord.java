@@ -6,6 +6,8 @@ import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 
 public class ZipcodeRecord implements Serializable
 {
+	private static final long serialVersionUID = 1769986686070108470L;
+	
 	final String zipcode;
 	final Pair<Double, Double> coordinates;
 	final String city;

@@ -11,6 +11,8 @@ import com.google.common.collect.ImmutableSet;
 
 public class ProductCategory implements Serializable
 {
+	private static final long serialVersionUID = -7638076590334497836L;
+	
 	String categoryLabel;
 	ImmutableSet<PetSpecies> applicableSpecies;
 	ImmutableSet<String> fieldNames;
