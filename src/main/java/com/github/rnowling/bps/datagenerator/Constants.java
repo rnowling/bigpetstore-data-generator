@@ -28,6 +28,8 @@ public class Constants
 	
 	public static final File PRODUCTS_FILE = new File("product_categories.json");
 	
+	public static final File WEATHER_PARAMETERS_FILE = new File("weather_parameters.csv");
+	
 	public static final double INCOME_SCALING_FACTOR = 100.0;
 	
 	public static final int MIN_PETS = 1;

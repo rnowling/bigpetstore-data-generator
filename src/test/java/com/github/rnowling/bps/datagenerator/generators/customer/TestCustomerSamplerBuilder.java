@@ -16,6 +16,7 @@ import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
+import com.github.rnowling.bps.datagenerator.datamodels.inputs.WeatherStationParameters;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
@@ -36,8 +37,13 @@ public class TestCustomerSamplerBuilder
 		
 		Names names = new Names(nameList, nameList);
 		
+		List<WeatherStationParameters> weatherParameters = Arrays.asList(new WeatherStationParameters[] {
+			new WeatherStationParameters("234", "Pompano Beach", "FL", Pair.create(1.0, 2.0), 0.0,
+					0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+		});
+		
 		// don't need product categories for building customers
-		InputData inputData = new InputData(zipcodes, names, new ArrayList<ProductCategory>());
+		InputData inputData = new InputData(zipcodes, names, new ArrayList<ProductCategory>(), weatherParameters);
 		
 		List<Store> stores = Arrays.asList(new Store(0, "Store_0", zipcodes.get(0)),
 				new Store(1, "Store_1", zipcodes.get(1)),

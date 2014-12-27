@@ -12,14 +12,17 @@ public class InputData implements Serializable
 	List<ZipcodeRecord> zipcodeTable;
 	Names names;
 	Collection<ProductCategory> productCategories;
+	List<WeatherStationParameters> weatherStationParameters;
 	
 	public InputData(List<ZipcodeRecord> zipcodeTable,
 			Names names,
-			Collection<ProductCategory> productCategories)
+			Collection<ProductCategory> productCategories,
+			List<WeatherStationParameters> weatherStationParameters)
 	{
 		this.zipcodeTable = Collections.unmodifiableList(zipcodeTable);
 		this.names = names;
 		this.productCategories = Collections.unmodifiableCollection(productCategories);
+		this.weatherStationParameters = Collections.unmodifiableList(weatherStationParameters);
 	}
 	
 	public List<ZipcodeRecord> getZipcodeTable()
@@ -35,6 +38,11 @@ public class InputData implements Serializable
 	public Collection<ProductCategory> getProductCategories()
 	{
 		return productCategories;
+	}
+	
+	public List<WeatherStationParameters> getWeatherStationParameters()
+	{
+		return weatherStationParameters;
 	}
 	
 	
