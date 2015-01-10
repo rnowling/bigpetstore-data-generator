@@ -5,12 +5,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.github.rnowling.bps.datagenerator.DataLoader;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.Product;
+import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.Transaction;
+import com.github.rnowling.bps.datagenerator.datamodels.Weather;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 
 
@@ -129,10 +133,33 @@ public class Driver
 		}
 	}
 	
+	private void writeWeather(Map<Store, List<Weather>> weatherTrajectories) throws Exception
+	{
+		File outputFile = new File(outputDir.toString() + File.separator + "weather.txt");
+		OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
+		for(Map.Entry<Store, List<Weather>> entry : weatherTrajectories.entrySet())
+		{
+			for(Weather weather : entry.getValue())
+			{
+				String record = weather.getTime() + ",";
+				record += entry.getKey().getId() + ",";
+				record += weather.getTemperature() + ",";
+				record += weather.getWindChill() + ",";
+				record += weather.getWindSpeed() + ",";
+				record += weather.getPrecipitation() + ",";
+				record += weather.getRainFall() + ",";
+				record += weather.getSnowFall() + "\n";
+				
+				outputStream.write(record.getBytes());
+			}
+		}
+		
+		outputStream.close();
+	}
+	
 	private void writeTransactions(Collection<Transaction> transactions) throws Exception
 	{
 		File outputFile = new File(outputDir.toString() + File.separator + "transactions.txt");
-		System.out.println(outputFile.toString());
 		OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
 		
 		for(Transaction transaction : transactions)
@@ -172,6 +199,7 @@ public class Driver
 		simulation.simulate();
 		
 		writeTransactions(simulation.getTransactions());
+		writeWeather(simulation.getWeatherTrajectories());
 	}	
 	public void run(String[] args) throws Exception
 	{

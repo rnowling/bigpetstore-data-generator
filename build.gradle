@@ -43,6 +43,7 @@ test {
 dependencies {
     compile 'com.google.guava:guava:18.0'
     compile 'com.google.code.gson:gson:2.3'
+    compile 'org.apache.commons:commons-math3:3.3'
 
     testCompile 'junit:junit:4.+'
 }

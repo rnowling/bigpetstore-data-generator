@@ -35,6 +35,8 @@ public class Constants
 	public static final int MIN_PETS = 1;
 	public static final int MAX_PETS = 10;
 	
+	public static final double TRANSACTION_START_TIME = 0.0;
+	
 	public static final List<Pair<Double, Double>> TRANSACTION_TRIGGER_TIME_GAUSSIANS = ImmutableList.of(Pair.create(5.0, 2.0));
 	public static final List<Pair<Double, Double>> PURCHASE_TRIGGER_TIME_GAUSSIANS = ImmutableList.of(Pair.create(10.0, 4.0));
 	
@@ -79,4 +81,34 @@ public class Constants
 	public static final String PRODUCT_CATEGORY = "category";
 	
 	public static final double STOP_CATEGORY_WEIGHT = 0.01;
+	
+	public static final double TEMPERATURE_GAMMA = 0.5; // 2 / day
+	public static final double WEATHER_TIMESTEP = 1.0; // days
+	public static final double TEMPERATURE_PERIOD = 365.0; // days
+	
+	public static final double PRECIPITATION_A = 0.2;
+	public static final double PRECIPITATION_B = 27.0;
+	public static final double PRECIPITATION_TO_SNOWFALL = 10.0;
+	
+	public static final double WEATHER_SIMULATION_LENGTH_MULTIPLIER = 1.25;
+	
+	public static final double WIND_CHILL_PROBABILITY_A = 0.8;
+	public static final double WIND_CHILL_PROBABILITY_B = 0.5;
+	public static final double WIND_CHILL_PROBABILITY_C = 10.0; // F
+	public static final double WIND_CHILL_PROBABILITY_D = 0.2;
+	
+	public static final double WIND_SPEED_PROBABILITY_A = -0.5;
+	public static final double WIND_SPEED_PROBABILITY_B = 0.8;
+	public static final double WIND_SPEED_PROBABILITY_C = 17.5; // mph
+	public static final double WIND_SPEED_PROBABILITY_D = 1.0;
+	
+	public static final double SNOWFALL_PROBABILITY_A = -0.8;
+	public static final double SNOWFALL_PROBABILITY_B = 10.0; 
+	public static final double SNOWFALL_PROBABILITY_C = 0.75; // in
+	public static final double SNOWFALL_PROBABILITY_D = 1.0;
+	
+	public static final double RAINFALL_PROBABILITY_A = -0.6;
+	public static final double RAINFALL_PROBABILITY_B = 7.5;
+	public static final double RAINFALL_PROBABILITY_C = 0.75; // in
+	public static final double RAINFALL_PROBABILITY_D = 1.0;
 }

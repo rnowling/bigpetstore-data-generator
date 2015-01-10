@@ -6,6 +6,7 @@ import java.util.List;
 import com.github.rnowling.bps.datagenerator.datamodels.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.Product;
 import com.github.rnowling.bps.datagenerator.datamodels.Transaction;
+import com.github.rnowling.bps.datagenerator.datamodels.Weather;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.samplers.ConditionalSampler;
@@ -18,6 +19,7 @@ public class TransactionSamplerBuilder
 	private final Collection<ProductCategory> productCategories;
 	private final Customer customer;
 	private final PurchasingModel purchasingProfile;
+	private final List<Weather> weatherTraj;
 	private final SeedFactory seedFactory;
 	
 	CustomerTransactionParameters parameters;
@@ -26,12 +28,14 @@ public class TransactionSamplerBuilder
 	public TransactionSamplerBuilder(Collection<ProductCategory> productCategories, 
 			Customer customer,
 			PurchasingModel purchasingProfile,
+			List<Weather> weatherTraj,
 			SeedFactory seedFactory) throws Exception
 	{
 		this.customer = customer;
 		this.seedFactory = seedFactory;
 		this.purchasingProfile = purchasingProfile;
 		this.productCategories = productCategories;	
+		this.weatherTraj = weatherTraj;
 	}
 	
 	protected void buildParameters() throws Exception
@@ -53,7 +57,8 @@ public class TransactionSamplerBuilder
 	
 	protected Sampler<Double> buildTimeSampler()
 	{
-		TransactionTimeSamplerBuilder builder = new TransactionTimeSamplerBuilder(seedFactory);
+		TransactionTimeSamplerBuilder builder = 
+				new TransactionTimeSamplerBuilder(weatherTraj, seedFactory);
 		builder.setCustomerTransactionParameters(parameters);
 		builder.setCustomerInventory(inventory);
 		
