@@ -15,10 +15,12 @@ public class WeatherGenerator
 	private final Sampler<Weather> weatherSampler;
 	private final int weatherSimulationLength;
 	
-	public WeatherGenerator(InputData inputData, double simulationLength, Store store, SeedFactory seedFactory)
+	public WeatherGenerator(InputData inputData, double simulationLength, double timeOffset, 
+			Store store, SeedFactory seedFactory)
 	{
-		WeatherSamplerBuilder builder = new WeatherSamplerBuilder(inputData.getWeatherStationParameters(),
-				store.getLocation(), seedFactory);
+		WeatherSamplerBuilder builder = new WeatherSamplerBuilder(
+				inputData.getWeatherStationParameters(),
+				store.getLocation(), timeOffset, seedFactory);
 		weatherSampler = builder.build();
 		
 		weatherSimulationLength = (int) Math.ceil(simulationLength * Constants.WEATHER_SIMULATION_LENGTH_MULTIPLIER);

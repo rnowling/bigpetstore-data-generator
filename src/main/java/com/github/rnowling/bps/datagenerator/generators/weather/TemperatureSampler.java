@@ -15,7 +15,7 @@ public class TemperatureSampler implements Sampler<Double>
 	private double time;
 	private double noise;
 	
-	public TemperatureSampler(double tempAverage, double tempRealCoeff, double tempImagCoeff,
+	public TemperatureSampler(double timeOffset, double tempAverage, double tempRealCoeff, double tempImagCoeff,
 			double tempSigma, SeedFactory seedFactory)
 	{
 		R = new GaussianSampler(0.0, tempSigma, seedFactory);
@@ -24,7 +24,7 @@ public class TemperatureSampler implements Sampler<Double>
 		this.coeffReal = tempRealCoeff;
 		this.coeffImag = tempImagCoeff;
 
-		time = 0.0;
+		time = timeOffset;
 		noise = 0.0;
 	}
 	

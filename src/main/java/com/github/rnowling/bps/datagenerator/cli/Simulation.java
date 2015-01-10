@@ -31,6 +31,7 @@ public class Simulation
 	int nCustomers;
 	int nPurchasingModels;
 	double simulationTime;
+	double timeOffset;
 	
 	List<Store> stores;
 	List<Customer> customers;
@@ -38,13 +39,14 @@ public class Simulation
 	List<Transaction> transactions;
 	Map<Store, List<Weather>> weatherTrajectories;
 	
-	public Simulation(InputData inputData, int nStores, int nCustomers, int nPurchasingModels, double simulationTime, long seed)
+	public Simulation(InputData inputData, int nStores, int nCustomers, int nPurchasingModels, double simulationTime, double timeOffset, long seed)
 	{
 		this.inputData = inputData;
 		this.nStores = nStores;
 		this.nCustomers = nCustomers;
 		this.nPurchasingModels = nPurchasingModels;
 		this.simulationTime = simulationTime;
+		this.timeOffset = timeOffset;
 		seedFactory = new SeedFactory(seed);
 	}
 	
@@ -73,7 +75,7 @@ public class Simulation
 		for(Store store : stores)
 		{
 			WeatherGenerator generator = new WeatherGenerator(inputData,
-					simulationTime, store, seedFactory);
+					simulationTime, timeOffset, store, seedFactory);
 			List<Weather> trajectory = generator.generate();
 			
 			weatherTrajectories.put(store, trajectory);

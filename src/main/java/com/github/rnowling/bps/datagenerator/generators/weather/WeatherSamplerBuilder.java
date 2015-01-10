@@ -15,12 +15,14 @@ public class WeatherSamplerBuilder
 	
 	private final WeatherStationParameters parameters;
 	private final SeedFactory seedFactory;
+	private final double timeOffset;
 	
 	public WeatherSamplerBuilder(Collection<WeatherStationParameters> weatherParameters,
-			ZipcodeRecord location, SeedFactory seedFactory)
+			ZipcodeRecord location, double timeOffset, SeedFactory seedFactory)
 	{
 		parameters = findClosest(weatherParameters, location);
 		this.seedFactory = seedFactory;
+		this.timeOffset = timeOffset;
 	}
 	
 	private WeatherStationParameters findClosest(Collection<WeatherStationParameters> weatherParameters,
@@ -62,14 +64,15 @@ public class WeatherSamplerBuilder
 	
 	private Sampler<Double> buildTempSampler()
 	{
-		return new TemperatureSampler(parameters.getTemperatureAverage(),
+		return new TemperatureSampler(timeOffset, parameters.getTemperatureAverage(),
 				parameters.getTemperatureRealCoeff(), parameters.getTemperatureImagCoeff(),
 				parameters.getTemperatureDerivStd(), seedFactory);
 	}
 	
 	private Sampler<Double> buildWindSpeedSampler()
 	{
-		return new WindSpeedSampler(parameters.getWindSpeedRealCoeff(),
+		return new WindSpeedSampler(timeOffset,
+				parameters.getWindSpeedRealCoeff(),
 				parameters.getWindSpeedImagCoeff(),
 				parameters.getWindSpeedK(),
 				parameters.getWindSpeedTheta(), seedFactory);

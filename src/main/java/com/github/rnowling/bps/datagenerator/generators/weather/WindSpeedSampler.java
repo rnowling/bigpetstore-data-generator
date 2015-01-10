@@ -14,7 +14,7 @@ public class WindSpeedSampler implements Sampler<Double>
 	
 	private double time;
 	
-	public WindSpeedSampler(double windSpeedRealCoeff, double windSpeedImagCoeff,
+	public WindSpeedSampler(double timeOffset, double windSpeedRealCoeff, double windSpeedImagCoeff,
 			double windSpeedK, double windSpeedTheta, SeedFactory seedFactory)
 	{
 		coeffReal = windSpeedRealCoeff;
@@ -23,7 +23,7 @@ public class WindSpeedSampler implements Sampler<Double>
 		gamma = new GammaDistribution(windSpeedK, windSpeedTheta);
 		gamma.reseedRandomGenerator(seedFactory.getNextSeed());
 		
-		time = 0.0;
+		time = timeOffset;
 	}
 	
 	public Double sample()

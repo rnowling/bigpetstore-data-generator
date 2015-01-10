@@ -24,10 +24,11 @@ public class Driver
 	int nCustomers;
 	int nPurchasingModels;
 	double simulationTime;
+	double timeOffset;
 	long seed;
 	File outputDir;
 	
-	static final int NPARAMS = 6;
+	static final int NPARAMS = 7;
 	
 	private void printUsage()
 	{
@@ -40,6 +41,7 @@ public class Driver
 				"nCustomers - (int) number of customers to generate\n" +
 				"nPurchasingModels - (int) number of purchasing models to generate\n" + 
 				"simulationLength - (float) number of days to simulate\n" +
+				"timeOffset - (float) time of year to start simulation in days\n" +
 				"seed - (long) seed for RNG. If not given, one is reandomly generated.\n";
 		
 		System.out.println(usage);
@@ -110,6 +112,17 @@ public class Driver
 		catch(Exception e)
 		{
 			System.err.println("Unable to parse '" + args[i] + "' as a float for simulationLength.\n");
+			printUsage();
+			System.exit(1);
+		}
+		
+		try
+		{
+			timeOffset = Double.parseDouble(args[++i]);
+		}
+		catch(Exception e)
+		{
+			System.err.println("Unable to parse '" + args[i] + "' as a float for timeOffset.\n");
 			printUsage();
 			System.exit(1);
 		}
@@ -189,7 +202,8 @@ public class Driver
 	
 	public Simulation buildSimulation(InputData inputData)
 	{
-		return new Simulation(inputData, nStores, nCustomers, nPurchasingModels, simulationTime, seed);
+		return new Simulation(inputData, nStores, nCustomers, nPurchasingModels,
+				simulationTime, timeOffset, seed);
 	}
 	
 	private void run(InputData inputData) throws Exception
