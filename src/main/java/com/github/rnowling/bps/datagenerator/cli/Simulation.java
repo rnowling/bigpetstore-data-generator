@@ -3,25 +3,21 @@ package com.github.rnowling.bps.datagenerator.cli;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 import com.github.rnowling.bps.datagenerator.CustomerGenerator;
 import com.github.rnowling.bps.datagenerator.PurchasingModelGenerator;
 import com.github.rnowling.bps.datagenerator.StoreGenerator;
 import com.github.rnowling.bps.datagenerator.TransactionGenerator;
-import com.github.rnowling.bps.datagenerator.WeatherGenerator;
 import com.github.rnowling.bps.datagenerator.datamodels.Customer;
 import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.Transaction;
-import com.github.rnowling.bps.datagenerator.datamodels.Weather;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.framework.SeedFactory;
 import com.github.rnowling.bps.datagenerator.framework.samplers.RouletteWheelSampler;
 import com.github.rnowling.bps.datagenerator.framework.samplers.Sampler;
 import com.github.rnowling.bps.datagenerator.generators.purchase.PurchasingModel;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 public class Simulation
 {
@@ -31,22 +27,19 @@ public class Simulation
 	int nCustomers;
 	int nPurchasingModels;
 	double simulationTime;
-	double timeOffset;
 	
 	List<Store> stores;
 	List<Customer> customers;
 	Sampler<PurchasingModel> purchasingModelSampler;
 	List<Transaction> transactions;
-	Map<Store, List<Weather>> weatherTrajectories;
 	
-	public Simulation(InputData inputData, int nStores, int nCustomers, int nPurchasingModels, double simulationTime, double timeOffset, long seed)
+	public Simulation(InputData inputData, int nStores, int nCustomers, int nPurchasingModels, double simulationTime, long seed)
 	{
 		this.inputData = inputData;
 		this.nStores = nStores;
 		this.nCustomers = nCustomers;
 		this.nPurchasingModels = nPurchasingModels;
 		this.simulationTime = simulationTime;
-		this.timeOffset = timeOffset;
 		seedFactory = new SeedFactory(seed);
 	}
 	
@@ -65,23 +58,6 @@ public class Simulation
 		stores = Collections.unmodifiableList(stores);
 		
 		System.out.println("Generated " + stores.size() + " stores");
-	}
-	
-	public void generateWeather() throws Exception
-	{
-		System.out.println("Generating weather data");
-		weatherTrajectories = Maps.newHashMap();
-		
-		for(Store store : stores)
-		{
-			WeatherGenerator generator = new WeatherGenerator(inputData,
-					simulationTime, timeOffset, store, seedFactory);
-			List<Weather> trajectory = generator.generate();
-			
-			weatherTrajectories.put(store, trajectory);
-		}
-		
-		System.out.println("Generated weather data.");
 	}
 	
 	public void generateCustomers() throws Exception
@@ -127,10 +103,9 @@ public class Simulation
 		{
 			Customer customer = customers.get(i);
 			PurchasingModel profile = purchasingModelSampler.sample();
-			List<Weather> weatherTraj = weatherTrajectories.get(customer.getStore());
 			
 			TransactionGenerator generator = new TransactionGenerator(customer,
-					profile, inputData.getProductCategories(), weatherTraj, seedFactory);
+					profile, inputData.getProductCategories(), seedFactory);
 			
 			while(true)
 			{
@@ -148,7 +123,6 @@ public class Simulation
 	public void simulate() throws Exception
 	{
 		generateStores();
-		generateWeather();
 		generateCustomers();
 		generatePurchasingProfiles();
 		generateTransactions();
@@ -172,10 +146,5 @@ public class Simulation
 	public InputData getInputData()
 	{
 		return inputData;
-	}
-	
-	public Map<Store, List<Weather>> getWeatherTrajectories()
-	{
-		return weatherTrajectories;
 	}
 }

@@ -9,11 +9,9 @@ import java.util.List;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.Names;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ProductCategory;
-import com.github.rnowling.bps.datagenerator.datamodels.inputs.WeatherStationParameters;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.ZipcodeRecord;
 import com.github.rnowling.bps.datagenerator.datareaders.NameReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ProductsReader;
-import com.github.rnowling.bps.datagenerator.datareaders.WeatherParametersReader;
 import com.github.rnowling.bps.datagenerator.datareaders.ZipcodeReader;
 
 public class DataLoader
@@ -45,12 +43,7 @@ public class DataLoader
 		Collection<ProductCategory> productCategories = reader.readData();
 		System.out.println("Read " + productCategories.size() + " product categories");
 		
-		System.out.println("Reading weather parameters");
-		WeatherParametersReader weatherReader = new WeatherParametersReader(getResource(Constants.WEATHER_PARAMETERS_FILE));
-		List<WeatherStationParameters> weatherParameters = weatherReader.readParameters();
-		System.out.println("Read parameters for " + weatherParameters.size() + " stations");
-		
-		InputData inputData = new InputData(zipcodeTable, names, productCategories, weatherParameters);
+		InputData inputData = new InputData(zipcodeTable, names, productCategories);
 		
 		return inputData;
 	}

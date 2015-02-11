@@ -3,21 +3,28 @@ package com.github.rnowling.bps.datagenerator.generators.transaction;
 import com.github.rnowling.bps.datagenerator.framework.pdfs.ConditionalProbabilityDensityFunction;
 import com.github.rnowling.bps.datagenerator.framework.pdfs.ProbabilityDensityFunction;
 
-public class TransactionTimePDF implements
-		ConditionalProbabilityDensityFunction<Double, Double>
-{
-	private final ConditionalProbabilityDensityFunction<Double, Double> arrowOfTimePDF;
-	private final ProbabilityDensityFunction<Double> weatherPDF;
-	
-	public TransactionTimePDF(ConditionalProbabilityDensityFunction<Double, Double> arrowOfTimePDF,
-			ProbabilityDensityFunction<Double> weatherPDF)
+public class TransactionTimePDF implements ConditionalProbabilityDensityFunction<Double, Double>
+{	
+	public double probability(Double proposedTime, Double lastTransactionTime)
 	{
-		this.arrowOfTimePDF = arrowOfTimePDF;
-		this.weatherPDF = weatherPDF;
+		return fixConditional(lastTransactionTime).probability(proposedTime);
 	}
 	
-	public double probability(Double time, Double previousTime)
+	public ProbabilityDensityFunction<Double> fixConditional(final Double lastTransactionTime)
 	{
-		return arrowOfTimePDF.probability(time, previousTime) * weatherPDF.probability(time);
+		return new ProbabilityDensityFunction<Double>()
+			{
+				public double probability(Double proposedTransactionTime)
+				{
+					if(proposedTransactionTime >= lastTransactionTime)
+					{
+						return 1.0;
+					}
+					else
+					{
+						return 0.0;
+					}
+				}
+			};
 	}
 }

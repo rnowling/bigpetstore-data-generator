@@ -5,16 +5,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import com.github.rnowling.bps.datagenerator.DataLoader;
 import com.github.rnowling.bps.datagenerator.datamodels.Pair;
 import com.github.rnowling.bps.datagenerator.datamodels.Product;
-import com.github.rnowling.bps.datagenerator.datamodels.Store;
 import com.github.rnowling.bps.datagenerator.datamodels.Transaction;
-import com.github.rnowling.bps.datagenerator.datamodels.Weather;
 import com.github.rnowling.bps.datagenerator.datamodels.inputs.InputData;
 
 
@@ -24,11 +20,10 @@ public class Driver
 	int nCustomers;
 	int nPurchasingModels;
 	double simulationTime;
-	double timeOffset;
 	long seed;
 	File outputDir;
 	
-	static final int NPARAMS = 7;
+	static final int NPARAMS = 6;
 	
 	private void printUsage()
 	{
@@ -41,7 +36,6 @@ public class Driver
 				"nCustomers - (int) number of customers to generate\n" +
 				"nPurchasingModels - (int) number of purchasing models to generate\n" + 
 				"simulationLength - (float) number of days to simulate\n" +
-				"timeOffset - (float) time of year to start simulation in days\n" +
 				"seed - (long) seed for RNG. If not given, one is reandomly generated.\n";
 		
 		System.out.println(usage);
@@ -116,17 +110,6 @@ public class Driver
 			System.exit(1);
 		}
 		
-		try
-		{
-			timeOffset = Double.parseDouble(args[++i]);
-		}
-		catch(Exception e)
-		{
-			System.err.println("Unable to parse '" + args[i] + "' as a float for timeOffset.\n");
-			printUsage();
-			System.exit(1);
-		}
-		
 		if(args.length == NPARAMS)
 		{
 			try
@@ -146,33 +129,10 @@ public class Driver
 		}
 	}
 	
-	private void writeWeather(Map<Store, List<Weather>> weatherTrajectories) throws Exception
-	{
-		File outputFile = new File(outputDir.toString() + File.separator + "weather.txt");
-		OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
-		for(Map.Entry<Store, List<Weather>> entry : weatherTrajectories.entrySet())
-		{
-			for(Weather weather : entry.getValue())
-			{
-				String record = weather.getTime() + ",";
-				record += entry.getKey().getId() + ",";
-				record += weather.getTemperature() + ",";
-				record += weather.getWindChill() + ",";
-				record += weather.getWindSpeed() + ",";
-				record += weather.getPrecipitation() + ",";
-				record += weather.getRainFall() + ",";
-				record += weather.getSnowFall() + "\n";
-				
-				outputStream.write(record.getBytes());
-			}
-		}
-		
-		outputStream.close();
-	}
-	
 	private void writeTransactions(Collection<Transaction> transactions) throws Exception
 	{
 		File outputFile = new File(outputDir.toString() + File.separator + "transactions.txt");
+		System.out.println(outputFile.toString());
 		OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
 		
 		for(Transaction transaction : transactions)
@@ -202,8 +162,7 @@ public class Driver
 	
 	public Simulation buildSimulation(InputData inputData)
 	{
-		return new Simulation(inputData, nStores, nCustomers, nPurchasingModels,
-				simulationTime, timeOffset, seed);
+		return new Simulation(inputData, nStores, nCustomers, nPurchasingModels, simulationTime, seed);
 	}
 	
 	private void run(InputData inputData) throws Exception
@@ -213,7 +172,6 @@ public class Driver
 		simulation.simulate();
 		
 		writeTransactions(simulation.getTransactions());
-		writeWeather(simulation.getWeatherTrajectories());
 	}	
 	public void run(String[] args) throws Exception
 	{
